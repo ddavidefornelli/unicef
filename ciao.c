@@ -10,6 +10,3 @@ void ao(){
 void ciaobelli() {
   printf("affammoccAsort");
 }
-void ciaobelli() {
-  printf("affammoccAsort");
-}
