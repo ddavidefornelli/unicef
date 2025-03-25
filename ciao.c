@@ -7,3 +7,9 @@ void ao(){
     printf("Il gruppo di francesco viene bocciato");
 }
 
+void ciaobelli() {
+  printf("affammoccAsort");
+}
+void ciaobelli() {
+  printf("affammoccAsort");
+}
