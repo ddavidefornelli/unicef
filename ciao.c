@@ -4,5 +4,6 @@ int main() {
 
 void ao(){
     printf("affammoccA");
+    printf("Il gruppo di francesco viene bocciato");
 }
 
