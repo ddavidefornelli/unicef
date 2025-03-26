@@ -39,6 +39,7 @@ void mostraMenu() {
   stampaCentrato("~ Facile    ");
   stampaCentrato("~ Media     ");
   stampaCentrato("~ Difficile ");
+
 }
 
 int main() {
