@@ -44,6 +44,7 @@ void mostraMenu() {
 int main() {
     mostraMenu();
     getchar();
+    getchar();
     return 0;
 }
 
