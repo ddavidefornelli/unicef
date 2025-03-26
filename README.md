@@ -1,4 +1,1 @@
-REGOLE DEL GIOCO:
-ciao
-
-
+PSEUDO:
