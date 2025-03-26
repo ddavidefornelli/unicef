@@ -2,23 +2,32 @@
 #include <stdlib.h>
 #include <string.h>
 
-void stampaCentrato(const char *testo) {
-    const int larghezza = 120;
-    int len;
-    int spazi = (larghezza - len) / 2;
-    int i;
+void stampaCentrato(const char *TESTO);
+void mostraMenu();
 
-    len = strlen(testo);
-    spazi = (larghezza - len) / 2;
+int main() {
+  mostraMenu();
+  getchar();
+  return 0;
+}
 
-    if (spazi < 0) spazi = 0;
+void stampaCentrato(const char *TESTO) {
+  const int LARGHEZZA = 120;
+  int len;
+  int spazi; 
+  int i;
 
-    i = 0;
-    while(i < spazi){
-      printf(" ");
-      i = i + 1;
-    }
-    printf("%s\n", testo);
+  len = strlen(TESTO);
+  spazi = (LARGHEZZA - len) / 2;
+
+  if (spazi < 0) spazi = 0;
+
+  i = 0;
+  while(i < spazi){
+    printf(" ");
+    i = i + 1;
+  }
+  printf("%s\n", TESTO);
 }
 
 void mostraMenu() {
@@ -40,11 +49,5 @@ void mostraMenu() {
   stampaCentrato("~ Media     ");
   stampaCentrato("~ Difficile ");
 
-}
-
-int main() {
-    mostraMenu();
-    getchar();
-    return 0;
 }
 
