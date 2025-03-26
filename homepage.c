@@ -22,7 +22,7 @@ void stampaCentrato(const char *testo) {
 }
 
 void mostraMenu() {
-
+  int sceltaUtente;
   printf("\n");
   stampaCentrato(" ");
   stampaCentrato(" __           _       _           ");
@@ -33,13 +33,14 @@ void mostraMenu() {
   stampaCentrato(" ");
   printf("\n");
 
-  stampaCentrato("MODALITA':");
+  stampaCentrato("digita un numero per selezionare la modalita' di gioco e premi invio per confermare:");
   printf("\n");
-  stampaCentrato("~ Tutorial  ");
-  stampaCentrato("~ Facile    ");
-  stampaCentrato("~ Media     ");
-  stampaCentrato("~ Difficile ");
-
+  stampaCentrato("1) Tutorial  ");
+  stampaCentrato("2) Facile    ");
+  stampaCentrato("3) Media     ");
+  stampaCentrato("4) Difficile ");
+  /*scanf("%d", &sceltaUtente);*/
+  /*printf("%d", sceltaUtente);*/
 }
 
 int main() {
