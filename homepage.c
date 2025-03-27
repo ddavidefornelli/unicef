@@ -4,12 +4,21 @@ Fornelli Davide
 Antoniciello Giuliano
 
 Data di inizio di scrittura del file: 
-26/03/2025
+26/03/2025 MODIFICALA FALLA PIU TARDI
 
 Nome del file:
 Home Page sudoku
 
 Scopo di ogni funzione presente:
+<<<<<<< HEAD
+stampaCentrato() -> funzione utilizzata per posizionare al centro del terminale il menù di partenza;
+stampaASinistra() -> funzione utilizzata per posizionare al lato sinistro del terminale una stringa quando viene stampata.
+mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
+
+Modifiche apportate:
+Nel giorno 27/03/2025, Fornelli Davide e Antonciello Giuliano, hanno inserito la funzioni stampaASinistra() e modificato layout e interfaccia
+la modifica è stata effettuata per permettere una comprensione più chiara del menù di gioco  MODIFICALA FALLA PIU TARDI
+=======
 stampaASinistra() -> funzione utilizzata per centrare a sinistra sul terminale;
 stampaCentrato() -> funzione utilizzata per centrare sul terminale il menù di partenza;
 mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
@@ -17,6 +26,7 @@ collezionaInput() -> funzione utilizzata per collezionare l' input dell utente;
 spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel terminale;
 
 
+>>>>>>> 07b7c137c82ff0fb8542d94845be37ab55f75e51
 */
 
 #include <stdio.h>
@@ -26,7 +36,8 @@ spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel
 #define LARGHEZZA (120) /* rappresenta la larghezza del terminale */
 
 int main();
-void stampaCentrato(const char *testo); /* Centra una stringa quando stampata nel terminale. paramentro = stringa da centrare */
+void stampaCentrato(const char *testo); /* centra una stringa quando viene stampata sul terminale. */
+void stampaASinistra(const char *testo) ; /* Centra una stringa quando stampata sul terminale. */
 void mostraMenu(); /* Stampa a video il menù di partenza */
 void spostaCursore(int x, int y);
 void collezionaInput();
@@ -55,16 +66,13 @@ int main() {
 void stampaCentrato(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
-  // int spazi = (LARGHEZZA - len) / 2;
-  int spaziDaInserire; /* contatore per il ciclo */
+  int spaziDaInserire = 0; /* contatore per il ciclo */
   int dimStringa; /* calcolo la lunghezza di dimStringa */
-  int spazi; 
-
-  /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
-  
+  int spazi; /* rappresenta le coordinate dove deve essere stampata "testo" */
   dimStringa = strlen(testo);
   spazi = (LARGHEZZA - dimStringa) / 2;
-
+  
+  /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
   if (spazi < 0)
   {
     spazi = 0;
@@ -97,16 +105,13 @@ void stampaCentrato(const char *testo)
 void stampaASinistra(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
-  // int spazi = (LARGHEZZA - len) / 2;
   int spaziDaInserire; /* contatore per il ciclo */
-  int dimStringa; /* calcolo la lunghezza di dimStringa */
-  int spazi; 
-
-  /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
-  
-  dimStringa = strlen(testo);
+  int dimStringa; 
+  int spazi; /* rappresenta le coordinate dove deve essere stampata "testo" */
+  dimStringa = strlen(testo); /* calcolo la lunghezza di dimStringa */
   spazi = (LARGHEZZA - dimStringa) - 5;
-
+  
+  /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
   if (spazi < 0)
   {
     spazi = 0;
@@ -146,17 +151,17 @@ void mostraMenu()
   stampaCentrato("_\\ \\ |_| | (_| | (_) |   <| |_| | ");
   stampaCentrato("\\__/\\__,_|\\__,_|\\___/|_|\\_\\\\__,_| ");
   printf("\n\n");
-  stampaCentrato("+---------------------------------+") ;
-  stampaCentrato("|                ||               |") ;
+  stampaCentrato("+---------------------------------+");
+  stampaCentrato("|                ||               |");
   stampaCentrato("| Le Modalita':  ||               |");
-  stampaCentrato("|                ||               |") ;
-  stampaCentrato("+----------------||   Modalita'   |") ;
-  stampaCentrato("|                ||  Selezionata  |") ;
+  stampaCentrato("|                ||               |");
+  stampaCentrato("+----------------||   Modalita'   |");
+  stampaCentrato("|                ||  Selezionata  |");
   stampaCentrato("| 1) Tutorial    ||               |");
   stampaCentrato("| 2) Facile      ||               |");
   stampaCentrato("| 3) Media       ||               |");
   stampaCentrato("| 4) Difficile   ||               |");
-  stampaCentrato("|                ||               |") ;
+  stampaCentrato("|                ||               |");
   stampaCentrato("+---------------------------------+");
 
   printf("\n");
@@ -164,12 +169,15 @@ void mostraMenu()
   stampaCentrato("Digita il numero per scegliere la Modalita");
   stampaCentrato("  premi invio per iniziare a giocare!");
 
-
-
   printf("\n\n\n\n\n");
   stampaASinistra("Digita FINE per terminare il gioco");
 
+<<<<<<< HEAD
+  MOVE_CURSOR(16, 66);
+   
+=======
   spostaCursore(16, 66);
+>>>>>>> 07b7c137c82ff0fb8542d94845be37ab55f75e51
   // Chiede l'input
   collezionaInput();
 }
