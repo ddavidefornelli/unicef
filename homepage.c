@@ -10,8 +10,13 @@ Nome del file:
 Home Page sudoku
 
 Scopo di ogni funzione presente:
+stampaASinistra() -> funzione utilizzata per centrare a sinistra sul terminale;
 stampaCentrato() -> funzione utilizzata per centrare sul terminale il menù di partenza;
 mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
+collezionaInput() -> funzione utilizzata per collezionare l' input dell utente;
+spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel terminale;
+
+
 */
 
 #include <stdio.h>
@@ -19,7 +24,6 @@ mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
 #include <string.h>
 
 #define LARGHEZZA (120) /* rappresenta la larghezza del terminale */
-#define SPOSTA_CURSORE(riga, colonna) printf("\033[%d;%dH", row, col)
 
 int main();
 void stampaCentrato(const char *testo); /* Centra una stringa quando stampata nel terminale. paramentro = stringa da centrare */
