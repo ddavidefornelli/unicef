@@ -19,13 +19,13 @@ mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
 #include <string.h>
 
 #define LARGHEZZA (120) /* rappresenta la larghezza del terminale */
-#define GRIGIO ("\033[37m") /* rappresenta la larghezza del terminale */
-#define RESET ("\033[0m") /* rappresenta la larghezza del terminale */
-#define MOVE_CURSOR(row, col) printf("\033[%d;%dH", row, col)
+#define SPOSTA_CURSORE(riga, colonna) printf("\033[%d;%dH", row, col)
 
 int main();
 void stampaCentrato(const char *testo); /* Centra una stringa quando stampata nel terminale. paramentro = stringa da centrare */
 void mostraMenu(); /* Stampa a video il menù di partenza */
+void spostaCursore(int x, int y);
+void collezionaInput();
 
 
 int main() {
@@ -46,7 +46,6 @@ int main() {
 *                                                          *
 *  MODIFICHE:                                              *
 *  2025/03/26 - Prima versione                             *
-*                                                          *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 
 void stampaCentrato(const char *testo) 
@@ -77,6 +76,20 @@ void stampaCentrato(const char *testo)
   printf("%s\n", testo);
 }
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+*  FUNZIONE: stampaCentrato(const char *testo)             *
+*  DESCRIZIONE: Allinea la stringa "testo" a sinistra      *
+*  nel terminale                                           *
+*                                                          *
+*  ARGOMENTI:                                              *
+*  const char *testo: stringa da allineare                 *
+*                                                          *
+*  RITORNO: //                                             *
+*                                                          *
+*  MODIFICHE:                                              *
+*  2025/03/27 - Prima versione                             *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+
 void stampaASinistra(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
@@ -95,7 +108,7 @@ void stampaASinistra(const char *testo)
     spazi = 0;
   }
 
-  /* Stampo tanti spazi vuoti quanto basta per centrare "testo" */
+  /* Stampo tanti spazi vuoti quanto basta per spostare a sinistra il "testo" */
   spaziDaInserire = 0;
   while(spaziDaInserire < spazi)
   {
@@ -116,8 +129,8 @@ void stampaASinistra(const char *testo)
 *                                                          *
 *  MODIFICHE:                                              *
 *  2025/03/26 - Prima versione                             *
-*                                                          *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+
 void mostraMenu() 
 {
   int scelta;
@@ -152,10 +165,18 @@ void mostraMenu()
   printf("\n\n\n\n\n");
   stampaASinistra("Digita FINE per terminare il gioco");
 
-  MOVE_CURSOR(16, 66);
-    
+  spostaCursore(16, 66);
   // Chiede l'input
+  collezionaInput();
+}
+
+void spostaCursore(int x, int y){
+  printf("\033[%d;%dH", x, y);
+}
+
+void collezionaInput(){
+  int scelta;
+
   printf(">> ");  
   scanf("%d", &scelta);
 }
-
