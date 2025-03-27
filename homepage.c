@@ -39,13 +39,11 @@ void mostraMenu(); /* Stampa a video il menù di partenza */
 void spostaCursore(int x, int y);
 void collezionaInput();
 
-
 int main() {
   mostraMenu();
   getchar();
   return 0;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 *  FUNZIONE: stampaCentrato(const char *testo)             *
@@ -123,7 +121,6 @@ void stampaASinistra(const char *testo)
   printf("%s\n", testo);
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 *  FUNZIONE: mostraMenu()                                  *
 *  DESCRIZIONE: Mostra il menù iniziale del gioco          *
@@ -156,6 +153,8 @@ void mostraMenu()
   stampaCentrato("| 2) Facile      ||               |");
   stampaCentrato("| 3) Media       ||               |");
   stampaCentrato("| 4) Difficile   ||               |");
+  stampaCentrato("| 5) ESTREMA     ||               |");
+  stampaCentrato("|                ||               |") ;
   stampaCentrato("|                ||               |");
   stampaCentrato("+---------------------------------+");
 
@@ -168,6 +167,7 @@ void mostraMenu()
   printf("Digita FINE per terminare il gioco");
 
   //spostaCursore(16, 66);
+  spostaCursore(16, 66);
   // Chiede l'input
   collezionaInput();
 }
