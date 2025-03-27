@@ -15,8 +15,6 @@ stampaCentrato() -> funzione utilizzata per centrare sul terminale il menù di p
 mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
 collezionaInput() -> funzione utilizzata per collezionare l' input dell utente;
 spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel terminale;
-
-
 */
 
 #include <stdio.h>
@@ -31,13 +29,11 @@ void mostraMenu(); /* Stampa a video il menù di partenza */
 void spostaCursore(int x, int y);
 void collezionaInput();
 
-
 int main() {
   mostraMenu();
   getchar();
   return 0;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 *  FUNZIONE: stampaCentrato(const char *testo)             *
@@ -122,7 +118,6 @@ void stampaASinistra(const char *testo)
   printf("%s\n", testo);
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 *  FUNZIONE: mostraMenu()                                  *
 *  DESCRIZIONE: Mostra il menù iniziale del gioco          *
@@ -156,6 +151,7 @@ void mostraMenu()
   stampaCentrato("| 2) Facile      ||               |");
   stampaCentrato("| 3) Media       ||               |");
   stampaCentrato("| 4) Difficile   ||               |");
+  stampaCentrato("| 5) ESTREMA     ||               |");
   stampaCentrato("|                ||               |") ;
   stampaCentrato("+---------------------------------+");
 
