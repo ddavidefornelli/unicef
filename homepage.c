@@ -59,7 +59,6 @@ int main() {
 *  MODIFICHE:                                              *
 *  2025/03/26 - Prima versione                             *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-
 void stampaCentrato(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
@@ -85,6 +84,7 @@ void stampaCentrato(const char *testo)
   printf("%s\n", testo);
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 *  FUNZIONE: stampaCentrato(const char *testo)             *
 *  DESCRIZIONE: Allinea la stringa "testo" a sinistra      *
@@ -98,7 +98,6 @@ void stampaCentrato(const char *testo)
 *  MODIFICHE:                                              *
 *  2025/03/27 - Prima versione                             *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-
 void stampaASinistra(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
@@ -136,7 +135,6 @@ void stampaASinistra(const char *testo)
 *  MODIFICHE:                                              *
 *  2025/03/26 - Prima versione                             *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-
 void mostraMenu() 
 {
   int scelta;
