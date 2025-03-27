@@ -10,7 +10,6 @@ Nome del file:
 Home Page sudoku
 
 Scopo di ogni funzione presente:
-<<<<<<< HEAD
 stampaCentrato() -> funzione utilizzata per posizionare al centro del terminale il menù di partenza;
 stampaASinistra() -> funzione utilizzata per posizionare al lato sinistro del terminale una stringa quando viene stampata.
 mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
@@ -18,21 +17,19 @@ mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
 Modifiche apportate:
 Nel giorno 27/03/2025, Fornelli Davide e Antonciello Giuliano, hanno inserito la funzioni stampaASinistra() e modificato layout e interfaccia
 la modifica è stata effettuata per permettere una comprensione più chiara del menù di gioco  MODIFICALA FALLA PIU TARDI
+
 =======
+
 stampaASinistra() -> funzione utilizzata per centrare a sinistra sul terminale;
 stampaCentrato() -> funzione utilizzata per centrare sul terminale il menù di partenza;
 mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
 collezionaInput() -> funzione utilizzata per collezionare l' input dell utente;
 spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel terminale;
-
-
->>>>>>> 07b7c137c82ff0fb8542d94845be37ab55f75e51
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #define LARGHEZZA (120) /* rappresenta la larghezza del terminale */
 
 int main();
@@ -154,10 +151,10 @@ void mostraMenu()
   stampaCentrato("+---------------------------------+");
   stampaCentrato("|                ||               |");
   stampaCentrato("| Le Modalita':  ||               |");
-  stampaCentrato("|                ||               |");
-  stampaCentrato("+----------------||   Modalita'   |");
-  stampaCentrato("|                ||  Selezionata  |");
-  stampaCentrato("| 1) Tutorial    ||               |");
+  stampaCentrato("|                ||   Digita il   |");
+  stampaCentrato("+----------------||     numero    |");
+  stampaCentrato("|                ||     della     |");
+  stampaCentrato("| 1) Tutorial    ||    modalita'  |");
   stampaCentrato("| 2) Facile      ||               |");
   stampaCentrato("| 3) Media       ||               |");
   stampaCentrato("| 4) Difficile   ||               |");
@@ -169,15 +166,10 @@ void mostraMenu()
   stampaCentrato("Digita il numero per scegliere la Modalita");
   stampaCentrato("  premi invio per iniziare a giocare!");
 
-  printf("\n\n\n\n\n");
-  stampaASinistra("Digita FINE per terminare il gioco");
+  printf("\n\n");
+  printf("Digita FINE per terminare il gioco");
 
-<<<<<<< HEAD
-  MOVE_CURSOR(16, 66);
-   
-=======
-  spostaCursore(16, 66);
->>>>>>> 07b7c137c82ff0fb8542d94845be37ab55f75e51
+  //spostaCursore(16, 66);
   // Chiede l'input
   collezionaInput();
 }
@@ -189,6 +181,6 @@ void spostaCursore(int x, int y){
 void collezionaInput(){
   int scelta;
 
-  printf(">> ");  
+  printf("\n >> ");  
   scanf("%d", &scelta);
 }
