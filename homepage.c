@@ -18,8 +18,6 @@ Modifiche apportate:
 Nel giorno 27/03/2025, Fornelli Davide e Antonciello Giuliano, hanno inserito la funzioni stampaASinistra() e modificato layout e interfaccia
 la modifica è stata effettuata per permettere una comprensione più chiara del menù di gioco  MODIFICALA FALLA PIU TARDI
 
-=======
-
 stampaASinistra() -> funzione utilizzata per centrare a sinistra sul terminale;
 stampaCentrato() -> funzione utilizzata per centrare sul terminale il menù di partenza;
 mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
@@ -37,10 +35,13 @@ void stampaCentrato(const char *testo); /* centra una stringa quando viene stamp
 void stampaASinistra(const char *testo) ; /* Centra una stringa quando stampata sul terminale. */
 void mostraMenu(); /* Stampa a video il menù di partenza */
 void spostaCursore(int x, int y);
-void collezionaInput();
+void collezionaInput(const char *testo, int *input); /* recupera un input da terminale inserito dall'utente */
 
-int main() {
+int main() 
+{
+  int scelta;
   mostraMenu();
+  collezionaInput("Digita il numero per scegliere la Modalita e premi invio:", &scelta);
   getchar();
   return 0;
 }
@@ -121,6 +122,7 @@ void stampaASinistra(const char *testo)
   printf("%s\n", testo);
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 *  FUNZIONE: mostraMenu()                                  *
 *  DESCRIZIONE: Mostra il menù iniziale del gioco          *
@@ -134,7 +136,6 @@ void stampaASinistra(const char *testo)
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 void mostraMenu() 
 {
-  int scelta;
   printf("\n");
   stampaCentrato(" ");
   stampaCentrato(" __           _       _           ");
@@ -143,42 +144,47 @@ void mostraMenu()
   stampaCentrato("_\\ \\ |_| | (_| | (_) |   <| |_| | ");
   stampaCentrato("\\__/\\__,_|\\__,_|\\___/|_|\\_\\\\__,_| ");
   printf("\n\n");
-  stampaCentrato("+---------------------------------+");
-  stampaCentrato("|                ||               |");
-  stampaCentrato("| Le Modalita':  ||               |");
-  stampaCentrato("|                ||   Digita il   |");
-  stampaCentrato("+----------------||     numero    |");
-  stampaCentrato("|                ||     della     |");
-  stampaCentrato("| 1) Tutorial    ||    modalita'  |");
-  stampaCentrato("| 2) Facile      ||               |");
-  stampaCentrato("| 3) Media       ||               |");
-  stampaCentrato("| 4) Difficile   ||               |");
-  stampaCentrato("| 5) ESTREMA     ||               |");
-  stampaCentrato("|                ||               |") ;
-  stampaCentrato("|                ||               |");
-  stampaCentrato("+---------------------------------+");
-
-  printf("\n");
-
-  stampaCentrato("Digita il numero per scegliere la Modalita");
-  stampaCentrato("  premi invio per iniziare a giocare!");
-
+  stampaCentrato("+----------------------------------+");
+  stampaCentrato("|                ||                |");
+  stampaCentrato("| Le Modalita':  ||                |");
+  stampaCentrato("|                ||                |");
+  stampaCentrato("+----------------||                |");
+  stampaCentrato("|                ||   Digita il    |");
+  stampaCentrato("| 1) Tutorial    ||  numero della  |");
+  stampaCentrato("| 2) Facile      ||    modalita'   |");
+  stampaCentrato("| 3) Media       ||     scelta     |");
+  stampaCentrato("| 4) Difficile   ||                |");
+  stampaCentrato("| 5) ESTREMA     ||                |");
+  stampaCentrato("|                ||                |");
+  stampaCentrato("|                ||                |");
+  stampaCentrato("+----------------------------------+");
   printf("\n\n");
-  printf("Digita FINE per terminare il gioco");
 
   //spostaCursore(16, 66);
-  spostaCursore(16, 66);
-  // Chiede l'input
-  collezionaInput();
 }
 
-void spostaCursore(int x, int y){
+void spostaCursore(int x, int y)
+{
   printf("\033[%d;%dH", x, y);
 }
 
-void collezionaInput(){
-  int scelta;
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+*  FUNZIONE: collezionaInput()                             *
+*  DESCRIZIONE: richiede un qualsiasi input con la stampa  *
+*               di un  testo, come la richiesta.           *
+*                                                          *
+*  ARGOMENTI:                                              *
+*  const char *testo: richiesta da fare all'utente         *
+*  *int scelta: variabile dedicata all'input da terminale  *
+*                                                          *
+*  RITORNO: //                                             *
+*                                                          *
+*  MODIFICHE:                                              *
+*  2025/03/26 - Prima versione  MODIFICA DATA              *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+void collezionaInput(const char *testo, int *input){  
+  printf("Digita il numero per scegliere la Modalita e premi invio:");  
   printf("\n >> ");  
-  scanf("%d", &scelta);
+  scanf("%d", input);
 }
