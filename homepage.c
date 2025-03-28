@@ -30,19 +30,17 @@ spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel
 #include <string.h>
 #define LARGHEZZA (120) /* rappresenta la larghezza del terminale */
 
-int main();
-
 void stampaCentrato(const char *testo); /* centra una stringa quando viene stampata sul terminale. */
 void stampaASinistra(const char *testo) ; /* Centra una stringa quando stampata sul terminale. */
 void mostraMenu(); /* Stampa a video il menù di partenza */
 void spostaCursore(int x, int y);
-void collezionaInput(const char *testo, int *input); /* recupera un input da terminale inserito dall'utente */
+void collezionaInput(int *input); /* recupera un input da terminale inserito dall'utente */
 
 int main() 
 {
   int scelta;
   mostraMenu();
-  collezionaInput(" ", &scelta);
+  collezionaInput(&scelta);
   getchar();
   return 0;
 }
@@ -59,6 +57,7 @@ int main()
 *  MODIFICHE:                                              *
 *  2025/03/26 - Prima versione                             *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+
 void stampaCentrato(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
@@ -135,8 +134,10 @@ void stampaASinistra(const char *testo)
 *  MODIFICHE:                                              *
 *  2025/03/26 - Prima versione                             *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+
 void mostraMenu() 
 {
+  system("clear || cls");
   printf("\n");
   stampaCentrato(" ");
   stampaCentrato(" __           _       _           ");
@@ -145,37 +146,29 @@ void mostraMenu()
   stampaCentrato("_\\ \\ |_| | (_| | (_) |   <| |_| | ");
   stampaCentrato("\\__/\\__,_|\\__,_|\\___/|_|\\_\\\\__,_| ");
   printf("\n\n");
-  stampaCentrato("+--------------------------------------+");
-  stampaCentrato("|                ||                    |");
-  stampaCentrato("| Le Modalita':  ||                    |");
-  stampaCentrato("|                ||  Digita il numero  |");
-  stampaCentrato("|----------------||   per scegliere    |");
-  stampaCentrato("|                ||   la Modalita e    |");
-  stampaCentrato("| 1) Tutorial    ||  inizia a giocare! |");
-  stampaCentrato("| 2) Facile      ||                    |");
-  stampaCentrato("| 3) Media       ||                    |");
-  stampaCentrato("| 4) Difficile   ||                    |");
-  stampaCentrato("| 5) ESTREMA     ||                    |");
-  stampaCentrato("|                ||                    |");
-  stampaCentrato("+--------------------------------------+");
+  stampaCentrato("+---------------------------------------+");
+  stampaCentrato("|                 ||                    |");
+  stampaCentrato("|  Le Modalita':  ||                    |");
+  stampaCentrato("|                 ||  Digita il numero  |");
+  stampaCentrato("|-----------------||   per scegliere    |");
+  stampaCentrato("|                 ||   la Modalita' e   |");
+  stampaCentrato("|  1) Tutorial    ||  inizia a giocare! |");
+  stampaCentrato("|  2) Facile      ||                    |");
+  stampaCentrato("|  3) Media       ||                    |");
+  stampaCentrato("|  4) Difficile   ||                    |");
+  stampaCentrato("|  5) ESTREMA     ||                    |");
+  stampaCentrato("|                 ||                    |");
+  stampaCentrato("+---------------------------------------+");
 
-  printf("\n");
+  printf("\n\n\n\n\n\n");
+  stampaASinistra("Premi CNTRL + C per terminare il gioco");
 
-  stampaCentrato("Digita il numero per scegliere la Modalita");
-  stampaCentrato("  premi invio per iniziare a giocare!");
-
-  printf("\n\n\n\n\n");
-  stampaASinistra("Digita FINE per terminare il gioco");
-
-  spostaCursore(16, 65);
-  // Chiede l'input
 }
 
 void spostaCursore(int x, int y)
 {
   printf("\033[%d;%dH", x, y);
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 *  FUNZIONE: collezionaInput()                             *
@@ -191,7 +184,26 @@ void spostaCursore(int x, int y)
 *  MODIFICHE:                                              *
 *  2025/03/26 - Prima versione  MODIFICA DATA              *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-void collezionaInput(const char *testo, int *input){  
-  printf(">> ");  
-  scanf("%d", input);
+
+void collezionaInput(int *input) {
+    while(1) {
+        spostaCursore(18, 66);
+        printf(">>            ");
+        spostaCursore(18, 69);
+        if(scanf("%d", input) != 1) {
+            // Pulizia buffer e gestione errore
+            while(getchar() != '\n');
+            spostaCursore(20, 61);
+            printf("\033[31m Digita un Numero. \033[0m");
+            spostaCursore(18, 68);
+            continue;
+        }
+        if(*input < 1 || *input > 5) {
+            spostaCursore(20, 61);
+            printf("\033[31m     Riprova.      \033[0m");
+            spostaCursore(18, 68);
+        } else {
+            break; //qui mandiamo il gioco nella modalitá selzionata
+        }
+    }
 }
