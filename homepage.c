@@ -31,6 +31,7 @@ spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel
 #define LARGHEZZA (120) /* rappresenta la larghezza del terminale */
 
 int main();
+
 void stampaCentrato(const char *testo); /* centra una stringa quando viene stampata sul terminale. */
 void stampaASinistra(const char *testo) ; /* Centra una stringa quando stampata sul terminale. */
 void mostraMenu(); /* Stampa a video il menù di partenza */
