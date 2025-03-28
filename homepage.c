@@ -42,7 +42,7 @@ int main()
 {
   int scelta;
   mostraMenu();
-  collezionaInput("Digita il numero per scegliere la Modalita e premi invio:", &scelta);
+  collezionaInput(" ", &scelta);
   getchar();
   return 0;
 }
@@ -145,19 +145,19 @@ void mostraMenu()
   stampaCentrato("_\\ \\ |_| | (_| | (_) |   <| |_| | ");
   stampaCentrato("\\__/\\__,_|\\__,_|\\___/|_|\\_\\\\__,_| ");
   printf("\n\n");
-  stampaCentrato("+---------------------------------+");
-  stampaCentrato("|                ||               |");
-  stampaCentrato("| Le Modalita':  ||               |");
-  stampaCentrato("|                ||               |");
-  stampaCentrato("|----------------||               |");
-  stampaCentrato("|                ||   Modalita'   |");
-  stampaCentrato("| 1) Tutorial    ||  Selezionata: |");
-  stampaCentrato("| 2) Facile      ||               |");
-  stampaCentrato("| 3) Media       ||               |");
-  stampaCentrato("| 4) Difficile   ||               |");
-  stampaCentrato("| 5) ESTREMA     ||               |");
-  stampaCentrato("|                ||               |");
-  stampaCentrato("+---------------------------------+");
+  stampaCentrato("+--------------------------------------+");
+  stampaCentrato("|                ||                    |");
+  stampaCentrato("| Le Modalita':  ||                    |");
+  stampaCentrato("|                ||  Digita il numero  |");
+  stampaCentrato("|----------------||   per scegliere    |");
+  stampaCentrato("|                ||   la Modalita e    |");
+  stampaCentrato("| 1) Tutorial    ||  inizia a giocare! |");
+  stampaCentrato("| 2) Facile      ||                    |");
+  stampaCentrato("| 3) Media       ||                    |");
+  stampaCentrato("| 4) Difficile   ||                    |");
+  stampaCentrato("| 5) ESTREMA     ||                    |");
+  stampaCentrato("|                ||                    |");
+  stampaCentrato("+--------------------------------------+");
 
   printf("\n");
 
@@ -167,27 +167,8 @@ void mostraMenu()
   printf("\n\n\n\n\n");
   stampaASinistra("Digita FINE per terminare il gioco");
 
-  spostaCursore(16, 66);
+  spostaCursore(16, 65);
   // Chiede l'input
-  collezionaInput();
-  stampaCentrato("+----------------------------------+");
-  stampaCentrato("|                ||                |");
-  stampaCentrato("| Le Modalita':  ||                |");
-  stampaCentrato("|                ||                |");
-  stampaCentrato("+----------------||                |");
-  stampaCentrato("|                ||   Digita il    |");
-  stampaCentrato("| 1) Tutorial    ||  numero della  |");
-  stampaCentrato("| 2) Facile      ||    modalita'   |");
-  stampaCentrato("| 3) Media       ||     scelta     |");
-  stampaCentrato("| 4) Difficile   ||                |");
-  stampaCentrato("| 5) ESTREMA     ||                |");
-  stampaCentrato("|                ||                |");
-  stampaCentrato("|                ||                |");
-  stampaCentrato("+----------------------------------+");
-  printf("\n\n");
-
-  //spostaCursore(16, 66);
->>>>>>> 6f102d0204e095cab19cca114d284dc9c1eff74c
 }
 
 void spostaCursore(int x, int y)
@@ -211,7 +192,6 @@ void spostaCursore(int x, int y)
 *  2025/03/26 - Prima versione  MODIFICA DATA              *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 void collezionaInput(const char *testo, int *input){  
-  printf("Digita il numero per scegliere la Modalita e premi invio:");  
-  printf("\n >> ");  
+  printf(">> ");  
   scanf("%d", input);
 }
