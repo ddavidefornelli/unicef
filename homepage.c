@@ -135,8 +135,6 @@ void stampaASinistra(const char *testo)
 
 void mostraMenu() 
 {
-  int scelta;
-  printf("\n");
   stampaCentrato(" ");
   stampaCentrato(" __           _       _           ");
   stampaCentrato("/ _\\_   _  __| | ___ | | ___   _  ");
@@ -148,14 +146,13 @@ void mostraMenu()
   stampaCentrato("|                ||               |");
   stampaCentrato("| Le Modalita':  ||               |");
   stampaCentrato("|                ||               |");
-  stampaCentrato("+----------------||   Modalita'   |");
-  stampaCentrato("|                ||  Selezionata  |");
-  stampaCentrato("| 1) Tutorial    ||               |");
+  stampaCentrato("|----------------||               |");
+  stampaCentrato("|                ||   Modalita'   |");
+  stampaCentrato("| 1) Tutorial    ||  Selezionata: |");
   stampaCentrato("| 2) Facile      ||               |");
   stampaCentrato("| 3) Media       ||               |");
   stampaCentrato("| 4) Difficile   ||               |");
   stampaCentrato("| 5) ESTREMA     ||               |");
-  stampaCentrato("|                ||               |") ;
   stampaCentrato("|                ||               |");
   stampaCentrato("+---------------------------------+");
 
@@ -167,8 +164,6 @@ void mostraMenu()
   printf("\n\n\n\n\n");
   stampaASinistra("Digita FINE per terminare il gioco");
 
-  MOVE_CURSOR(16, 66);
-   
   spostaCursore(16, 66);
   // Chiede l'input
   collezionaInput();
