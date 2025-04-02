@@ -164,10 +164,7 @@ void mostraMenu()
   stampaCentrato("|  5) ESTREMA     ||                    |");
   stampaCentrato("|                 ||                    |");
   stampaCentrato("+---------------------------------------+");
-
-  printf("\n\n\n\n\n\n");
-  stampaASinistra("Premi CNTRL + C per terminare il gioco");
-
+  //stampaASinistra("Premi CNTRL + C per terminare il gioco")
 }
 
 void spostaCursore(int x, int y)
@@ -187,38 +184,41 @@ void spostaCursore(int x, int y)
 *  RITORNO: //                                             *
 *                                                          *
 *  MODIFICHE:                                              *
-*  2025/03/26 - Prima versione  MODIFICA DATA     fadsf         *
+*  2025/03/26 - Prima versione  MODIFICA DATA              *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 void collezionaInput(int *input) {
-    while(1) 
-    {
-      spostaCursore(1, 66);
-      printf(">>");
-      spostaCursore(1, 69);
+  int resta = 1; /* variabile booleana che serve per capire fin quando dobbiamo restare nel ciclo */
+  while(resta == 1) 
+  {
+    spostaCursore(1, 66);
+    printf(">>");
+    spostaCursore(1, 69);
 
-      /* si legge un intero dalla tastiera ma se l'utente inserisce un valore non numerico, scanf 
-      non riesce a leggere un intero e restituisce un valore diverso da 1.*/
-      
-      while(scanf("%d", input) != 1) 
-      {  
+    /* si legge un intero dalla tastiera ma se l'utente inserisce un valore non compreso tra 1 e 5 oppure 
+    un valore non numero, allora viene stampato un messaggio di errore e viene richiesto l'input*/
+    while((scanf("%d", input) != 1) || (*input < 1 || *input > 5))
+    {
+
       /* Se l'input non è un numero, questo ciclo elimina tutti i caratteri rimasti nel buffer 
       fino al \n (nuova riga), evitando errori nelle successive letture. */
       while(getchar() != '\n');
 
       /* spostiamo il cursore in basso per poter stampare il messaggio di errore */
-      spostaCursore(20, 61);
-      printf("\033[31m Digita un Numero. \033[0m");
+      spostaCursore(20, 35);
+      printf("\033[31m Digita un numero compreso tra 1 e 5 e riprova. \033[0m");
       
       /* rispostiamo il cursore nella tabella del menù */
       spostaCursore(1, 69);
-      }
-      printf("\n\n\n\n");
-      if(*input < 1 || *input > 5) {
-        spostaCursore(20, 61);
-        printf("\033[31m     Riprova.      \033[0m");
-        spostaCursore(18, 68);
-      } else {
-        break; //qui mandiamo il gioco nella modalitá selzionata
-      }
     }
+    resta = 0;
+    printf("\n\n\n\n");
+    /*if(*input < 1 || *input > 5) {
+      spostaCursore(20, 61);
+      printf("\033[31m     Riprova.      \033[0m");
+      spostaCursore(18, 68);
+    } else {
+      break; //qui mandiamo il gioco nella modalitá selzionata
+    }*/
+  }
+  printf("esce");
 }
