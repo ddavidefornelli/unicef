@@ -187,7 +187,7 @@ void spostaCursore(int x, int y)
 *  RITORNO: //                                             *
 *                                                          *
 *  MODIFICHE:                                              *
-*  2025/03/26 - Prima versione  MODIFICA DATA              *
+*  2025/03/26 - Prima versione  MODIFICA DATA     fadsf         *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 void collezionaInput(int *input) {
     while(1) 
