@@ -57,7 +57,6 @@ int main()
 *  MODIFICHE:                                              *
 *  2025/03/26 - Prima versione                             *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-
 void stampaCentrato(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
@@ -102,8 +101,13 @@ void stampaASinistra(const char *testo)
   /* Definisco ed inizializzo le variabili */
   int spaziDaInserire; /* contatore per il ciclo */
   int dimStringa; 
-  int spazi; /* rappresenta le coordinate dove deve essere stampata "testo" */
-  dimStringa = strlen(testo); /* calcolo la lunghezza di dimStringa */
+  int spazi;           /* rappresenta le coordinate dove deve essere stampata "testo" */
+  
+  /* calcolo la lunghezza di dimStringa */
+  dimStringa = strlen(testo);
+
+  /* Calcolo il numero di spazi da inserire per spostare il testo a sinistra (Sottraendo 5, la 
+  stringa viene spostata verso sinistra di 5 posizioni rispetto al margine destro) */
   spazi = (LARGHEZZA - dimStringa) - 5;
   
   /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
@@ -119,6 +123,8 @@ void stampaASinistra(const char *testo)
     printf(" ");
     spaziDaInserire = spaziDaInserire + 1;
   }
+
+  /* Stampo effettivamente "testo" */
   printf("%s\n", testo);
 }
 
@@ -134,7 +140,6 @@ void stampaASinistra(const char *testo)
 *  MODIFICHE:                                              *
 *  2025/03/26 - Prima versione                             *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-
 void mostraMenu() 
 {
   system("clear || cls");
@@ -182,28 +187,38 @@ void spostaCursore(int x, int y)
 *  RITORNO: //                                             *
 *                                                          *
 *  MODIFICHE:                                              *
-*  2025/03/26 - Prima versione  MODIFICA DATA              *
+*  2025/03/26 - Prima versione  MODIFICA DATA     fadsf         *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-
 void collezionaInput(int *input) {
-    while(1) {
-        spostaCursore(18, 66);
-        printf(">>            ");
-        spostaCursore(18, 69);
-        if(scanf("%d", input) != 1) {
-            // Pulizia buffer e gestione errore
-            while(getchar() != '\n');
-            spostaCursore(20, 61);
-            printf("\033[31m Digita un Numero. \033[0m");
-            spostaCursore(18, 68);
-            continue;
-        }
-        if(*input < 1 || *input > 5) {
-            spostaCursore(20, 61);
-            printf("\033[31m     Riprova.      \033[0m");
-            spostaCursore(18, 68);
-        } else {
-            break; //qui mandiamo il gioco nella modalitá selzionata
-        }
+    while(1) 
+    {
+      spostaCursore(1, 66);
+      printf(">>");
+      spostaCursore(1, 69);
+
+      /* si legge un intero dalla tastiera ma se l'utente inserisce un valore non numerico, scanf 
+      non riesce a leggere un intero e restituisce un valore diverso da 1.*/
+      
+      while(scanf("%d", input) != 1) 
+      {  
+      /* Se l'input non è un numero, questo ciclo elimina tutti i caratteri rimasti nel buffer 
+      fino al \n (nuova riga), evitando errori nelle successive letture. */
+      while(getchar() != '\n');
+
+      /* spostiamo il cursore in basso per poter stampare il messaggio di errore */
+      spostaCursore(20, 61);
+      printf("\033[31m Digita un Numero. \033[0m");
+      
+      /* rispostiamo il cursore nella tabella del menù */
+      spostaCursore(1, 69);
+      }
+      printf("\n\n\n\n");
+      if(*input < 1 || *input > 5) {
+        spostaCursore(20, 61);
+        printf("\033[31m     Riprova.      \033[0m");
+        spostaCursore(18, 68);
+      } else {
+        break; //qui mandiamo il gioco nella modalitá selzionata
+      }
     }
 }
