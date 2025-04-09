@@ -28,7 +28,11 @@ spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define LARGHEZZA (120) /* rappresenta la larghezza del terminale */
+
+typedef enum {
+  LARGHEZZA_TERMINALE = 120,
+  ALTEZZA_TERMINALE = 80
+} terminale;
 
 void stampaCentrato(const char *testo); /* centra una stringa quando viene stampata sul terminale. */
 void stampaASinistra(const char *testo) ; /* Centra una stringa quando stampata sul terminale. */
@@ -57,7 +61,6 @@ int main()
 *  MODIFICHE:                                              *
 *  2025/03/26 - Prima versione                             *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-
 void stampaCentrato(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
@@ -65,7 +68,7 @@ void stampaCentrato(const char *testo)
   int dimStringa; /* calcolo la lunghezza di dimStringa */
   int spazi; /* rappresenta le coordinate dove deve essere stampata "testo" */
   dimStringa = strlen(testo);
-  spazi = (LARGHEZZA - dimStringa) / 2;
+  spazi = (LARGHEZZA_TERMINALE - dimStringa) / 2;
   
   /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
   if (spazi < 0)
@@ -102,9 +105,14 @@ void stampaASinistra(const char *testo)
   /* Definisco ed inizializzo le variabili */
   int spaziDaInserire; /* contatore per il ciclo */
   int dimStringa; 
-  int spazi; /* rappresenta le coordinate dove deve essere stampata "testo" */
-  dimStringa = strlen(testo); /* calcolo la lunghezza di dimStringa */
-  spazi = (LARGHEZZA - dimStringa) - 5;
+  int spazi;           /* rappresenta le coordinate dove deve essere stampata "testo" */
+  
+  /* calcolo la lunghezza di dimStringa */
+  dimStringa = strlen(testo);
+
+  /* Calcolo il numero di spazi da inserire per spostare il testo a sinistra (Sottraendo 5, la 
+  stringa viene spostata verso sinistra di 5 posizioni rispetto al margine destro) */
+  spazi = (LARGHEZZA_TERMINALE - dimStringa) - 5;
   
   /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
   if (spazi < 0)
@@ -119,6 +127,8 @@ void stampaASinistra(const char *testo)
     printf(" ");
     spaziDaInserire = spaziDaInserire + 1;
   }
+
+  /* Stampo effettivamente "testo" */
   printf("%s\n", testo);
 }
 
@@ -134,7 +144,6 @@ void stampaASinistra(const char *testo)
 *  MODIFICHE:                                              *
 *  2025/03/26 - Prima versione                             *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-
 void mostraMenu() 
 {
   system("clear || cls");
@@ -181,29 +190,36 @@ void spostaCursore(int x, int y)
 *  RITORNO: //                                             *
 *                                                          *
 *  MODIFICHE:                                              *
+<<<<<<< HEAD
 *  2025/03/26 - Prima versione                             *
 *  2025/03/28 - Seconda versione                           *
+=======
+*  2025/03/26 - Prima versione  MODIFICA DATA     fadsf         *
+>>>>>>> 624c4321eccbaf8db8cf587ad5ae54cdadbdadc3
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-
 void collezionaInput(int *input) {
     while(1) {
         spostaCursore(18, 66);
         printf(">>            ");
         spostaCursore(18, 69);
-        if(scanf("%d", input) != 1) {
-            // Pulizia buffer e gestione errore
-            while(getchar() != '\n');
+
+        while(scanf("%d", input) != 1) {
+            while(getchar() != '\n'); // pulisce il buffer
+
+            spostaCursore(18, 66);
+            printf(">>            ");
             spostaCursore(20, 61);
             printf("\033[31m Digita un Numero. \033[0m");
-            spostaCursore(18, 68);
-            continue;
+            spostaCursore(18, 69);
         }
+        while(getchar() != '\n'); // <-- pulisce anche dopo un input valido
+
         if(*input < 1 || *input > 5) {
             spostaCursore(20, 61);
             printf("\033[31m     Riprova.      \033[0m");
-            spostaCursore(18, 68);
+            spostaCursore(18, 69);
         } else {
-            break; //qui mandiamo il gioco nella modalitá selzionata
+            break; // input valido, esce dal ciclo
         }
     }
 }
