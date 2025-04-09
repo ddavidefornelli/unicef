@@ -176,13 +176,13 @@ void spostaCursore(int x, int y)
 *               di un  testo, come la richiesta.           *
 *                                                          *
 *  ARGOMENTI:                                              *
-*  const char *testo: richiesta da fare all'utente         *
-*  *int scelta: variabile dedicata all'input da terminale  *
+*  *int intput: variabile dedicata all'input da terminale  *
 *                                                          *
 *  RITORNO: //                                             *
 *                                                          *
 *  MODIFICHE:                                              *
-*  2025/03/26 - Prima versione  MODIFICA DATA              *
+*  2025/03/26 - Prima versione                             *
+*  2025/03/28 - Seconda versione                           *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 
 void collezionaInput(int *input) {
