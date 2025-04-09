@@ -50,17 +50,17 @@ int main()
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-*  FUNZIONE: stampaCentrato(const char *testo)             *
-*  DESCRIZIONE: Allinea la stringa "testo"sul terminale    *
-*                                                          *
-*  ARGOMENTI:                                              *
-*  const char *testo: stringa da allineare                 *
-*                                                          *
-*  RITORNO: //                                             *
-*                                                          *
-*  MODIFICHE:                                              *
-*  2025/03/26 - Prima versione                             *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+ *  FUNZIONE: stampaCentrato(const char *testo)             *
+ *  DESCRIZIONE: Allinea la stringa "testo"sul terminale    *
+ *                                                          *
+ *  ARGOMENTI:                                              *
+ *  const char *testo: stringa da allineare                 *
+ *                                                          *
+ *  RITORNO: //                                             *
+ *                                                          *
+ *  MODIFICHE:                                              *
+ *  2025/03/26 - Prima versione                             *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 void stampaCentrato(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
@@ -69,7 +69,7 @@ void stampaCentrato(const char *testo)
   int spazi; /* rappresenta le coordinate dove deve essere stampata "testo" */
   dimStringa = strlen(testo);
   spazi = (LARGHEZZA_TERMINALE - dimStringa) / 2;
-  
+
   /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
   if (spazi < 0)
   {
@@ -88,32 +88,32 @@ void stampaCentrato(const char *testo)
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-*  FUNZIONE: stampaCentrato(const char *testo)             *
-*  DESCRIZIONE: Allinea la stringa "testo" a sinistra      *
-*  nel terminale                                           *
-*                                                          *
-*  ARGOMENTI:                                              *
-*  const char *testo: stringa da allineare                 *
-*                                                          *
-*  RITORNO: //                                             *
-*                                                          *
-*  MODIFICHE:                                              *
-*  2025/03/27 - Prima versione                             *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+ *  FUNZIONE: stampaCentrato(const char *testo)             *
+ *  DESCRIZIONE: Allinea la stringa "testo" a sinistra      *
+ *  nel terminale                                           *
+ *                                                          *
+ *  ARGOMENTI:                                              *
+ *  const char *testo: stringa da allineare                 *
+ *                                                          *
+ *  RITORNO: //                                             *
+ *                                                          *
+ *  MODIFICHE:                                              *
+ *  2025/03/27 - Prima versione                             *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 void stampaASinistra(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
   int spaziDaInserire; /* contatore per il ciclo */
   int dimStringa; 
   int spazi;           /* rappresenta le coordinate dove deve essere stampata "testo" */
-  
+
   /* calcolo la lunghezza di dimStringa */
   dimStringa = strlen(testo);
 
   /* Calcolo il numero di spazi da inserire per spostare il testo a sinistra (Sottraendo 5, la 
-  stringa viene spostata verso sinistra di 5 posizioni rispetto al margine destro) */
+     stringa viene spostata verso sinistra di 5 posizioni rispetto al margine destro) */
   spazi = (LARGHEZZA_TERMINALE - dimStringa) - 5;
-  
+
   /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
   if (spazi < 0)
   {
@@ -134,19 +134,18 @@ void stampaASinistra(const char *testo)
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-*  FUNZIONE: mostraMenu()                                  *
-*  DESCRIZIONE: Mostra il menù iniziale del gioco          *
-*                                                          *
-*  ARGOMENTI: //                                           *
-*                                                          *
-*  RITORNO: //                                             *
-*                                                          *
-*  MODIFICHE:                                              *
-*  2025/03/26 - Prima versione                             *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+ *  FUNZIONE: mostraMenu()                                  *
+ *  DESCRIZIONE: Mostra il menù iniziale del gioco          *
+ *                                                          *
+ *  ARGOMENTI: //                                           *
+ *                                                          *
+ *  RITORNO: //                                             *
+ *                                                          *
+ *  MODIFICHE:                                              *
+ *  2025/03/26 - Prima versione                             *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 void mostraMenu() 
 {
-  system("clear || cls");
   printf("\n");
   stampaCentrato(" ");
   stampaCentrato(" __           _       _           ");
@@ -180,46 +179,46 @@ void spostaCursore(int x, int y)
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-*  FUNZIONE: collezionaInput()                             *
-*  DESCRIZIONE: richiede un qualsiasi input con la stampa  *
-*               di un  testo, come la richiesta.           *
-*                                                          *
-*  ARGOMENTI:                                              *
-*  *int intput: variabile dedicata all'input da terminale  *
-*                                                          *
-*  RITORNO: //                                             *
-*                                                          *
-*  MODIFICHE:                                              *
-<<<<<<< HEAD
-*  2025/03/26 - Prima versione                             *
-*  2025/03/28 - Seconda versione                           *
-=======
-*  2025/03/26 - Prima versione  MODIFICA DATA     fadsf         *
->>>>>>> 624c4321eccbaf8db8cf587ad5ae54cdadbdadc3
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+ *  FUNZIONE: collezionaInput()                             *
+ *  DESCRIZIONE: richiede un qualsiasi input con la stampa  *
+ *               di un  testo, come la richiesta.           *
+ *                                                          *
+ *  ARGOMENTI:                                              *
+ *  *int intput: variabile dedicata all'input da terminale  *
+ *                                                          *
+ *  RITORNO: //                                             *
+ *                                                          *
+ *  MODIFICHE:                                              *
+ <<<<<<< HEAD
+ *  2025/03/26 - Prima versione                             *
+ *  2025/03/28 - Seconda versione                           *
+ =======
+ *  2025/03/26 - Prima versione  MODIFICA DATA     fadsf         *
+ >>>>>>> 624c4321eccbaf8db8cf587ad5ae54cdadbdadc3
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 void collezionaInput(int *input) {
-    while(1) {
-        spostaCursore(18, 66);
-        printf(">>            ");
-        spostaCursore(18, 69);
+  while(1) {
+    spostaCursore(18, 66);
+    printf(">>            ");
+    spostaCursore(18, 69);
 
-        while(scanf("%d", input) != 1) {
-            while(getchar() != '\n'); // pulisce il buffer
+    while(scanf("%d", input) != 1) {
+      while(getchar() != '\n'); // pulisce il buffer
 
-            spostaCursore(18, 66);
-            printf(">>            ");
-            spostaCursore(20, 61);
-            printf("\033[31m Digita un Numero. \033[0m");
-            spostaCursore(18, 69);
-        }
-        while(getchar() != '\n'); // <-- pulisce anche dopo un input valido
-
-        if(*input < 1 || *input > 5) {
-            spostaCursore(20, 61);
-            printf("\033[31m     Riprova.      \033[0m");
-            spostaCursore(18, 69);
-        } else {
-            break; // input valido, esce dal ciclo
-        }
+      spostaCursore(18, 66);
+      printf(">>            ");
+      spostaCursore(20, 61);
+      printf("\033[31m Digita un Numero. \033[0m");
+      spostaCursore(18, 69);
     }
+    while(getchar() != '\n'); // <-- pulisce anche dopo un input valido
+
+    if(*input < 1 || *input > 5) {
+      spostaCursore(20, 61);
+      printf("\033[31m     Riprova.      \033[0m");
+      spostaCursore(18, 69);
+    } else {
+      break; // input valido, esce dal ciclo
+    }
+  }
 }
