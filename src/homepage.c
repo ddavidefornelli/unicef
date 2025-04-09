@@ -28,26 +28,7 @@ spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-typedef enum {
-  LARGHEZZA_TERMINALE = 120,
-  ALTEZZA_TERMINALE = 80
-} terminale;
-
-void stampaCentrato(const char *testo); /* centra una stringa quando viene stampata sul terminale. */
-void stampaASinistra(const char *testo) ; /* Centra una stringa quando stampata sul terminale. */
-void mostraMenu(); /* Stampa a video il menù di partenza */
-void spostaCursore(int x, int y);
-void collezionaInput(int *input); /* recupera un input da terminale inserito dall'utente */
-
-int main() 
-{
-  int scelta;
-  mostraMenu();
-  collezionaInput(&scelta);
-  getchar();
-  return 0;
-}
+#include "homepage.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  *  FUNZIONE: stampaCentrato(const char *testo)             *
@@ -146,6 +127,7 @@ void stampaASinistra(const char *testo)
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 void mostraMenu() 
 {
+  system("clear || cls");
   printf("\n");
   stampaCentrato(" ");
   stampaCentrato(" __           _       _           ");
@@ -189,12 +171,9 @@ void spostaCursore(int x, int y)
  *  RITORNO: //                                             *
  *                                                          *
  *  MODIFICHE:                                              *
- <<<<<<< HEAD
  *  2025/03/26 - Prima versione                             *
  *  2025/03/28 - Seconda versione                           *
- =======
  *  2025/03/26 - Prima versione  MODIFICA DATA     fadsf         *
- >>>>>>> 624c4321eccbaf8db8cf587ad5ae54cdadbdadc3
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 void collezionaInput(int *input) {
   while(1) {
@@ -204,9 +183,10 @@ void collezionaInput(int *input) {
 
     while(scanf("%d", input) != 1) {
       while(getchar() != '\n'); // pulisce il buffer
-
+                                
       spostaCursore(18, 66);
       printf(">>            ");
+
       spostaCursore(20, 61);
       printf("\033[31m Digita un Numero. \033[0m");
       spostaCursore(18, 69);
@@ -222,3 +202,4 @@ void collezionaInput(int *input) {
     }
   }
 }
+
