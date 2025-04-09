@@ -212,13 +212,6 @@ void collezionaInput(int *input) {
     }
     resta = 0;
     printf("\n\n\n\n");
-    /*if(*input < 1 || *input > 5) {
-      spostaCursore(20, 61);
-      printf("\033[31m     Riprova.      \033[0m");
-      spostaCursore(18, 68);
-    } else {
-      break; //qui mandiamo il gioco nella modalitá selzionata
-    }*/
   }
   printf("esce");
 }
