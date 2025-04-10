@@ -29,12 +29,47 @@ spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel
 #include <stdlib.h>
 #include <string.h>
 #define LARGHEZZA (120) /* rappresenta la larghezza del terminale */
+#define NUMRIGHE 12
+#define NUMCOLONNE 12
+
+/*Struct che indica come è strutturata una singola cella di una griglia*/
+struct cella
+{
+  int valore;
+  int valoreAssegnato;
+};
+
+/*Struct che rappresenta l'intera griglia di gioco (per esempio quante righe e colonne possiede)*/
+struct griglia
+{
+  int dimensione;
+  struct cella **Matrice;
+  int numRigheSottogriglia;
+  int numColonneSottogriglia;
+  int completa;
+};
+
+/*Struct che rappresenta lo stato attuale del gioco*/
+struct gioco
+{
+  struct griglia grigliaGenerata;
+  struct griglia grigliaGiocatore;
+  int stato;
+};
+
+/*Struct che indica qual è la modalità scelta dall'utente con eventuali dati correlati*/
+struct modalita
+{
+  int nome;
+  int erroriConsentiti;
+};
 
 void stampaCentrato(const char *testo); /* centra una stringa quando viene stampata sul terminale. */
 void stampaASinistra(const char *testo) ; /* Centra una stringa quando stampata sul terminale. */
 void mostraMenu(); /* Stampa a video il menù di partenza */
 void spostaCursore(int x, int y);
 void collezionaInput(int *input); /* recupera un input da terminale inserito dall'utente */
+void CreaMatrice();
 
 int main() 
 {
@@ -214,4 +249,15 @@ void collezionaInput(int *input) {
     printf("\n\n\n\n");
   }
   printf("esce");
+}
+
+void CreaMatrice()
+{
+  struct griglia Tabella;
+  Tabella.dimensione = 3;
+  Tabella.Matrice = malloc(Tabella.dimensione * sizeof(struct cella *));
+  for (int i = 0; i < Tabella.dimensione; i++)
+  {
+    Tabella.Matrice[i] = malloc(Tabella.dimensione * sizeof(struct cella));
+  }
 }
