@@ -52,6 +52,7 @@ struct griglia
 /*Struct che rappresenta lo stato attuale del gioco*/
 struct gioco
 {
+  struct modalita scelta;
   struct griglia grigliaGenerata;
   struct griglia grigliaGiocatore;
   int stato;
@@ -69,7 +70,7 @@ void stampaASinistra(const char *testo) ; /* Centra una stringa quando stampata 
 void mostraMenu(); /* Stampa a video il menù di partenza */
 void spostaCursore(int x, int y);
 void collezionaInput(int *input); /* recupera un input da terminale inserito dall'utente */
-void CreaMatrice();
+//void CreaMatrice();   era giusto per vedere se funzionano le struct
 
 int main() 
 {
@@ -100,7 +101,7 @@ void stampaCentrato(const char *testo)
   int spazi; /* rappresenta le coordinate dove deve essere stampata "testo" */
   dimStringa = strlen(testo);
   spazi = (LARGHEZZA - dimStringa) / 2;
-  
+
   /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
   if (spazi < 0)
   {
@@ -251,7 +252,7 @@ void collezionaInput(int *input) {
   printf("esce");
 }
 
-void CreaMatrice()
+/*void CreaMatrice()
 {
   struct griglia Tabella;
   Tabella.dimensione = 3;
@@ -260,4 +261,4 @@ void CreaMatrice()
   {
     Tabella.Matrice[i] = malloc(Tabella.dimensione * sizeof(struct cella));
   }
-}
+}*/
