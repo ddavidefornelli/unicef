@@ -28,23 +28,24 @@ void stampaGrigliaSudoku(int griglia[DIMENSIONEMASSIMA][DIMENSIONEMASSIMA]) {
 int eValido(int griglia[DIMENSIONEMASSIMA][DIMENSIONEMASSIMA], int riga, int colonna, int valore) {
     int i;
     int j;
+    int esito;
     int rigaDiPartenza;
     int colonnaDiPartenza;
 
     // Controlla la riga
-    i = 0;
-    while (i < dimensioneGriglia) {
-        if (griglia[riga][i] == valore) {
-            return 0;
+    j = 0;
+    while (i < dimensioneGriglia && esito != 0) {
+        if (griglia[riga][j] == valore) {
+            esito = 0;
         }
         i = i + 1;
     }
 
     // Controlla la colonna
     i = 0;
-    while (i < dimensioneGriglia) {
+    while (i < dimensioneGriglia && esito != 0) {
         if (griglia[i][colonna] == valore) {
-            return 0;
+            esito = 0;
         }
         i = i + 1;
     }
@@ -55,39 +56,40 @@ int eValido(int griglia[DIMENSIONEMASSIMA][DIMENSIONEMASSIMA], int riga, int col
 
     // Controlla la sottogriglia
     i = 0;
-    while (i < dimensioneSottogriglia) {
+    while (i < dimensioneSottogriglia && esito != 0) {
         j = 0;
         while (j < dimensioneSottogriglia) {
             if (griglia[rigaDiPartenza + i][colonnaDiPartenza + j] == valore) {
-                return 0;
+                esito = 0;
             }
             j = j + 1;
         }
         i = i + 1;
     }
 
-    return 1;
+    return esito;
 }
 
 // Trova la prossima cella vuota nella griglia
 int trovaCellaVuota(int griglia[DIMENSIONEMASSIMA][DIMENSIONEMASSIMA], int *riga, int *colonna) {
     int i;
     int j;
+    int esito = 0;
 
     i = 0;
-    while (i < dimensioneGriglia) {
+    while (i < dimensioneGriglia && esito == 0) {
         j = 0;
         while (j < dimensioneGriglia) {
             if (griglia[i][j] == 0) {
                 *riga = i;
                 *colonna = j;
-                return 1;
+                esito = 1;
             }
             j = j + 1;
         }
         i = i + 1;
     }
-    return 0;
+    return esito;
 }
 
 // Funzione per inserire alcuni numeri casuali nella griglia
