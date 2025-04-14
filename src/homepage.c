@@ -42,6 +42,7 @@ spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel
  *  MODIFICHE:                                              *
  *  2025/03/26 - Prima versione                             *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+
 void stampaCentrato(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
@@ -141,12 +142,10 @@ void mostraMenu()
   stampaCentrato("|  Le Modalita':  ||                    |");
   stampaCentrato("|                 ||  Digita il numero  |");
   stampaCentrato("|-----------------||   per scegliere    |");
-  stampaCentrato("|                 ||   la Modalita' e   |");
-  stampaCentrato("|  1) Tutorial    ||  inizia a giocare! |");
-  stampaCentrato("|  2) Facile      ||                    |");
-  stampaCentrato("|  3) Media       ||                    |");
-  stampaCentrato("|  4) Difficile   ||                    |");
-  stampaCentrato("|  5) ESTREMA     ||                    |");
+  stampaCentrato("|                 ||    la Modalita     |");
+  stampaCentrato("|  1) Facile      ||  inizia a giocare! |");
+  stampaCentrato("|  2) Intermedia  ||                    |");
+  stampaCentrato("|  3) Difficile   ||                    |");
   stampaCentrato("|                 ||                    |");
   stampaCentrato("+---------------------------------------+");
 
@@ -173,8 +172,9 @@ void spostaCursore(int x, int y)
  *  MODIFICHE:                                              *
  *  2025/03/26 - Prima versione                             *
  *  2025/03/28 - Seconda versione                           *
- *  2025/03/26 - Prima versione  MODIFICA DATA     fadsf         *
+ *  2025/03/26 - Prima versione  MODIFICA DATA              *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+
 void collezionaInput(int *input) {
   while(1) {
     spostaCursore(18, 66);
