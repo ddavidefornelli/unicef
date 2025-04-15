@@ -4,5 +4,6 @@
 #include "partita.h"
 
 void loopPartita(){
-  printf("stiamo giocando uomini di cultura")
+  system("clear || cls");
+  printf("stiamo giocando uomini di cultura");
 }
