@@ -10,19 +10,12 @@ Nome del file:
 Home Page sudoku
 
 Scopo di ogni funzione presente:
-stampaCentrato() -> funzione utilizzata per posizionare al centro del terminale il menù di partenza;
-stampaASinistra() -> funzione utilizzata per posizionare al lato sinistro del terminale una stringa quando viene stampata.
 mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
 
 Modifiche apportate:
 Nel giorno 27/03/2025, Fornelli Davide e Antonciello Giuliano, hanno inserito la funzioni stampaASinistra() e modificato layout e interfaccia
 la modifica è stata effettuata per permettere una comprensione più chiara del menù di gioco  MODIFICALA FALLA PIU TARDI
 
-stampaASinistra() -> funzione utilizzata per centrare a sinistra sul terminale;
-stampaCentrato() -> funzione utilizzata per centrare sul terminale il menù di partenza;
-mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
-collezionaInput() -> funzione utilizzata per collezionare l' input dell utente;
-spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel terminale;
 */
 
 #include <stdio.h>
@@ -30,9 +23,46 @@ spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel
 #include <string.h>
 
 #include "homepage.h"
-#include "menu.h"
+#include "interfaccia_util.h"
+#include "menucaricapartita.h"
+#include "menudifficolta.h"
+#include "mentustatistiche.h"
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+ *  FUNZIONE: stampareMenuPrincipale()                      *
+ *  DESCRIZIONE: Mostra il menù iniziale del gioco          *
+ *                                                          *
+ *  ARGOMENTI: //                                           *
+ *                                                          *
+ *  RITORNO: //                                             *
+ *                                                          *
+ *  MODIFICHE:                                              *
+ *  2025/03/26 - Prima versione                             *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 
+void stampareMenuPrincipale() 
+{
+  system("clear || cls");
+  printf("\n");
+  stampaCentrato(" __           _       _           ");
+  stampaCentrato("/ _\\_   _  __| | ___ | | ___   _  ");
+  stampaCentrato("\\ \\| | | |/ _` |/ _ \\| |/ / | | | ");
+  stampaCentrato("_\\ \\ |_| | (_| | (_) |   <| |_| | ");
+  stampaCentrato("\\__/\\__,_|\\__,_|\\___/|_|\\_\\\\__,_| ");
+  printf("\n\n");
+  spostaCursore(9, 56);
+  printf("- MENU -");
+  spostaCursore(11, 50);
+  printf("[1] Nuova Partita");
+  spostaCursore(12, 50);
+  printf("[2] Carica Partita");
+  spostaCursore(13, 50);
+  printf("[3] Statistiche");
+  spostaCursore(14, 50);
+  printf("\033[31m[4] Esci \033[0m");
+  spostaCursore(16, 48);
+  printf("Inserisci una scelta (1 - 4)");
+}
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  *  FUNZIONE: collezionaInput()                             *
@@ -82,7 +112,7 @@ void collezionaInput(int *input) {
     }
 
     else if (*input == 1) {
-      stampareMenuDifficolta();
+      loopMenuDifficolta();
       inMenuPrinipale = 0;
     }
     else if (*input == 2) {

@@ -3,6 +3,14 @@
 #include <string.h>
 #include "homepage.h"
 
+/*
+stampaASinistra() -> funzione utilizzata per centrare a sinistra sul terminale;
+stampaCentrato() -> funzione utilizzata per centrare sul terminale il menù di partenza;
+mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
+collezionaInput() -> funzione utilizzata per collezionare l' input dell utente;
+spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel terminale;
+*/
+
 typedef enum {
   LARGHEZZA_TERMINALE = 120,
   ALTEZZA_TERMINALE = 80
@@ -99,54 +107,4 @@ void stampaASinistra(const char *testo)
 }
 
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- *  FUNZIONE: stampareMenuPrincipale()                                  *
- *  DESCRIZIONE: Mostra il menù iniziale del gioco          *
- *                                                          *
- *  ARGOMENTI: //                                           *
- *                                                          *
- *  RITORNO: //                                             *
- *                                                          *
- *  MODIFICHE:                                              *
- *  2025/03/26 - Prima versione                             *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-
-void stampareMenuPrincipale() 
-{
-  system("clear || cls");
-  printf("\n");
-  stampaCentrato(" __           _       _           ");
-  stampaCentrato("/ _\\_   _  __| | ___ | | ___   _  ");
-  stampaCentrato("\\ \\| | | |/ _` |/ _ \\| |/ / | | | ");
-  stampaCentrato("_\\ \\ |_| | (_| | (_) |   <| |_| | ");
-  stampaCentrato("\\__/\\__,_|\\__,_|\\___/|_|\\_\\\\__,_| ");
-  printf("\n\n");
-  spostaCursore(9, 56);
-  printf("- MENU -");
-  spostaCursore(11, 50);
-  printf("[1] Nuova Partita");
-  spostaCursore(12, 50);
-  printf("[2] Carica Partita");
-  spostaCursore(13, 50);
-  printf("[3] Statistiche");
-  spostaCursore(14, 50);
-  printf("\033[31m[4] Esci \033[0m");
-  spostaCursore(16, 48);
-  printf("Inserisci una scelta (1 - 4)");
-}
-
-void stampareMenuStatistiche(){
-  system("clear || cls");
-  printf("ciao sono nel menu Statistiche");
-}
-
-void stampareMenuCaricaPartita(){
-  system("clear || cls");
-  printf("ciao sono nel menu CaricaPartita");
-}
-
-void stampareMenuDifficolta(){
-  system("clear || cls");
-  printf("ciao sono nel menu Difficolta");
-}
 
