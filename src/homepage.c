@@ -49,11 +49,15 @@ spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel
  *  2025/03/28 - Seconda versione                           *
  *  2025/03/26 - Prima versione  MODIFICA DATA              *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+int inMenuPrinipale = 1;
+
+void loopMenuPrincipale(){
+  int input;
+  stampareMenuPrincipale();
+  collezionaInput(&input); 
+}
 
 void collezionaInput(int *input) {
-  int inMenuPrinipale;
-
-  inMenuPrinipale = 1;
   while(inMenuPrinipale) {
     spostaCursore(17, 55);
     printf(">>            ");
@@ -61,7 +65,7 @@ void collezionaInput(int *input) {
 
     while(scanf("%d", input) != 1) {
       while(getchar() != '\n'); // pulisce il buffer
-                                
+
       spostaCursore(17, 55);
       printf(">>            ");
 

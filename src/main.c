@@ -4,9 +4,7 @@
 
 int main() 
 {
-  int scelta;
-  stampareMenuPrincipale();
-  collezionaInput(&scelta);
+  loopMenuPrincipale();
   getchar();
   return 0;
 }
