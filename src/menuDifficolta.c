@@ -1,4 +1,5 @@
 #include "interfaccia_util.h"
+#include "menudifficolta.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -12,6 +13,6 @@ void stampareMenuDifficolta(){
   printf("ciao sono nel menu Difficolta");
 }
 void collezionaInputMenuDifficolta(int *input){
-
+  return;
 }
 

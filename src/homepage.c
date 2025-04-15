@@ -26,7 +26,7 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
 #include "interfaccia_util.h"
 #include "menucaricapartita.h"
 #include "menudifficolta.h"
-#include "mentustatistiche.h"
+#include "menustatistiche.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  *  FUNZIONE: stampareMenuPrincipale()                      *
