@@ -55,11 +55,11 @@ void stampareMenuPrincipale()
   spostaCursore(11, 50);
   printf("[1] Nuova Partita");
   spostaCursore(12, 50);
-  printf("[2] Carica Partita");
+  printf("[2] Partite Salvate");
   spostaCursore(13, 50);
   printf("[3] Statistiche");
   spostaCursore(14, 50);
-  printf("\033[31m[4] Esci \033[0m");
+  printf("[4] Esci");
   spostaCursore(16, 48);
   printf("Inserisci una scelta (1 - 4)");
 }
@@ -79,6 +79,7 @@ void stampareMenuPrincipale()
  *  2025/03/28 - Seconda versione                           *
  *  2025/03/26 - Prima versione  MODIFICA DATA              *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+
 int inMenuPrinipale = 1;
 
 void loopMenuPrincipale(){
