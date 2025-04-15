@@ -1,10 +1,11 @@
 #include "homepage.h"
+#include "menu.h"
 #include <stdio.h>
 
-//int main() 
+int main() 
 {
   int scelta;
-  mostraMenu();
+  stampareMenuPrincipale();
   collezionaInput(&scelta);
   getchar();
   return 0;

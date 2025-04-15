@@ -206,7 +206,7 @@ int generaSudoku(int griglia[DIMENSIONEMASSIMA][DIMENSIONEMASSIMA]) {
 }
 
 // Funzione principale
-int main() {
+//int main() {
     int griglia[DIMENSIONEMASSIMA][DIMENSIONEMASSIMA];
     int esito;
     esito = 0;
