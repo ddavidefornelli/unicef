@@ -15,6 +15,7 @@ typedef struct{
 } statisticheGiocatore;
 
 void stampareMenuStatistiche();
+void tornareHompage(int *input);
 
 // Lettura statistiche
 int leggerePartiteGiocateTotali(statisticheGiocatore *giocatore);
@@ -45,5 +46,7 @@ void leggiStatisticheGiocatore(statisticheGiocatore *giocatore, const char *nome
 // Stampa statistiche
 void stampaStatisticheGiocatore(statisticheGiocatore *giocatore);
 void caricaStatistiche(statisticheGiocatore *giocatore, const char *filename);
+
+float calcolareWLRatio(statisticheGiocatore *giocatore);
 
 #endif

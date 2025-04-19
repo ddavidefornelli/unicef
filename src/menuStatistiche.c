@@ -1,8 +1,14 @@
 #include "interfaccia_util.h"
+#include "homepage.h"
 #include "menustatistiche.h"
 #include <stdio.h>
 #include <stdlib.h>
 
+#define INPUT_RIGA 23
+#define INPUT_COLONNA 39
+
+#define ERR_MSG_RIGA 24
+#define ERR_MSG_COLONNA 40
 
 int leggerePartiteGiocateTotali(statisticheGiocatore *giocatore){
   return giocatore->partiteGiocateTotali;
@@ -68,6 +74,7 @@ void incrementarePartiteVinteDifficile(statisticheGiocatore *giocatore){
 statisticheGiocatore giocatore;
 
 void stampareMenuStatistiche(){
+  int input;
   system("clear || cls");
   stampaCentrato("            _       _   _     _   _     _              ");
   stampaCentrato(" ___    ___| |_ ___| |_|_|___| |_|_|___| |_ ___    ___ ");
@@ -77,6 +84,7 @@ void stampareMenuStatistiche(){
   printf("\n\n\n");
   caricaStatistiche(&giocatore, "database/statisticheGiocatore.txt");
   stampaStatisticheGiocatore(&giocatore);
+  tornareHompage(&input);
 }
 
 void caricaStatistiche(statisticheGiocatore *giocatore, const char *filename) {
@@ -104,5 +112,54 @@ void stampaStatisticheGiocatore(statisticheGiocatore *giocatore) {
     printf("   - Facile           : %d\n", leggerePartiteVinteFacile(giocatore));
     printf("   - Media            : %d\n", leggerePartiteVinteMedia (giocatore));
     printf("   - Difficile        : %d\n", leggerePartiteVinteDifficile(giocatore));
+    printf("\n");
+    printf("W/L Ratio             : %.2f", calcolareWLRatio(giocatore));
+
+    printf("\n");
+    printf("\n");
+    printf("\n");
+    printf("\n");
+    stampaCentrato("[0] Torna alla homepage");
 }
 
+float calcolareWLRatio(statisticheGiocatore *giocatore){
+  float wlRatio;
+  int giocate;
+  int vinte;
+  int perse;
+
+  giocate = leggerePartiteGiocateTotali(giocatore);
+  vinte = leggerePartiteVinteTotali(giocatore);
+  perse = giocate - vinte;
+
+  if(perse == 0){
+    wlRatio = vinte;
+  }
+  else {
+  wlRatio = (float)vinte / (float)perse;
+  }
+
+  return wlRatio;
+}
+
+void tornareHompage(int *input){
+  int inStatistiche = 1;
+  while(inStatistiche) {
+    resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+
+    while(scanf("%d", input) != 1) {
+        mostrareMessaggioErrore("input non valido", ERR_MSG_RIGA, ERR_MSG_COLONNA - 10);
+        resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+        pulireBuffer();
+    }
+    if(*input != 0){
+        mostrareMessaggioErrore("input non valido", ERR_MSG_RIGA, ERR_MSG_COLONNA - 10);
+        resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+        pulireBuffer();
+    }
+    else if (*input == 0) {
+      loopMenuPrincipale();
+      inStatistiche = 0;
+    }
+  }
+}
