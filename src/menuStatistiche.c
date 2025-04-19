@@ -3,16 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct{
-  int partiteGiocateTotali;
-  int partiteGiocateFacile;
-  int partiteGiocateMedia;
-  int partiteGiocateDifficile;
-  int partiteVinteTotali;
-  int partiteVinteFacile;
-  int partiteVinteMedia;
-  int partiteVinteDifficile;
-} statisticheGiocatore;
 
 int leggerePartiteGiocateTotali(statisticheGiocatore *giocatore){
   return giocatore->partiteGiocateTotali;
@@ -74,11 +64,45 @@ void incrementarePartiteVinteDifficile(statisticheGiocatore *giocatore){
   giocatore->partiteVinteDifficile = giocatore->partiteVinteDifficile + 1;
 }
 
+
+statisticheGiocatore giocatore;
+
 void stampareMenuStatistiche(){
   system("clear || cls");
   stampaCentrato("            _       _   _     _   _     _              ");
   stampaCentrato(" ___    ___| |_ ___| |_|_|___| |_|_|___| |_ ___    ___ ");
   stampaCentrato("|___|  |_ -|  _| .'|  _| |_ -|  _| |  _|   | -_|  |___|");
   stampaCentrato("       |___|_| |__,|_| |_|___|_| |_|___|_|_|___|       ");
+  
+  printf("\n\n\n");
+  caricaStatistiche(&giocatore, "database/statisticheGiocatore.txt");
+  stampaStatisticheGiocatore(&giocatore);
+}
+
+void caricaStatistiche(statisticheGiocatore *giocatore, const char *filename) {
+    FILE *file = fopen(filename, "r");
+
+    fscanf(file, "Partite_Giocate_Totali: %d\n", &giocatore->partiteGiocateTotali);
+    fscanf(file, "Partite_Giocate_Facile: %d\n", &giocatore->partiteGiocateFacile);
+    fscanf(file, "Partite_Giocate_Media: %d\n", &giocatore->partiteGiocateMedia);
+    fscanf(file, "Partite_Giocate_Difficile: %d\n", &giocatore->partiteGiocateDifficile);
+    fscanf(file, "Partite_Vinte_Totali: %d\n", &giocatore->partiteVinteTotali);
+    fscanf(file, "Partite_Vinte_Facile: %d\n", &giocatore->partiteVinteFacile);
+    fscanf(file, "Partite_Vinte_Media: %d\n", &giocatore->partiteVinteMedia);
+    fscanf(file, "Partite_Vinte_Difficile: %d\n", &giocatore->partiteVinteDifficile);
+
+    fclose(file);
+}
+
+void stampaStatisticheGiocatore(statisticheGiocatore *giocatore) {
+    printf("PARTITE GIOCATE TOTALI: %d\n", leggerePartiteGiocateTotali(giocatore));
+    printf("   - Facile           : %d\n", leggerePartiteGiocateFacile(giocatore));
+    printf("   - Media            : %d\n", leggerePartiteGiocateMedia(giocatore));
+    printf("   - Difficile        : %d\n", leggerePartiteGiocateDifficile(giocatore));
+    printf("\n");
+    printf("PARTITE VINTE TOTALI: %d\n", leggerePartiteVinteTotali(giocatore));
+    printf("   - Facile           : %d\n", leggerePartiteVinteFacile(giocatore));
+    printf("   - Media            : %d\n", leggerePartiteVinteMedia (giocatore));
+    printf("   - Difficile        : %d\n", leggerePartiteVinteDifficile(giocatore));
 }
 
