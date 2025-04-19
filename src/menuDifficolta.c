@@ -38,8 +38,14 @@ void loopMenuDifficolta() {
 
 void stampareMenuDifficolta() {
   system("clear || cls");
-  spostaCursore(TITOLO_RIGA, TITOLO_COLONNA);
-  stampaCentrato("- MENU DIFFICOLTA -");
+
+  printf("\n");
+  stampaCentrato("        _                   _           _         _        ");
+  stampaCentrato(" ___   |_|_____ ___ ___ ___| |_ ___ ___|_|___ ___|_|   ___ ");
+  stampaCentrato("|___|  | |     | . | . |_ -|  _| .'|- _| | . |   | |  |___|");
+  stampaCentrato("       |_|_|_|_|  _|___|___|_| |__,|___|_|___|_|_|_|       ");
+  stampaCentrato("               |_|                                         ");
+
   
   spostaCursore(OPZIONE_START_RIGA, OPZIONE_COLONNA);
   printf("[%d] Facile", DIFFICOLTA_FACILE);

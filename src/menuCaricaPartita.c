@@ -4,5 +4,11 @@
 
 void stampareMenuCaricaPartita(){
   system("clear || cls");
-  printf("ciao sono nel menu CaricaPartita");
+stampaCentrato("                    _   _ _                  _         _              ");
+stampaCentrato(" ___    ___ ___ ___| |_|_| |_ ___    ___ ___| |_ _ ___| |_ ___    ___ ");
+stampaCentrato("|___|  | . | .'|  _|  _| |  _| -_|  |_ -| .'| | | | .'|  _| -_|  |___|");
+stampaCentrato("       |  _|__,|_| |_| |_|_| |___|  |___|__,|_|\\_/|__,|_| |___|       ");
+stampaCentrato("       |_|                                                            ");
 }
+
+

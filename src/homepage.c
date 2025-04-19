@@ -62,11 +62,11 @@ void stampareMenuPrincipale()
 {
   system("clear || cls");
   printf("\n");
-  stampaCentrato(" __           *       *           ");
-  stampaCentrato("/ *\\*   *  *_| | ___ | | ___   _  ");
-  stampaCentrato("\\ \\| | | |/ *` |/ * \\| |/ / | | | ");
-  stampaCentrato("_\\ \\ |_| | (_| | (_) |   <| |_| | ");
-  stampaCentrato("\\__/\\__,_|\\__,_|\\___/|_|\\_\\\\__,_| ");
+  stampaCentrato("        _____ _____ ____  _____ _____ _____         ___ ___        ");
+  stampaCentrato(" ___   |   __|  |  |    \\|     |  |  |  |  |       |_  |_  |   ___ ");
+  stampaCentrato("|___|  |__   |  |  |  |  |  |  |    -|  |  |   _   |_  |  _|  |___|");
+  stampaCentrato("       |_____|_____|____/|_____|__|__|_____|  |_|  |___|___|       ");
+  stampaCentrato("                                                                   ");
   printf("\n\n");
   
   spostaCursore(TITOLO_RIGA, TITOLO_COLONNA);
