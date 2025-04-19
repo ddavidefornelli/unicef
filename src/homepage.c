@@ -28,6 +28,9 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
 #include "menudifficolta.h"
 #include "menustatistiche.h"
 
+#define COLOR_RED "\x1b[31m"
+#define COLOR_RESET "\x1b[0m"
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  *  FUNZIONE: stampareMenuPrincipale()                      *
  *  DESCRIZIONE: Mostra il menù iniziale del gioco          *
@@ -88,28 +91,35 @@ void loopMenuPrincipale(){
   collezionaInput(&input); 
 }
 
+
+void resetZonaInput(int posRiga, int posColonna){
+    spostaCursore(posRiga, posColonna);
+    printf(">> ");
+    printf("%-10s", "");
+    spostaCursore(posRiga, posColonna + 3);
+}
+
+void pulireBuffer(){
+      while(getchar() != '\n'); // pulisce il buffer
+}
+
+void mostrareMessaggioErrore(const char *testo, int posRiga, int posColonna) {
+      spostaCursore(posRiga, posColonna);
+      printf("%s %s %s",COLOR_RED, testo, COLOR_RESET);
+}
+
 void collezionaInput(int *input) {
   while(inMenuPrinipale) {
-    spostaCursore(17, 55);
-    printf(">>            ");
-    spostaCursore(17, 58);
-
+    resetZonaInput(17, 50);
     while(scanf("%d", input) != 1) {
-      while(getchar() != '\n'); // pulisce il buffer
-
-      spostaCursore(17, 55);
-      printf(">>            ");
-
-      spostaCursore(19, 50);
-      printf("\033[31m Digita un Numero. \033[0m");
-      spostaCursore(17, 58);
+      pulireBuffer();
+      mostrareMessaggioErrore(" Digita un Numero ", 19, 59);
+      resetZonaInput(17, 50);
     }
-
-    while(getchar() != '\n'); // <-- pulisce anche dopo un input valido
+    pulireBuffer();
     if(*input < 1 || *input > 4) {
-      spostaCursore(19, 50);
-      printf("\033[31m      Riprova.     \033[0m");
-      spostaCursore(17, 58);
+      mostrareMessaggioErrore(" Digita un Numero ", 19, 59);
+      resetZonaInput(17, 50);
     }
 
     else if (*input == 1) {
