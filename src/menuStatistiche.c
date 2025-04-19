@@ -115,10 +115,7 @@ void stampaStatisticheGiocatore(statisticheGiocatore *giocatore) {
     printf("\n");
     printf("W/L Ratio             : %.2f", calcolareWLRatio(giocatore));
 
-    printf("\n");
-    printf("\n");
-    printf("\n");
-    printf("\n");
+    printf("\n\n\n\n");
     stampaCentrato("[0] Torna alla homepage");
 }
 
