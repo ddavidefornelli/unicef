@@ -12,8 +12,8 @@ spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel
 */
 
 typedef enum {
-  LARGHEZZA_TERMINALE = 120,
-  ALTEZZA_TERMINALE = 80
+  LARGHEZZA_TERMINALE = 80,
+  ALTEZZA_TERMINALE = 25
 } terminale;
 
 void spostaCursore(int x, int y)
@@ -106,5 +106,20 @@ void stampaASinistra(const char *testo)
   printf("%s\n", testo);
 }
 
+void resetZonaInput(int posRiga, int posColonna){
+    spostaCursore(posRiga, posColonna);
+    printf(">> ");
+    printf("%-10s", "");
+    spostaCursore(posRiga, posColonna + 3);
+}
 
+void pulireBuffer(){
+      while(getchar() != '\n'); // pulisce il buffer
+}
 
+void mostrareMessaggioErrore(const char *testo, int posRiga, int posColonna) {
+      spostaCursore(posRiga, 0);
+      printf("%-80s", "");
+      spostaCursore(posRiga, posColonna);
+      printf("%s %s %s",COLOR_RED, testo, COLOR_RESET);
+}
