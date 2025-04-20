@@ -7,9 +7,9 @@ Data di inizio di scrittura del file:
 Nome del file:
 Home Page sudoku
 Scopo di ogni funzione presente:
-mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
+mostraMenu() -> funzione utilizzata per stamparere a video il menù di partenza;
 Modifiche apportate:
-Nel giorno 06/04/2025, Fornelli Davide e Antonciello Giuliano, hanno inserito la funzioni stampaASinistra() e modificato layout e interfaccia
+Nel giorno 06/04/2025, Fornelli Davide e Antonciello Giuliano, hanno inserito la funzioni stampareASinistra() e modificato layout e interfaccia
 la modifica è stata effettuata per permettere una comprensione più chiara del menù di gioco
 */
 #include <stdio.h>
@@ -25,16 +25,16 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
 #define LARGHEZZA_TERMINALE 80
 
 // Posizioni del menu
-#define TITOLO_RIGA 9
+#define TITOLO_RIGA 10
 #define TITOLO_COLONNA 36  
-#define OPZIONE_START_RIGA 11
+#define OPZIONE_START_RIGA 12
 #define OPZIONE_COLONNA 30 
-#define PROMPT_RIGA 16
+#define PROMPT_RIGA 19
 #define PROMPT_COLONNA 28 
-#define INPUT_RIGA 17
+#define INPUT_RIGA 20
 #define INPUT_COLONNA 35 
-#define ERR_MSG_RIGA 19
-#define ERR_MSG_COLONNA 33
+#define ERR_MSG_RIGA 22
+#define ERR_MSG_COLONNA 31
 
 // Opzioni del menu
 typedef enum {
@@ -58,39 +58,40 @@ typedef enum {
  *  MODIFICHE:                                              *
  *  2025/03/26 - Prima versione                             *
  ************************************************************/
+void stampareTitoloHomepage(){
+  stampareCentrato("        _____ _____ ____  _____ _____ _____         ___ ___        ");
+  stampareCentrato(" ___   |   __|  |  |    \\|     |  |  |  |  |       |_  |_  |   ___ ");
+  stampareCentrato("|___|  |__   |  |  |  |  |  |  |    -|  |  |   _   |_  |  _|  |___|");
+  stampareCentrato("       |_____|_____|____/|_____|__|__|_____|  |_|  |___|___|       ");
+  stampareCentrato("                                                                   ");
+}
+
+void stampareMenuHomepage(){
+
+  spostareCursore(TITOLO_RIGA, TITOLO_COLONNA);
+  printf("- MENU -");
+  spostareCursore(OPZIONE_START_RIGA, OPZIONE_COLONNA);
+  printf("[1] Nuova Partita");
+  spostareCursore(OPZIONE_START_RIGA + 1, OPZIONE_COLONNA);
+  printf("[2] Partite Salvate");
+  spostareCursore(OPZIONE_START_RIGA + 2, OPZIONE_COLONNA);
+  printf("[3] Statistiche");
+  spostareCursore(OPZIONE_START_RIGA + 3, OPZIONE_COLONNA);
+  printf("[4] Esci");
+  spostareCursore(PROMPT_RIGA, PROMPT_COLONNA);
+  printf("Inserisci una scelta (1 - 4)");
+
+}
 void stampareMenuPrincipale() 
 {
-  system("clear || cls");
-  printf("\n");
-  stampaCentrato("        _____ _____ ____  _____ _____ _____         ___ ___        ");
-  stampaCentrato(" ___   |   __|  |  |    \\|     |  |  |  |  |       |_  |_  |   ___ ");
-  stampaCentrato("|___|  |__   |  |  |  |  |  |  |    -|  |  |   _   |_  |  _|  |___|");
-  stampaCentrato("       |_____|_____|____/|_____|__|__|_____|  |_|  |___|___|       ");
-  stampaCentrato("                                                                   ");
-  printf("\n\n");
-  
-  spostaCursore(TITOLO_RIGA, TITOLO_COLONNA);
-  printf("- MENU -");
-  
-  spostaCursore(OPZIONE_START_RIGA, OPZIONE_COLONNA);
-  printf("[1] Nuova Partita");
-  
-  spostaCursore(OPZIONE_START_RIGA + 1, OPZIONE_COLONNA);
-  printf("[2] Partite Salvate");
-  
-  spostaCursore(OPZIONE_START_RIGA + 2, OPZIONE_COLONNA);
-  printf("[3] Statistiche");
-  
-  spostaCursore(OPZIONE_START_RIGA + 3, OPZIONE_COLONNA);
-  printf("[4] Esci");
-  
-  spostaCursore(PROMPT_RIGA, PROMPT_COLONNA);
-  printf("Inserisci una scelta (%d - %d)", OPZIONE_MIN, OPZIONE_MAX);
+  pulireSchermo();
+  stampareTitoloHomepage();
+  stampareMenuHomepage();
 }
 
 /************************************************************ 
- *  FUNZIONE: collezionaInput()                             *
- *  DESCRIZIONE: richiede un qualsiasi input con la stampa  *
+ *  FUNZIONE: collezionareInput()                             *
+ *  DESCRIZIONE: richiede un qualsiasi input con la stampare  *
  *               di un  testo, come la richiesta.           *
  *                                                          *
  *  ARGOMENTI:                                              *
@@ -106,12 +107,11 @@ void stampareMenuPrincipale()
 
 int inMenuPrinipale = 1;
 void loopMenuPrincipale(){
-  int input;
   stampareMenuPrincipale();
-  collezionaInput(&input); 
+  collezionareInput(); 
 }
 
-void collezionaInput(int *input) {
+void collezionareInput(int *input) {
   while(inMenuPrinipale) {
     resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
     
@@ -120,11 +120,11 @@ void collezionaInput(int *input) {
       mostrareMessaggioErrore(" Digita un Numero ", ERR_MSG_RIGA, ERR_MSG_COLONNA);
       resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
     }
-    
+
     pulireBuffer();
     
     if(*input < OPZIONE_MIN || *input > OPZIONE_MAX) {
-      mostrareMessaggioErrore(" Digita un Numero compreso tra 1 - 4 ", ERR_MSG_RIGA, ERR_MSG_COLONNA - 10);
+      mostrareMessaggioErrore("Digita un Numero compreso tra 1 - 4 ", ERR_MSG_RIGA, ERR_MSG_COLONNA - 7);
       resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
     }
     else if (*input == NUOVA_PARTITA) {

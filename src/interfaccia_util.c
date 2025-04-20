@@ -8,7 +8,7 @@ stampaASinistra() -> funzione utilizzata per centrare a sinistra sul terminale;
 stampaCentrato() -> funzione utilizzata per centrare sul terminale il menù di partenza;
 mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
 collezionaInput() -> funzione utilizzata per collezionare l' input dell utente;
-spostaCursore() -> funzione utilizzata per spostare la posizione del cursore nel terminale;
+spostareCursore() -> funzione utilizzata per spostare la posizione del cursore nel terminale;
 */
 
 typedef enum {
@@ -16,7 +16,7 @@ typedef enum {
   ALTEZZA_TERMINALE = 25
 } terminale;
 
-void spostaCursore(int x, int y)
+void spostareCursore(int x, int y)
 {
   printf("\033[%d;%dH", x, y);
 }
@@ -34,7 +34,7 @@ void spostaCursore(int x, int y)
  *  2025/03/26 - Prima versione                             *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 
-void stampaCentrato(const char *testo) 
+void stampareCentrato(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
   int spaziDaInserire = 0; /* contatore per il ciclo */
@@ -74,7 +74,7 @@ void stampaCentrato(const char *testo)
  *  2025/03/27 - Prima versione                             *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 
-void stampaASinistra(const char *testo) 
+void stampareASinistra(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
   int spaziDaInserire; /* contatore per il ciclo */
@@ -84,8 +84,8 @@ void stampaASinistra(const char *testo)
   /* calcolo la lunghezza di dimStringa */
   dimStringa = strlen(testo);
 
-  /* Calcolo il numero di spazi da inserire per spostare il testo a sinistra (Sottraendo 5, la 
-     stringa viene spostata verso sinistra di 5 posizioni rispetto al margine destro) */
+  /* Calcolo il numero di spazi da inserire per spostarere il testo a sinistra (Sottraendo 5, la 
+     stringa viene spostareta verso sinistra di 5 posizioni rispetto al margine destro) */
   spazi = (LARGHEZZA_TERMINALE - dimStringa) - 5;
 
   /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
@@ -94,7 +94,7 @@ void stampaASinistra(const char *testo)
     spazi = 0;
   }
 
-  /* Stampo tanti spazi vuoti quanto basta per spostare a sinistra il "testo" */
+  /* Stampo tanti spazi vuoti quanto basta per spostarere a sinistra il "testo" */
   spaziDaInserire = 0;
   while(spaziDaInserire < spazi)
   {
@@ -107,10 +107,10 @@ void stampaASinistra(const char *testo)
 }
 
 void resetZonaInput(int posRiga, int posColonna){
-    spostaCursore(posRiga, posColonna);
+    spostareCursore(posRiga, posColonna);
     printf(">> ");
     printf("%-10s", "");
-    spostaCursore(posRiga, posColonna + 3);
+    spostareCursore(posRiga, posColonna + 3);
 }
 
 void pulireBuffer(){
@@ -118,16 +118,16 @@ void pulireBuffer(){
 }
 
 void mostrareMessaggioErrore(const char *testo, int posRiga, int posColonna) {
-      spostaCursore(posRiga, 0);
+      spostareCursore(posRiga, 0);
       printf("%-80s", "");
-      spostaCursore(posRiga, posColonna);
+      spostareCursore(posRiga, posColonna);
       printf("%s %s %s",COLOR_RED, testo, COLOR_RESET);
 }
 
 void tornareHompage(int *input, int posRiga, int posColonna){
   int inMenuCorrente = 1;
 
-  spostaCursore(posRiga - 1, posColonna);
+  spostareCursore(posRiga - 1, posColonna);
   printf("[0] torna alla homepage");
   while(inMenuCorrente) {
     resetZonaInput(posRiga, posColonna + 8);
@@ -147,4 +147,8 @@ void tornareHompage(int *input, int posRiga, int posColonna){
       inMenuCorrente = 0;
     }
   }
+}
+
+void pulireSchermo(){
+  system("clear || cls");
 }

@@ -9,12 +9,12 @@
 
 void loopPartita(){
   int input;
-  system("clear || cls");
-  stampaCentrato("                    _   _ _              ");
-  stampaCentrato(" ___    ___ ___ ___| |_|_| |_ ___    ___ ");
-  stampaCentrato("|___|  | . | .'|  _|  _| |  _| .'|  |___|");
-  stampaCentrato("       |  _|__,|_| |_| |_|_| |__,|       ");
-  stampaCentrato("       |_|                               ");
+  pulireSchermo();
+  stampareCentrato("                    _   _ _              ");
+  stampareCentrato(" ___    ___ ___ ___| |_|_| |_ ___    ___ ");
+  stampareCentrato("|___|  | . | .'|  _|  _| |  _| .'|  |___|");
+  stampareCentrato("       |  _|__,|_| |_| |_|_| |__,|       ");
+  stampareCentrato("       |_|                               ");
   tornareHompage(&input, INPUT_RIGA, INPUT_COLONNA);
 }
  

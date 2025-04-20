@@ -15,14 +15,13 @@ typedef enum {
 #define TITOLO_RIGA 9
 #define TITOLO_COLONNA 0
 #define OPZIONE_START_RIGA 11
-#define OPZIONE_COLONNA 30 
-#define OPZIONE_INCREMENTO 1
-#define PROMPT_RIGA 16
+#define OPZIONE_COLONNA 33 
+#define PROMPT_RIGA 19
 #define PROMPT_COLONNA 28 
-#define INPUT_RIGA 17
+#define INPUT_RIGA 20
 #define INPUT_COLONNA 35 
-#define ERR_MSG_RIGA 19
-#define ERR_MSG_COLONNA 30 
+#define ERR_MSG_RIGA 22
+#define ERR_MSG_COLONNA 32
 
 // Opzioni del menu
 #define OPZIONE_MIN 1
@@ -30,40 +29,46 @@ typedef enum {
 
 int inMenuDifficolta = 1;
 
+void stampareMenuDifficolta() {
+  pulireSchermo();
+  stampareTitoloImpostazioni();
+  stampareMenuImpostazioni();
+}
+
 void loopMenuDifficolta() {
   int input;
   stampareMenuDifficolta();
   collezionaInputMenuDifficolta(&input);
 }
 
-void stampareMenuDifficolta() {
-  system("clear || cls");
-
+void stampareTitoloImpostazioni(){
   printf("\n");
-  stampaCentrato("        _                   _           _         _        ");
-  stampaCentrato(" ___   |_|_____ ___ ___ ___| |_ ___ ___|_|___ ___|_|   ___ ");
-  stampaCentrato("|___|  | |     | . | . |_ -|  _| .'|- _| | . |   | |  |___|");
-  stampaCentrato("       |_|_|_|_|  _|___|___|_| |__,|___|_|___|_|_|_|       ");
-  stampaCentrato("               |_|                                         ");
+  stampareCentrato("        _                   _           _         _        ");
+  stampareCentrato(" ___   |_|_____ ___ ___ ___| |_ ___ ___|_|___ ___|_|   ___ ");
+  stampareCentrato("|___|  | |     | . | . |_ -|  _| .'|- _| | . |   | |  |___|");
+  stampareCentrato("       |_|_|_|_|  _|___|___|_| |__,|___|_|___|_|_|_|       ");
+  stampareCentrato("               |_|                                         ");
+}
 
+void stampareMenuImpostazioni(){
+  spostareCursore(OPZIONE_START_RIGA, OPZIONE_COLONNA);
+  printf("[1] Facile");
   
-  spostaCursore(OPZIONE_START_RIGA, OPZIONE_COLONNA);
-  printf("[%d] Facile", DIFFICOLTA_FACILE);
+  spostareCursore(OPZIONE_START_RIGA + 1, OPZIONE_COLONNA);
+  printf("[2] Intermedia");
   
-  spostaCursore(OPZIONE_START_RIGA + OPZIONE_INCREMENTO, OPZIONE_COLONNA);
-  printf("[%d] Intermedia", DIFFICOLTA_INTERMEDIA);
+  spostareCursore(OPZIONE_START_RIGA + 2, OPZIONE_COLONNA);
+  printf("[3] Difficile");
   
-  spostaCursore(OPZIONE_START_RIGA + 2*OPZIONE_INCREMENTO, OPZIONE_COLONNA);
-  printf("[%d] Difficile", DIFFICOLTA_DIFFICILE);
+  spostareCursore(OPZIONE_START_RIGA + 3, OPZIONE_COLONNA);
+  printf("[4] Esci");
   
-  spostaCursore(OPZIONE_START_RIGA + 3*OPZIONE_INCREMENTO, OPZIONE_COLONNA);
-  printf("\033[31m[%d] Esci \033[0m", DIFFICOLTA_ESCI);
-  
-  spostaCursore(PROMPT_RIGA, PROMPT_COLONNA);
-  printf("Inserisci una scelta (%d - %d)", OPZIONE_MIN, OPZIONE_MAX);
+  spostareCursore(PROMPT_RIGA, PROMPT_COLONNA);
+  printf("Inserisci una scelta (1 - 4)");
 }
 
 void collezionaInputMenuDifficolta(int *input) {
+
   while(inMenuDifficolta) {
     resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
     
@@ -77,9 +82,10 @@ void collezionaInputMenuDifficolta(int *input) {
     pulireBuffer();
     
     if(*input < OPZIONE_MIN || *input > OPZIONE_MAX) {
-      mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA, ERR_MSG_COLONNA);
+      mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA, ERR_MSG_COLONNA - 5);
       resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
     }
+
     else if (*input == DIFFICOLTA_FACILE) {
       loopPartita();
       inMenuDifficolta = 0;
@@ -95,5 +101,6 @@ void collezionaInputMenuDifficolta(int *input) {
     else if (*input == DIFFICOLTA_ESCI) {
       exit(0);
     }
+
   }
 }

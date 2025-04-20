@@ -71,17 +71,18 @@ statisticheGiocatore giocatore;
 
 void stampareMenuStatistiche(){
   int input;
-  system("clear || cls");
-  stampaCentrato("            _       _   _     _   _     _              ");
-  stampaCentrato(" ___    ___| |_ ___| |_|_|___| |_|_|___| |_ ___    ___ ");
-  stampaCentrato("|___|  |_ -|  _| .'|  _| |_ -|  _| |  _|   | -_|  |___|");
-  stampaCentrato("       |___|_| |__,|_| |_|___|_| |_|___|_|_|___|       ");
+  pulireSchermo();
+  stampareCentrato("            _       _   _     _   _     _              ");
+  stampareCentrato(" ___    ___| |_ ___| |_|_|___| |_|_|___| |_ ___    ___ ");
+  stampareCentrato("|___|  |_ -|  _| .'|  _| |_ -|  _| |  _|   | -_|  |___|");
+  stampareCentrato("       |___|_| |__,|_| |_|___|_| |_|___|_|_|___|       ");
   
   printf("\n\n\n");
   caricaStatistiche(&giocatore, "database/statisticheGiocatore.txt");
-  stampaStatisticheGiocatore(&giocatore);
+  stampareStatisticheGiocatore(&giocatore);
   tornareHompage(&input, INPUT_RIGA, INPUT_COLONNA);
 }
+
 void caricaStatistiche(statisticheGiocatore *giocatore, const char *filename) {
     FILE *file = fopen(filename, "r");
 
@@ -97,7 +98,7 @@ void caricaStatistiche(statisticheGiocatore *giocatore, const char *filename) {
     fclose(file);
 }
 
-void stampaStatisticheGiocatore(statisticheGiocatore *giocatore) {
+void stampareStatisticheGiocatore(statisticheGiocatore *giocatore) {
     printf("PARTITE_GIOCATE_TOTALI: %d\n", leggerePartiteGiocateTotali(giocatore));
     printf("   - Facile           : %d\n", leggerePartiteGiocateFacile(giocatore));
     printf("   - Media            : %d\n", leggerePartiteGiocateMedia(giocatore));
@@ -133,6 +134,7 @@ float calcolareWLRatio(statisticheGiocatore *giocatore){
 
 void aggiornareDatabaseStatisticheGiocatore(const char *nomeFile, statisticheGiocatore *giocatore){
   FILE *file = fopen(nomeFile, "w");
+
     fprintf(file, "Partite_Giocate_Totali: %d\n", giocatore->partiteGiocateTotali);
     fprintf(file, "Partite_Giocate_Facile: %d\n", giocatore->partiteGiocateFacile);
     fprintf(file, "Partite_Giocate_Media: %d\n", giocatore->partiteGiocateMedia);
@@ -141,5 +143,6 @@ void aggiornareDatabaseStatisticheGiocatore(const char *nomeFile, statisticheGio
     fprintf(file, "Partite_Vinte_Facile: %d\n", giocatore->partiteVinteFacile);
     fprintf(file, "Partite_Vinte_Media: %d\n", giocatore->partiteVinteMedia);
     fprintf(file, "Partite_Vinte_Difficile: %d\n", giocatore->partiteVinteDifficile);
+
   fclose(file);
 }

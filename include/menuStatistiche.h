@@ -44,7 +44,7 @@ void leggiStatisticheGiocatore(statisticheGiocatore *giocatore, const char *nome
 void aggiornareDatabaseStatisticheGiocatore(const char *nomeFile, statisticheGiocatore *giocatore);
 
 // Stampa statistiche
-void stampaStatisticheGiocatore(statisticheGiocatore *giocatore);
+void stampareStatisticheGiocatore(statisticheGiocatore *giocatore);
 void caricaStatistiche(statisticheGiocatore *giocatore, const char *filename);
 
 float calcolareWLRatio(statisticheGiocatore *giocatore);
