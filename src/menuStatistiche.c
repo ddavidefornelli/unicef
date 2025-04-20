@@ -67,7 +67,6 @@ void incrementarePartiteVinteDifficile(statisticheGiocatore *giocatore){
   giocatore->partiteVinteDifficile = giocatore->partiteVinteDifficile + 1;
 }
 
-
 statisticheGiocatore giocatore;
 
 void stampareMenuStatistiche(){
@@ -83,7 +82,6 @@ void stampareMenuStatistiche(){
   stampaStatisticheGiocatore(&giocatore);
   tornareHompage(&input, INPUT_RIGA, INPUT_COLONNA);
 }
-
 void caricaStatistiche(statisticheGiocatore *giocatore, const char *filename) {
     FILE *file = fopen(filename, "r");
 
@@ -100,7 +98,7 @@ void caricaStatistiche(statisticheGiocatore *giocatore, const char *filename) {
 }
 
 void stampaStatisticheGiocatore(statisticheGiocatore *giocatore) {
-    printf("PARTITE GIOCATE TOTALI: %d\n", leggerePartiteGiocateTotali(giocatore));
+    printf("PARTITE_GIOCATE_TOTALI: %d\n", leggerePartiteGiocateTotali(giocatore));
     printf("   - Facile           : %d\n", leggerePartiteGiocateFacile(giocatore));
     printf("   - Media            : %d\n", leggerePartiteGiocateMedia(giocatore));
     printf("   - Difficile        : %d\n", leggerePartiteGiocateDifficile(giocatore));
@@ -111,8 +109,6 @@ void stampaStatisticheGiocatore(statisticheGiocatore *giocatore) {
     printf("   - Difficile        : %d\n", leggerePartiteVinteDifficile(giocatore));
     printf("\n");
     printf("W/L Ratio             : %.2f", calcolareWLRatio(giocatore));
-
-    printf("\n\n\n\n");
 }
 
 float calcolareWLRatio(statisticheGiocatore *giocatore){
@@ -135,3 +131,15 @@ float calcolareWLRatio(statisticheGiocatore *giocatore){
   return wlRatio;
 }
 
+void aggiornareDatabaseStatisticheGiocatore(const char *nomeFile, statisticheGiocatore *giocatore){
+  FILE *file = fopen(nomeFile, "w");
+    fprintf(file, "Partite_Giocate_Totali: %d\n", giocatore->partiteGiocateTotali);
+    fprintf(file, "Partite_Giocate_Facile: %d\n", giocatore->partiteGiocateFacile);
+    fprintf(file, "Partite_Giocate_Media: %d\n", giocatore->partiteGiocateMedia);
+    fprintf(file, "Partite_Giocate_Difficile: %d\n", giocatore->partiteGiocateDifficile);
+    fprintf(file, "Partite_Vinte_Totali: %d\n", giocatore->partiteVinteTotali);
+    fprintf(file, "Partite_Vinte_Facile: %d\n", giocatore->partiteVinteFacile);
+    fprintf(file, "Partite_Vinte_Media: %d\n", giocatore->partiteVinteMedia);
+    fprintf(file, "Partite_Vinte_Difficile: %d\n", giocatore->partiteVinteDifficile);
+  fclose(file);
+}

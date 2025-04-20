@@ -41,6 +41,7 @@ void incrementarePartiteVinteDifficile(statisticheGiocatore *giocatore);
 // Gestione file statistiche
 void scriviStatisticheGiocatore(statisticheGiocatore *giocatore, const char *nomeFile);
 void leggiStatisticheGiocatore(statisticheGiocatore *giocatore, const char *nomeFile);
+void aggiornareDatabaseStatisticheGiocatore(const char *nomeFile, statisticheGiocatore *giocatore);
 
 // Stampa statistiche
 void stampaStatisticheGiocatore(statisticheGiocatore *giocatore);
