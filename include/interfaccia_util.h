@@ -11,5 +11,6 @@ void spostaCursore(int x, int y);
 void resetZonaInput(int posRiga, int posColonna);
 void pulireBuffer();
 void mostrareMessaggioErrore(const char *testo, int posRiga, int posColonna);
+void tornareHompage(int *input, int posRiga, int posColonna);
 
 #endif

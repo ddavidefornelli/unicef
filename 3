@@ -5,7 +5,10 @@
 #include <stdlib.h>
 
 #define INPUT_RIGA 23
-#define INPUT_COLONNA 30
+#define INPUT_COLONNA 39
+
+#define ERR_MSG_RIGA 24
+#define ERR_MSG_COLONNA 43
 
 int leggerePartiteGiocateTotali(statisticheGiocatore *giocatore){
   return giocatore->partiteGiocateTotali;
@@ -81,7 +84,7 @@ void stampareMenuStatistiche(){
   printf("\n\n\n");
   caricaStatistiche(&giocatore, "database/statisticheGiocatore.txt");
   stampaStatisticheGiocatore(&giocatore);
-  tornareHompage(&input, INPUT_RIGA, INPUT_COLONNA);
+  tornareHompage(&input);
 }
 
 void caricaStatistiche(statisticheGiocatore *giocatore, const char *filename) {
@@ -135,3 +138,27 @@ float calcolareWLRatio(statisticheGiocatore *giocatore){
   return wlRatio;
 }
 
+void tornareHompage(int *input, int posRiga, int posColonna){
+  int inMenuCorrente = 1;
+
+  spostaCursore(posRiga - 1, posColonna);
+  printf("[1] torna alla homepage");
+  while(inMenuCorrente) {
+    resetZonaInput(posRiga, posColonna);
+
+    while(scanf("%d", input) != 1) {
+        mostrareMessaggioErrore("input non valido", posRiga + 2, posColonna - 6);
+        resetZonaInput(posRiga, posColonna);
+        pulireBuffer();
+    }
+    if(*input != 0){
+        mostrareMessaggioErrore("input non valido", posRiga + 2, posColonna - 6);
+        resetZonaInput(posRiga, posColonna);
+        pulireBuffer();
+    }
+    else if (*input == 0) {
+      loopMenuPrincipale();
+      inMenuCorrente = 0;
+    }
+  }
+}

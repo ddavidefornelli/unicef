@@ -123,3 +123,28 @@ void mostrareMessaggioErrore(const char *testo, int posRiga, int posColonna) {
       spostaCursore(posRiga, posColonna);
       printf("%s %s %s",COLOR_RED, testo, COLOR_RESET);
 }
+
+void tornareHompage(int *input, int posRiga, int posColonna){
+  int inMenuCorrente = 1;
+
+  spostaCursore(posRiga - 1, posColonna);
+  printf("[0] torna alla homepage");
+  while(inMenuCorrente) {
+    resetZonaInput(posRiga, posColonna + 8);
+
+    while(scanf("%d", input) != 1) {
+        mostrareMessaggioErrore("input non valido", posRiga + 2, posColonna + 3);
+        resetZonaInput(posRiga, posColonna + 8);
+        pulireBuffer();
+    }
+    if(*input != 0){
+        mostrareMessaggioErrore("input non valido", posRiga + 2, posColonna + 3);
+        resetZonaInput(posRiga, posColonna + 8);
+        pulireBuffer();
+    }
+    else if (*input == 0) {
+      loopMenuPrincipale();
+      inMenuCorrente = 0;
+    }
+  }
+}
