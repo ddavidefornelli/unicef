@@ -58,7 +58,9 @@ typedef enum {
  *  MODIFICHE:                                              *
  *  2025/03/26 - Prima versione                             *
  ************************************************************/
+
 void stampareTitoloHomepage(){
+  printf("\n");
   stampareCentrato("        _____ _____ ____  _____ _____ _____         ___ ___        ");
   stampareCentrato(" ___   |   __|  |  |    \\|     |  |  |  |  |       |_  |_  |   ___ ");
   stampareCentrato("|___|  |__   |  |  |  |  |  |  |    -|  |  |   _   |_  |  _|  |___|");
@@ -105,17 +107,19 @@ void stampareMenuPrincipale()
  *  2025/04/06 - Terza versione                             *
  *************************************************************/
 
-int inMenuPrinipale = 1;
 void loopMenuPrincipale(){
   stampareMenuPrincipale();
   collezionareInput(); 
 }
 
 void collezionareInput(int *input) {
+  int inMenuPrinipale; 
+
+  inMenuPrinipale = 1;
   while(inMenuPrinipale) {
     resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
     
-    while(scanf("%d", input) != 1) {
+    while(scanf("%d", input) != 1) { // input é formato da caratteri  
       pulireBuffer();
       mostrareMessaggioErrore(" Digita un Numero ", ERR_MSG_RIGA, ERR_MSG_COLONNA);
       resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
