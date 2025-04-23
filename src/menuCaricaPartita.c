@@ -15,5 +15,5 @@ void stampareMenuCaricaPartita(){
   stampareCentrato("       |  _|__,|_| |_| |_|_| |___|  |___|__,|_|\\_/|__,|_| |___|       ");
   stampareCentrato("       |_|                                                            ");
 
-  tornareHompage(&input, INPUT_RIGA, INPUT_COLONNA);
+  tornareHomepage(&input, INPUT_RIGA, INPUT_COLONNA);
 }

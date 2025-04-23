@@ -51,6 +51,7 @@ void stampareTitoloImpostazioni(){
 }
 
 void stampareMenuImpostazioni(){
+
   spostareCursore(OPZIONE_START_RIGA, OPZIONE_COLONNA);
   printf("[1] Facile");
   

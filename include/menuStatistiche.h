@@ -15,6 +15,7 @@ typedef struct{
 } statisticheGiocatore;
 
 void stampareMenuStatistiche();
+void stampareTitoloStatistiche();
 
 // Lettura statistiche
 int leggerePartiteGiocateTotali(statisticheGiocatore *giocatore);

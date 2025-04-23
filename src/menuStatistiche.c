@@ -69,18 +69,21 @@ void incrementarePartiteVinteDifficile(statisticheGiocatore *giocatore){
 
 statisticheGiocatore giocatore;
 
-void stampareMenuStatistiche(){
-  int input;
-  pulireSchermo();
+void stampareTitoloStatistiche(){
   stampareCentrato("            _       _   _     _   _     _              ");
   stampareCentrato(" ___    ___| |_ ___| |_|_|___| |_|_|___| |_ ___    ___ ");
   stampareCentrato("|___|  |_ -|  _| .'|  _| |_ -|  _| |  _|   | -_|  |___|");
   stampareCentrato("       |___|_| |__,|_| |_|___|_| |_|___|_|_|___|       ");
-  
   printf("\n\n\n");
+}
+
+void stampareMenuStatistiche(){
+  int input;
+  pulireSchermo();
+  stampareTitoloStatistiche();
   caricaStatistiche(&giocatore, "database/statisticheGiocatore.txt");
   stampareStatisticheGiocatore(&giocatore);
-  tornareHompage(&input, INPUT_RIGA, INPUT_COLONNA);
+  tornareHomepage(&input, INPUT_RIGA, INPUT_COLONNA);
 }
 
 void caricaStatistiche(statisticheGiocatore *giocatore, const char *filename) {

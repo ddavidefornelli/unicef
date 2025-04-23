@@ -108,8 +108,9 @@ void stampareMenuPrincipale()
  *************************************************************/
 
 void loopMenuPrincipale(){
+  int input;
   stampareMenuPrincipale();
-  collezionareInput(); 
+  collezionareInput(&input); 
 }
 
 void collezionareInput(int *input) {

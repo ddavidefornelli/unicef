@@ -15,7 +15,7 @@ void loopPartita(){
   stampareCentrato("|___|  | . | .'|  _|  _| |  _| .'|  |___|");
   stampareCentrato("       |  _|__,|_| |_| |_|_| |__,|       ");
   stampareCentrato("       |_|                               ");
-  tornareHompage(&input, INPUT_RIGA, INPUT_COLONNA);
+  tornareHomepage(&input, INPUT_RIGA, INPUT_COLONNA);
 }
  
 //qui va messa la partita, griglia sudoku + tutto il resto della partita;

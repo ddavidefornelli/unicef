@@ -124,7 +124,7 @@ void mostrareMessaggioErrore(const char *testo, int posRiga, int posColonna) {
       printf("%s %s %s",COLOR_RED, testo, COLOR_RESET);
 }
 
-void tornareHompage(int *input, int posRiga, int posColonna){
+void tornareHomepage(int *input, int posRiga, int posColonna){
   int inMenuCorrente = 1;
 
   spostareCursore(posRiga - 1, posColonna);
