@@ -17,9 +17,9 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
 #include <string.h>
 #include "homepage.h"
 #include "interfaccia_util.h"
-#include "menucaricapartita.h"
-#include "menudifficolta.h"
-#include "menustatistiche.h"
+#include "menuCaricaPartita.h"
+#include "menuDifficolta.h"
+#include "menuStatistiche.h"
 
 // Dimensioni terminale
 #define LARGHEZZA_TERMINALE 80
