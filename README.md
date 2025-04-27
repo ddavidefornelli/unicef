@@ -43,3 +43,4 @@ Se non riesci a trovare numeri evidenti, puoi utilizzare l'analisi per esclusion
 Il SUDOKU è un gioco di logica che stimola la mente e sviluppa abilità di ragionamento. Con pazienza, pratica e l'uso di diverse strategie, è possibile risolvere anche i puzzle più difficili. Speriamo che questo manuale ti aiuti a comprendere meglio le regole del gioco e a migliorare le tue capacità nella risoluzione dei Sudoku.
 
 BUON DIVERTIMENTO!
+ciao
