@@ -2,33 +2,52 @@
 Autori:
 Fornelli Davide
 Antoniciello Giuliano
-
 Data di inizio di scrittura del file: 
-26/03/2025 MODIFICALA FALLA PIU TARDI
-
+04/04/2025
 Nome del file:
 Home Page sudoku
-
 Scopo di ogni funzione presente:
-mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
-
+mostraMenu() -> funzione utilizzata per stamparere a video il menù di partenza;
 Modifiche apportate:
-Nel giorno 27/03/2025, Fornelli Davide e Antonciello Giuliano, hanno inserito la funzioni stampaASinistra() e modificato layout e interfaccia
-la modifica è stata effettuata per permettere una comprensione più chiara del menù di gioco  MODIFICALA FALLA PIU TARDI
-
+Nel giorno 06/04/2025, Fornelli Davide e Antonciello Giuliano, hanno inserito la funzioni stampareASinistra() e modificato layout e interfaccia
+la modifica è stata effettuata per permettere una comprensione più chiara del menù di gioco
 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "homepage.h"
 #include "interfaccia_util.h"
-#include "menucaricapartita.h"
-#include "menudifficolta.h"
-#include "menustatistiche.h"
+#include "menuCaricaPartita.h"
+#include "menuDifficolta.h"
+#include "menuStatistiche.h"
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+// Dimensioni terminale
+#define LARGHEZZA_TERMINALE 80
+
+// Posizioni del menu
+#define TITOLO_RIGA 10
+#define TITOLO_COLONNA 36  
+#define OPZIONE_START_RIGA 12
+#define OPZIONE_COLONNA 30 
+#define PROMPT_RIGA 19
+#define PROMPT_COLONNA 28 
+#define INPUT_RIGA 20
+#define INPUT_COLONNA 35 
+#define ERR_MSG_RIGA 22
+#define ERR_MSG_COLONNA 31
+
+// Opzioni del menu
+typedef enum {
+  NUOVA_PARTITA = 1,
+  PARTITE_SALVATE,
+  STATISTICHE,
+  ESCI,
+} MenuPrincipaleOpzioni;
+
+#define OPZIONE_MIN 1
+#define OPZIONE_MAX 4
+
+/************************************************************ 
  *  FUNZIONE: stampareMenuPrincipale()                      *
  *  DESCRIZIONE: Mostra il menù iniziale del gioco          *
  *                                                          *
@@ -38,35 +57,43 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
  *                                                          *
  *  MODIFICHE:                                              *
  *  2025/03/26 - Prima versione                             *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+ ************************************************************/
 
-void stampareMenuPrincipale() 
-{
-  system("clear || cls");
+void stampareTitoloHomepage(){
   printf("\n");
-  stampaCentrato(" __           _       _           ");
-  stampaCentrato("/ _\\_   _  __| | ___ | | ___   _  ");
-  stampaCentrato("\\ \\| | | |/ _` |/ _ \\| |/ / | | | ");
-  stampaCentrato("_\\ \\ |_| | (_| | (_) |   <| |_| | ");
-  stampaCentrato("\\__/\\__,_|\\__,_|\\___/|_|\\_\\\\__,_| ");
-  printf("\n\n");
-  spostaCursore(9, 56);
-  printf("- MENU -");
-  spostaCursore(11, 50);
-  printf("[1] Nuova Partita");
-  spostaCursore(12, 50);
-  printf("[2] Carica Partita");
-  spostaCursore(13, 50);
-  printf("[3] Statistiche");
-  spostaCursore(14, 50);
-  printf("\033[31m[4] Esci \033[0m");
-  spostaCursore(16, 48);
-  printf("Inserisci una scelta (1 - 4)");
+  stampareCentrato("        _____ _____ ____  _____ _____ _____         ___ ___        ");
+  stampareCentrato(" ___   |   __|  |  |    \\|     |  |  |  |  |       |_  |_  |   ___ ");
+  stampareCentrato("|___|  |__   |  |  |  |  |  |  |    -|  |  |   _   |_  |  _|  |___|");
+  stampareCentrato("       |_____|_____|____/|_____|__|__|_____|  |_|  |___|___|       ");
+  stampareCentrato("                                                                   ");
 }
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- *  FUNZIONE: collezionaInput()                             *
- *  DESCRIZIONE: richiede un qualsiasi input con la stampa  *
+void stampareMenuHomepage(){
+
+  spostareCursore(TITOLO_RIGA, TITOLO_COLONNA);
+  printf("- MENU -");
+  spostareCursore(OPZIONE_START_RIGA, OPZIONE_COLONNA);
+  printf("[1] Nuova Partita");
+  spostareCursore(OPZIONE_START_RIGA + 1, OPZIONE_COLONNA);
+  printf("[2] Partite Salvate");
+  spostareCursore(OPZIONE_START_RIGA + 2, OPZIONE_COLONNA);
+  printf("[3] Statistiche");
+  spostareCursore(OPZIONE_START_RIGA + 3, OPZIONE_COLONNA);
+  printf("[4] Esci");
+  spostareCursore(PROMPT_RIGA, PROMPT_COLONNA);
+  printf("Inserisci una scelta (1 - 4)");
+
+}
+void stampareMenuPrincipale() 
+{
+  pulireSchermo();
+  stampareTitoloHomepage();
+  stampareMenuHomepage();
+}
+
+/************************************************************ 
+ *  FUNZIONE: collezionareInput()                             *
+ *  DESCRIZIONE: richiede un qualsiasi input con la stampare  *
  *               di un  testo, come la richiesta.           *
  *                                                          *
  *  ARGOMENTI:                                              *
@@ -77,55 +104,48 @@ void stampareMenuPrincipale()
  *  MODIFICHE:                                              *
  *  2025/03/26 - Prima versione                             *
  *  2025/03/28 - Seconda versione                           *
- *  2025/03/26 - Prima versione  MODIFICA DATA              *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-int inMenuPrinipale = 1;
+ *  2025/04/06 - Terza versione                             *
+ *************************************************************/
 
 void loopMenuPrincipale(){
   int input;
   stampareMenuPrincipale();
-  collezionaInput(&input); 
+  collezionareInput(&input); 
 }
 
-void collezionaInput(int *input) {
+void collezionareInput(int *input) {
+  int inMenuPrinipale; 
+
+  inMenuPrinipale = 1;
   while(inMenuPrinipale) {
-    spostaCursore(17, 55);
-    printf(">>            ");
-    spostaCursore(17, 58);
-
-    while(scanf("%d", input) != 1) {
-      while(getchar() != '\n'); // pulisce il buffer
-
-      spostaCursore(17, 55);
-      printf(">>            ");
-
-      spostaCursore(19, 50);
-      printf("\033[31m Digita un Numero. \033[0m");
-      spostaCursore(17, 58);
+    resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+    
+    while(scanf("%d", input) != 1) { // input é formato da caratteri  
+      pulireBuffer();
+      mostrareMessaggioErrore(" Digita un Numero ", ERR_MSG_RIGA, ERR_MSG_COLONNA);
+      resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
     }
 
-    while(getchar() != '\n'); // <-- pulisce anche dopo un input valido
-    if(*input < 1 || *input > 4) {
-      spostaCursore(19, 50);
-      printf("\033[31m      Riprova.     \033[0m");
-      spostaCursore(17, 58);
+    pulireBuffer();
+    
+    if(*input < OPZIONE_MIN || *input > OPZIONE_MAX) {
+      mostrareMessaggioErrore("Digita un Numero compreso tra 1 - 4 ", ERR_MSG_RIGA, ERR_MSG_COLONNA - 7);
+      resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
     }
-
-    else if (*input == 1) {
+    else if (*input == NUOVA_PARTITA) {
       loopMenuDifficolta();
       inMenuPrinipale = 0;
     }
-    else if (*input == 2) {
+    else if (*input == PARTITE_SALVATE) {
       stampareMenuCaricaPartita();
       inMenuPrinipale = 0;
     }
-    else if (*input == 3) {
+    else if (*input == STATISTICHE) {
       stampareMenuStatistiche();
       inMenuPrinipale = 0;
     }
-    else if (*input == 4) {
+    else if (*input == ESCI) {
       exit(0);
     }
   }
 }
-

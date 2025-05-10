@@ -6,5 +6,7 @@
 void loopMenuDifficolta();
 void collezionaInputMenuDifficolta(int *input);
 void stampareMenuDifficolta();
+void stampareTitoloImpostazioni();
+void stampareMenuImpostazioni();
 
 #endif

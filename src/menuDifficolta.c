@@ -1,71 +1,107 @@
 #include "interfaccia_util.h"
-#include "menudifficolta.h"
+#include "menuDifficolta.h"
 #include "partita.h"
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef enum {
+  DIFFICOLTA_FACILE = 1,
+  DIFFICOLTA_INTERMEDIA,
+  DIFFICOLTA_DIFFICILE,
+  DIFFICOLTA_ESCI,
+} DifficoltaOpzioni;
+
+// Posizioni del menu (adattate per terminal 80 caratteri)
+#define TITOLO_RIGA 9
+#define TITOLO_COLONNA 0
+#define OPZIONE_START_RIGA 11
+#define OPZIONE_COLONNA 33 
+#define PROMPT_RIGA 19
+#define PROMPT_COLONNA 28 
+#define INPUT_RIGA 20
+#define INPUT_COLONNA 35 
+#define ERR_MSG_RIGA 22
+#define ERR_MSG_COLONNA 32
+
+// Opzioni del menu
+#define OPZIONE_MIN 1
+#define OPZIONE_MAX 4
+
 int inMenuDifficolta = 1;
 
-void loopMenuDifficolta(){
+void stampareMenuDifficolta() {
+  pulireSchermo();
+  stampareTitoloImpostazioni();
+  stampareMenuImpostazioni();
+}
+
+void loopMenuDifficolta() {
   int input;
   stampareMenuDifficolta();
   collezionaInputMenuDifficolta(&input);
 }
-void stampareMenuDifficolta(){
-  system("clear || cls");
-  spostaCursore(9, 0);
-  stampaCentrato("- MENU DIFFICOLTA-");
-  spostaCursore(11, 50);
+
+void stampareTitoloImpostazioni(){
+  printf("\n");
+  stampareCentrato("        _                   _           _         _        ");
+  stampareCentrato(" ___   |_|_____ ___ ___ ___| |_ ___ ___|_|___ ___|_|   ___ ");
+  stampareCentrato("|___|  | |     | . | . |_ -|  _| .'|- _| | . |   | |  |___|");
+  stampareCentrato("       |_|_|_|_|  _|___|___|_| |__,|___|_|___|_|_|_|       ");
+  stampareCentrato("               |_|                                         ");
+}
+
+void stampareMenuImpostazioni(){
+
+  spostareCursore(OPZIONE_START_RIGA, OPZIONE_COLONNA);
   printf("[1] Facile");
-  spostaCursore(12, 50);
+  
+  spostareCursore(OPZIONE_START_RIGA + 1, OPZIONE_COLONNA);
   printf("[2] Intermedia");
-  spostaCursore(13, 50);
+  
+  spostareCursore(OPZIONE_START_RIGA + 2, OPZIONE_COLONNA);
   printf("[3] Difficile");
-  spostaCursore(14, 50);
-  printf("\033[31m[4] Esci \033[0m");
-  spostaCursore(16, 48);
+  
+  spostareCursore(OPZIONE_START_RIGA + 3, OPZIONE_COLONNA);
+  printf("[4] Esci");
+  
+  spostareCursore(PROMPT_RIGA, PROMPT_COLONNA);
   printf("Inserisci una scelta (1 - 4)");
 }
 
-void collezionaInputMenuDifficolta(int *input){
+void collezionaInputMenuDifficolta(int *input) {
+
   while(inMenuDifficolta) {
-    spostaCursore(17, 55);
-    printf(">>            ");
-    spostaCursore(17, 58);
-
+    resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+    
     while(scanf("%d", input) != 1) {
-      while(getchar() != '\n'); // pulisce il buffer
-
-      spostaCursore(17, 55);
-      printf(">>            ");
-
-      spostaCursore(19, 50);
-      printf("\033[31m Digita un Numero. \033[0m");
-      spostaCursore(17, 58);
+      pulireBuffer();
+      resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+      mostrareMessaggioErrore("Digita un Numero", ERR_MSG_RIGA, ERR_MSG_COLONNA);
+      resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+    }
+   
+    pulireBuffer();
+    
+    if(*input < OPZIONE_MIN || *input > OPZIONE_MAX) {
+      mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA, ERR_MSG_COLONNA - 5);
+      resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
     }
 
-    while(getchar() != '\n'); // <-- pulisce anche dopo un input valido
-    if(*input < 1 || *input > 4) {
-      spostaCursore(19, 50);
-      printf("\033[31m      Riprova.     \033[0m");
-      spostaCursore(17, 58);
-    }
-
-    else if (*input == 1) {
+    else if (*input == DIFFICOLTA_FACILE) {
       loopPartita();
       inMenuDifficolta = 0;
     }
-    else if (*input == 2) {
+    else if (*input == DIFFICOLTA_INTERMEDIA) {
       loopPartita();
       inMenuDifficolta = 0;
     }
-    else if (*input == 3) {
+    else if (*input == DIFFICOLTA_DIFFICILE) {
       loopPartita();
       inMenuDifficolta = 0;
     }
-    else if (*input == 4) {
+    else if (*input == DIFFICOLTA_ESCI) {
       exit(0);
     }
+
   }
 }
-

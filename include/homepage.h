@@ -3,7 +3,7 @@
 
 #include "interfaccia_util.h"
 
-void collezionaInput(int *input); /* recupera un input da terminale inserito dall'utente */
+void collezionareInput(int *input); /* recupera un input da terminale inserito dall'utente */
 void stampareMenuPrincipale();
 void loopMenuPrincipale();
 

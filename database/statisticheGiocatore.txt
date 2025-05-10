@@ -1,0 +1,8 @@
+Partite_Giocate_Totali: 16
+Partite_Giocate_Facile: 4
+Partite_Giocate_Media: 3
+Partite_Giocate_Difficile: 9
+Partite_Vinte_Totali: 6
+Partite_Vinte_Facile: 3
+Partite_Vinte_Media: 2
+Partite_Vinte_Difficile: 1
