@@ -1,0 +1,107 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "src/homepage.o",
+      "src/homepage.c"
+    ],
+    "directory": "/home/davide/unicef",
+    "file": "/home/davide/unicef/src/homepage.c",
+    "output": "/home/davide/unicef/src/homepage.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "src/interfaccia_util.o",
+      "src/interfaccia_util.c"
+    ],
+    "directory": "/home/davide/unicef",
+    "file": "/home/davide/unicef/src/interfaccia_util.c",
+    "output": "/home/davide/unicef/src/interfaccia_util.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "src/main.o",
+      "src/main.c"
+    ],
+    "directory": "/home/davide/unicef",
+    "file": "/home/davide/unicef/src/main.c",
+    "output": "/home/davide/unicef/src/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "src/menuCaricaPartita.o",
+      "src/menuCaricaPartita.c"
+    ],
+    "directory": "/home/davide/unicef",
+    "file": "/home/davide/unicef/src/menuCaricaPartita.c",
+    "output": "/home/davide/unicef/src/menuCaricaPartita.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "src/menuDifficolta.o",
+      "src/menuDifficolta.c"
+    ],
+    "directory": "/home/davide/unicef",
+    "file": "/home/davide/unicef/src/menuDifficolta.c",
+    "output": "/home/davide/unicef/src/menuDifficolta.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "src/menuStatistiche.o",
+      "src/menuStatistiche.c"
+    ],
+    "directory": "/home/davide/unicef",
+    "file": "/home/davide/unicef/src/menuStatistiche.c",
+    "output": "/home/davide/unicef/src/menuStatistiche.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-g",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "src/Partita.o",
+      "src/Partita.c"
+    ],
+    "directory": "/home/davide/unicef",
+    "file": "/home/davide/unicef/src/Partita.c",
+    "output": "/home/davide/unicef/src/Partita.o"
+  }
+]
