@@ -8,5 +8,7 @@ void collezionaInputMenuDifficolta(int *input);
 void stampareMenuDifficolta();
 void stampareTitoloImpostazioni();
 void stampareMenuImpostazioni();
+void collezionaInputDifficolta(int *input);
+void collezionaInputDimensione(int *input);
 
 #endif
