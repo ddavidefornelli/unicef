@@ -123,7 +123,7 @@ int collezionaDimensione(int *inputDimensione) {
     if(*inputDimensione < OPZIONE_MIN || *inputDimensione > OPZIONE_MAX) {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA - 5);
       resetZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
-    } else { 
+    } else {
       return *inputDimensione;
     }
   }

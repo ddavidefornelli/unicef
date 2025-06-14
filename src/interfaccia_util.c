@@ -109,7 +109,7 @@ void stampareASinistra(const char *testo)
 void resetZonaInput(int posRiga, int posColonna){
     spostareCursore(posRiga, posColonna);
     printf(">> ");
-    printf("%-10s", "");
+    printf("%-8s", "");
     spostareCursore(posRiga, posColonna + 3);
 }
 

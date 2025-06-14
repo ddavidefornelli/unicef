@@ -7,18 +7,17 @@
 #include "tipiDiDato.h"
 #include "partita.h"
 
-#define INPUT_RIGA_RIGA 10
-#define INPUT_RIGA_COLONNA 13
-#define INPUT_RIGA_VALORE 16
-#define INPUT_RIGA 23
-#define INPUT_COLONNA 57
+#define INPUT_RIGA_RIGA  13
+#define INPUT_RIGA_COLONNA 16
+#define INPUT_RIGA_VALORE 19
+#define INPUT_RIGA 28
+#define INPUT_COLONNA 58
 #define FALSO 0
 #define VERO 1
 #define ERR_MSG_RIGA 22
-#define ERR_MSG_COLONNA 32
+#define ERR_MSG_COLONNA 27
 
 void loopPartita(int inputDifficolta, int inputDimensione) {
-  int input;
   Partita partita;
   int inputValore;
   int inputRiga;
@@ -60,7 +59,7 @@ void loopPartita(int inputDifficolta, int inputDimensione) {
 }
 
 void stampareTitoloPartita() {
-  pulireSchermo()
+  pulireSchermo();
   printf("\n");
   stampareCentrato("                    _   _ _              ");
   stampareCentrato(" ___    ___ ___ ___| |_|_| |_ ___    ___ ");
@@ -90,11 +89,26 @@ void stampareVittoria() {
   stampareCentrato("  \\ V /  | || |\\  | | || |_| |");
   stampareCentrato("   \\_/  |___|_| \\_| |_| \\___/ ");
 
-  tornareHomepage(&input, INPUT_RIGA, 30);
-
+  tornareHomepage(&input, INPUT_RIGA - 10, 30);
 }
 
 void stampareAiutiInput() {
+  int i = 0;
+  
+  spostareCursore(INPUT_RIGA_RIGA - 2 , INPUT_COLONNA - 2);
+  printf("+------------+\n");
+  spostareCursore(INPUT_RIGA_RIGA - 3 , INPUT_COLONNA - 2);
+  printf("|   Input    |\n");
+  spostareCursore(INPUT_RIGA_RIGA - 4 , INPUT_COLONNA - 2);
+  printf("+------------+\n");
+  while (i < 8) {
+    spostareCursore(INPUT_RIGA_RIGA - 1 + i, INPUT_COLONNA - 2);
+    printf("|            |\n");
+    i = i + 1;
+  }
+  spostareCursore(INPUT_RIGA_RIGA + 7 , INPUT_COLONNA - 2);
+  printf("+------------+\n");
+
   spostareCursore(INPUT_RIGA_RIGA - 1, INPUT_COLONNA + 1);
   printf("-Riga-");
   spostareCursore(INPUT_RIGA_COLONNA - 1, INPUT_COLONNA);
@@ -299,7 +313,7 @@ void stampareGrigliaPartita(Partita *partita) {
 
     // Stampa la linea di separazione tra i sottoquadrati
     if ((i + 1) % numeroSottoquadrato == 0 && i != dimensione - 1) {
-      printf("+-");
+      printf("  +-");
       j = 0;
       while (j < dimensione) {
         printf("--");
@@ -314,7 +328,7 @@ void stampareGrigliaPartita(Partita *partita) {
   }
 
   // Stampa la linea inferiore
-  printf("+-");
+  printf("  +-");
   j = 0;
   while (j < dimensione) {
     printf("--");
@@ -342,7 +356,7 @@ int collezionaRiga(Griglia *griglia, int *inputRiga) {
     pulireBuffer();
 
     if(*inputRiga < 1 || *inputRiga > leggereDimGriglia(*griglia)) {
-      mostrareMessaggioErrore("Numero fuori intervallo", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA - 5);
+      mostrareMessaggioErrore("Numero fuori intervallo", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA);
       resetZonaInput(INPUT_RIGA_RIGA, INPUT_COLONNA);
     } else { 
       valida = 1;
@@ -367,7 +381,7 @@ int collezionaColonna(Griglia *griglia, int *inputColonna) {
     pulireBuffer();
 
     if(*inputColonna < 1 || *inputColonna > leggereDimGriglia(*griglia)) {
-      mostrareMessaggioErrore("Numero fuori intervallo", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA - 5);
+      mostrareMessaggioErrore("Numero fuori intervallo", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA);
       resetZonaInput(INPUT_RIGA_COLONNA, INPUT_COLONNA);
     } else { 
       valida = 1;
@@ -392,7 +406,7 @@ int collezionaValore(Griglia *griglia, int *inputValore) {
     pulireBuffer();
 
     if(*inputValore < 1 || *inputValore > leggereDimGriglia(*griglia)) {
-      mostrareMessaggioErrore("Numero fuori intervallo", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA - 5);
+      mostrareMessaggioErrore("Numero fuori intervallo", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA );
       resetZonaInput(INPUT_RIGA_VALORE, INPUT_COLONNA);
     } else { 
       valida = 1;
