@@ -11,13 +11,14 @@
 #define INPUT_RIGA_COLONNA 16
 #define INPUT_RIGA_VALORE 19
 #define INPUT_RIGA 28
-#define INPUT_COLONNA 58
+#define INPUT_COLONNA 68
 #define FALSO 0
 #define VERO 1
 #define ERR_MSG_RIGA 22
 #define ERR_MSG_COLONNA 27
 
 void loopPartita(int inputDifficolta, int inputDimensione) {
+  int input;
   Partita partita;
   int inputValore;
   int inputRiga;
@@ -31,7 +32,13 @@ void loopPartita(int inputDifficolta, int inputDimensione) {
   generareSudoku(&partita, inputDimensione, inputDifficolta);
 
   while (!grigliaPiena) {
-    stampareTitoloPartita();
+    if(inputDimensione != 16){
+      stampareTitoloPartita();
+    } else {
+
+      pulireSchermo();
+      printf("\n\n");
+    }
     stampareGrigliaPartita(&partita);
     stampareAiutiInput();
 
@@ -45,6 +52,7 @@ void loopPartita(int inputDifficolta, int inputDimensione) {
     collezionaRiga(&griglia, &inputRiga);
     collezionaColonna(&griglia, &inputColonna);
     collezionaValore(&griglia, &inputValore);
+    tornareHomepage(&input, ERR_MSG_RIGA, ERR_MSG_COLONNA);
 
     valido = verificaValidita(&griglia, inputDimensione, inputRiga - 1, inputColonna - 1, inputValore);
     if (valido) {
@@ -278,7 +286,7 @@ void stampareGrigliaPartita(Partita *partita) {
   }
 
   j = 0;
-  printf("\n  +-");
+  printf("\n   +-");
   while (j < dimensione) {
     printf("--");
     if ((j + 1) % numeroSottoquadrato == 0 && j != dimensione - 1) {
@@ -292,7 +300,7 @@ void stampareGrigliaPartita(Partita *partita) {
   i = 0;
   while (i < dimensione) {
 
-    printf("%d | ", i + 1);
+    printf("%2d | ", i + 1);
     j = 0;
     while (j < dimensione) {
       int valore = leggereValGriglia(griglia, i, j);
@@ -313,7 +321,7 @@ void stampareGrigliaPartita(Partita *partita) {
 
     // Stampa la linea di separazione tra i sottoquadrati
     if ((i + 1) % numeroSottoquadrato == 0 && i != dimensione - 1) {
-      printf("  +-");
+      printf("   +-");
       j = 0;
       while (j < dimensione) {
         printf("--");
@@ -328,7 +336,7 @@ void stampareGrigliaPartita(Partita *partita) {
   }
 
   // Stampa la linea inferiore
-  printf("  +-");
+  printf("   +-");
   j = 0;
   while (j < dimensione) {
     printf("--");

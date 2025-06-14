@@ -20,6 +20,9 @@ int collezionaValore(Griglia *griglia, int *inputValore);
 int controllareGrigliaPiena(Griglia griglia); 
 void stampareAiutiInput();
 void stampareVittoria();
+
+void stampaSeparatorePiccola();
+void stampaGrigliaPartitaPiccola(Partita *partita);
 #endif
 
 
