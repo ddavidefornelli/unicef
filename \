@@ -1,0 +1,115 @@
+#include "interfaccia_util.h"
+#include "menuDifficolta.h"
+#include "partita.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+#define  DIFFICOLTA_FACILE  1
+#define  DIFFICOLTA_INTERMEDIA  2 
+#define  DIFFICOLTA_DIFFICILE  3
+
+#define TITOLO_RIGA 9
+#define TITOLO_COLONNA 0
+#define OPZIONE_START_RIGA 11
+#define OPZIONE_COLONNA 33 
+#define PROMPT_RIGA 19
+#define PROMPT_COLONNA 28 
+#define INPUT_RIGA 15
+#define INPUT_COLONNA 35 
+#define ERR_MSG_RIGA 22
+#define ERR_MSG_COLONNA 32
+
+#define OPZIONE_MIN 1
+#define OPZIONE_MAX 3
+
+
+void stampareMenuDifficolta() {
+  pulireSchermo();
+  stampareTitoloImpostazioni();
+  stampareMenuImpostazioni();
+}
+
+void loopMenuDifficolta() {
+  int input;
+  stampareMenuDifficolta();
+  collezionaInputMenuDifficolta(&input);
+}
+
+void stampareTitoloImpostazioni(){
+  printf("\n");
+  stampareCentrato("        _                   _           _         _        ");
+  stampareCentrato(" ___   |_|_____ ___ ___ ___| |_ ___ ___|_|___ ___|_|   ___ ");
+  stampareCentrato("|___|  | |     | . | . |_ -|  _| .'|- _| | . |   | |  |___|");
+  stampareCentrato("       |_|_|_|_|  _|___|___|_| |__,|___|_|___|_|_|_|       ");
+  stampareCentrato("               |_|                                         ");
+}
+
+void stampareMenuImpostazioni(){
+
+  spostareCursore(OPZIONE_START_RIGA - 2, 0);
+  stampareCentrato("Scegliere la Difficolta");
+
+  spostareCursore(OPZIONE_START_RIGA, OPZIONE_COLONNA);
+  printf("[1] Facile");
+  
+  spostareCursore(OPZIONE_START_RIGA + 1, OPZIONE_COLONNA);
+  printf("[2] Intermedia");
+  
+  spostareCursore(OPZIONE_START_RIGA + 2, OPZIONE_COLONNA);
+  printf("[3] Difficile");
+  
+  spostareCursore(PROMPT_RIGA + 4, PROMPT_COLONNA);
+  printf("Difficolta' (1 - 3)");
+
+  spostareCursore(OPZIONE_START_RIGA + 6, 0);
+  stampareCentrato("Scegliere la Dimensione");
+
+  spostareCursore(OPZIONE_START_RIGA + 8, OPZIONE_COLONNA);
+  printf("[1] Piccola");
+  
+  spostareCursore(OPZIONE_START_RIGA + 9, OPZIONE_COLONNA);
+  printf("[2] Mendia");
+  
+  spostareCursore(OPZIONE_START_RIGA + 10, OPZIONE_COLONNA);
+  printf("[3] Grande");
+  
+  spostareCursore(OPZIONE_START_RIGA + 12, PROMPT_COLONNA);
+  printf("Dimensione (1 - 3)");
+  
+}
+
+void collezionaDifficolta(int *input) {
+
+
+  int inMenuDifficolta = 1;
+  while(inMenuDifficolta) {
+    resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+    
+    while(scanf("%d", input) != 1) {
+      pulireBuffer();
+      resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+      mostrareMessaggioErrore("Digita un Numero", ERR_MSG_RIGA, ERR_MSG_COLONNA);
+      resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+    }
+   
+    pulireBuffer();
+    
+    if(*input < OPZIONE_MIN || *input > OPZIONE_MAX) {
+      mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA, ERR_MSG_COLONNA - 5);
+      resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+    }
+
+    else if (*input == DIFFICOLTA_FACILE) {
+      loopPartita();
+      inMenuDifficolta = 0;
+    }
+    else if (*input == DIFFICOLTA_INTERMEDIA) {
+      loopPartita();
+      inMenuDifficolta = 0;
+    }
+    else if (*input == DIFFICOLTA_DIFFICILE) {
+      loopPartita();
+      inMenuDifficolta = 0;
+    }
+  }
+}

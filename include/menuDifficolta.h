@@ -4,7 +4,8 @@
 #include "interfaccia_util.h"
 
 void loopMenuDifficolta();
-void collezionaInputMenuDifficolta(int *input);
+int collezionaDifficolta(int *inputDifficolta);
+int collezionaDimensione(int *inputDimensione);
 void stampareMenuDifficolta();
 void stampareTitoloImpostazioni();
 void stampareMenuImpostazioni();

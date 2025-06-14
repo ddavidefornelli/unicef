@@ -14,17 +14,14 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "homepage.h"
 #include "interfaccia_util.h"
 #include "menuCaricaPartita.h"
 #include "menuDifficolta.h"
 #include "menuStatistiche.h"
 
-// Dimensioni terminale
 #define LARGHEZZA_TERMINALE 80
 
-// Posizioni del menu
 #define TITOLO_RIGA 10
 #define TITOLO_COLONNA 36  
 #define OPZIONE_START_RIGA 12
@@ -36,13 +33,10 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
 #define ERR_MSG_RIGA 22
 #define ERR_MSG_COLONNA 31
 
-// Opzioni del menu
-typedef enum {
-  NUOVA_PARTITA = 1,
-  PARTITE_SALVATE,
-  STATISTICHE,
-  ESCI,
-} MenuPrincipaleOpzioni;
+#define NUOVA_PARTITA 1
+#define PARTITE_SALVATE 2
+#define STATISTICHE 3
+#define ESCI 4
 
 #define OPZIONE_MIN 1
 #define OPZIONE_MAX 4
@@ -69,7 +63,6 @@ void stampareTitoloHomepage(){
 }
 
 void stampareMenuHomepage(){
-
   spostareCursore(TITOLO_RIGA, TITOLO_COLONNA);
   printf("- MENU -");
   spostareCursore(OPZIONE_START_RIGA, OPZIONE_COLONNA);
@@ -82,8 +75,8 @@ void stampareMenuHomepage(){
   printf("[4] Esci");
   spostareCursore(PROMPT_RIGA, PROMPT_COLONNA);
   printf("Inserisci una scelta (1 - 4)");
-
 }
+
 void stampareMenuPrincipale() 
 {
   pulireSchermo();
@@ -127,7 +120,7 @@ void collezionareInput(int *input) {
     }
 
     pulireBuffer();
-    
+
     if(*input < OPZIONE_MIN || *input > OPZIONE_MAX) {
       mostrareMessaggioErrore("Digita un Numero compreso tra 1 - 4 ", ERR_MSG_RIGA, ERR_MSG_COLONNA - 7);
       resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
