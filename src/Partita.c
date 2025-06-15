@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <time.h>
 #include <math.h>
 #include "interfaccia_util.h"
 #include "tipiDiDato.h"
 #include "partita.h"
+#include "homepage.h"
 
 #define INPUT_RIGA_RIGA  13
 #define INPUT_RIGA_COLONNA 16
 #define INPUT_RIGA_VALORE 19
 #define INPUT_RIGA 28
-#define INPUT_COLONNA 58
+#define INPUT_COLONNA 67
 #define FALSO 0
 #define VERO 1
 #define ERR_MSG_RIGA 22
@@ -31,7 +31,13 @@ void loopPartita(int inputDifficolta, int inputDimensione) {
   generareSudoku(&partita, inputDimensione, inputDifficolta);
 
   while (!grigliaPiena) {
-    stampareTitoloPartita();
+    if (inputDimensione != 16) {
+      stampareTitoloPartita();
+    } else {
+      pulireSchermo();
+      printf("\n");
+    }
+    
     stampareGrigliaPartita(&partita);
     stampareAiutiInput();
 
@@ -66,6 +72,7 @@ void stampareTitoloPartita() {
   stampareCentrato("|___|  | . | .'|  _|  _| |  _| .'|  |___|");
   stampareCentrato("       |  _|__,|_| |_| |_|_| |__,|       ");
   stampareCentrato("       |_|                               ");
+  printf("\n");
 }
 
 void stampareVittoria() {
@@ -115,6 +122,8 @@ void stampareAiutiInput() {
   printf("-Colonna-");
   spostareCursore(INPUT_RIGA_VALORE - 1, INPUT_COLONNA);
   printf("-Valore-");
+  spostareCursore(25, 17);
+  printf("\033[34mDIGITA 32 e premi INVIO per tornare alla HOMEPAGE\033[0m");
 }
 
 void convertiDifficoltaEDimensione(int *inputDifficolta, int *inputDimensione) {
@@ -137,6 +146,7 @@ void convertiDifficoltaEDimensione(int *inputDifficolta, int *inputDimensione) {
 
 void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
   int celleRimuovere;
+  srand(time(NULL));
 
   if (difficolta == 4) { // Facile (dimensione 4)
     celleRimuovere = 6;
@@ -146,7 +156,6 @@ void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
     celleRimuovere = 150;
   }
 
-  srand(time(NULL));
 
   int rimosse = 0;
   while (rimosse < celleRimuovere) {
@@ -249,95 +258,117 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
 }
 
 void generareSudoku(Partita *partita, int dimensione, int difficolta) {
-  // La griglia dovrebbe essere già inizializzata
   riempireGriglia(&partita->grigliaPartita, dimensione);
   rimuovereNumeri(&partita->grigliaPartita, dimensione, difficolta);
 }
 
 void stampareGrigliaPartita(Partita *partita) {
-  int i;
-  int j;
-  int numeroSottoquadrato;
-  Griglia griglia = leggereGrigliaPartita(*partita);
-  int dimensione = leggereDimGriglia(griglia);
-
-  // Determina la dimensione del sottoquadrato
-  if(dimensione == 4) {
-    numeroSottoquadrato = 2;
-  } else if(dimensione == 9) {
-    numeroSottoquadrato = 3;
-  } else if(dimensione == 16) {
-    numeroSottoquadrato = 4;
-  }
-
-  // Stampa la linea superiore
-  j = 0;
-  while (j < dimensione) {
-    printf("%4d", j + 1);
-    j = j + 1;
-  }
-
-  j = 0;
-  printf("\n  +-");
-  while (j < dimensione) {
-    printf("--");
-    if ((j + 1) % numeroSottoquadrato == 0 && j != dimensione - 1) {
-      printf("---");
+    int i;
+    int j;
+    int numeroSottoquadrato;
+    Griglia griglia = leggereGrigliaPartita(*partita);
+    int dimensione = leggereDimGriglia(griglia);
+    
+    // Determina la dimensione del sottoquadrato
+    if(dimensione == 4) {
+        numeroSottoquadrato = 2;
+    } else if(dimensione == 9) {
+        numeroSottoquadrato = 3;
+    } else if(dimensione == 16) {
+        numeroSottoquadrato = 4;
     }
-    j = j + 1;
-  }
-  printf("-+\n");
 
-  // Stampa le righe con i numeri
-  i = 0;
-  while (i < dimensione) {
-
-    printf("%d | ", i + 1);
-    j = 0;
-    while (j < dimensione) {
-      int valore = leggereValGriglia(griglia, i, j);
-      if (valore == 0) {
-        printf("  ");
-      } else {
-        printf("%2d", valore);
-      }
-
-      if ((j + 1) % numeroSottoquadrato == 0 && j != dimensione - 1) {
-        printf(" | ");
-      } else {
-        printf(" ");
-      }
-      j = j + 1;
-    }
-    printf("|\n");
-
-    // Stampa la linea di separazione tra i sottoquadrati
-    if ((i + 1) % numeroSottoquadrato == 0 && i != dimensione - 1) {
-      printf("  +-");
-      j = 0;
-      while (j < dimensione) {
-        printf("--");
-        if ((j + 1) % numeroSottoquadrato == 0 && j != dimensione - 1) {
-          printf("-+-");
+    printf("    ");
+    for (j = 0; j < dimensione; j++) {
+        if (dimensione == 16 && j + 1 < 10) {
+            printf("  %d", j + 1);  // Numeri a una cifra nella 16x16
+        } else {
+            printf("%3d", j + 1);
         }
-        j = j + 1;
-      }
-      printf("-+\n");
+        if ((j + 1) % numeroSottoquadrato == 0 && j != dimensione - 1) {
+            printf("  ");
+        }
     }
-    i = i + 1;
-  }
-
-  // Stampa la linea inferiore
-  printf("  +-");
-  j = 0;
-  while (j < dimensione) {
-    printf("--");
-    if ((j + 1) % numeroSottoquadrato == 0 && j != dimensione - 1) {
-      printf("-+-");
+    
+    printf("\n");
+    
+    // Stampa la linea superiore
+    printf("   +");
+    for (j = 0; j < dimensione; j++) {
+        if (dimensione == 16) {
+            printf("---");
+        } else {
+            printf("---");
+        }
+        if ((j + 1) % numeroSottoquadrato == 0 && j != dimensione - 1) {
+            printf("-+");
+        }
     }
-    j = j + 1;
-  }
-  printf("-+\n");
+    printf("-+\n");
+    
+    // Stampa le righe con i numeri
+    for (i = 0; i < dimensione; i++) {
+        // Stampa l'indice della riga
+        if (dimensione == 16) {
+            printf("%2d |", i + 1);
+        } else {
+            printf("%2d |", i + 1);
+        }
+        
+        // Stampa i valori della riga
+        for (j = 0; j < dimensione; j++) {
+            int valore = leggereValGriglia(griglia, i, j);
+            if (valore == 0) {
+                if (dimensione == 16) {
+                    printf("  .");
+                } else {
+                    printf("  .");
+                }
+            } else {
+                if (dimensione == 16) {
+                    printf("%3d", valore);
+                } else {
+                    printf("%3d", valore);
+                }
+            }
+            
+            // Stampa il separatore verticale tra sottoquadrati
+            if ((j + 1) % numeroSottoquadrato == 0 && j != dimensione - 1) {
+                printf(" |");
+            }
+        }
+        printf(" |\n");
+        
+        // Stampa la linea di separazione orizzontale tra sottoquadrati
+        if ((i + 1) % numeroSottoquadrato == 0 && i != dimensione - 1) {
+            printf("   +");
+            for (j = 0; j < dimensione; j++) {
+                if (dimensione == 16) {
+                    printf("---");
+                } else {
+                    printf("---");
+                }
+                if ((j + 1) % numeroSottoquadrato == 0 && j != dimensione - 1) {
+                    printf("-+");
+                }
+            }
+            printf("-+\n");
+        }
+    }
+    
+    // Stampa la linea inferiore
+    printf("   +");
+    for (j = 0; j < dimensione; j++) {
+        if (dimensione == 16) {
+            printf("---");
+        } else {
+            printf("---");
+        }
+        if ((j + 1) % numeroSottoquadrato == 0 && j != dimensione - 1) {
+            printf("-+");
+        }
+    }
+    printf("-+\n");
 }
 
 int collezionaRiga(Griglia *griglia, int *inputRiga) {
@@ -355,9 +386,11 @@ int collezionaRiga(Griglia *griglia, int *inputRiga) {
 
     pulireBuffer();
 
-    if(*inputRiga < 1 || *inputRiga > leggereDimGriglia(*griglia)) {
+    if((*inputRiga < 1 || *inputRiga > leggereDimGriglia(*griglia)) && (*inputRiga != 32)) {
       mostrareMessaggioErrore("Numero fuori intervallo", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA);
       resetZonaInput(INPUT_RIGA_RIGA, INPUT_COLONNA);
+    } else if (*inputRiga == 32) {
+      loopMenuPrincipale();
     } else { 
       valida = 1;
     }
@@ -380,9 +413,11 @@ int collezionaColonna(Griglia *griglia, int *inputColonna) {
 
     pulireBuffer();
 
-    if(*inputColonna < 1 || *inputColonna > leggereDimGriglia(*griglia)) {
+    if((*inputColonna < 1 || *inputColonna > leggereDimGriglia(*griglia)) && (*inputColonna != 32)) {
       mostrareMessaggioErrore("Numero fuori intervallo", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA);
       resetZonaInput(INPUT_RIGA_COLONNA, INPUT_COLONNA);
+    } else if (*inputColonna == 32) {
+      loopMenuPrincipale();
     } else { 
       valida = 1;
     }
@@ -405,9 +440,11 @@ int collezionaValore(Griglia *griglia, int *inputValore) {
 
     pulireBuffer();
 
-    if(*inputValore < 1 || *inputValore > leggereDimGriglia(*griglia)) {
+    if((*inputValore < 1 || *inputValore > leggereDimGriglia(*griglia)) && (*inputValore != 32)) {
       mostrareMessaggioErrore("Numero fuori intervallo", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA );
       resetZonaInput(INPUT_RIGA_VALORE, INPUT_COLONNA);
+    } else if (*inputValore == 32) {
+      loopMenuPrincipale();
     } else { 
       valida = 1;
     }
@@ -421,15 +458,15 @@ int controllareGrigliaPiena(Griglia griglia) {
   int esito = VERO;
 
   riga = 0;
-  while (riga < dimensione && esito) { // CORREZIONE: esce al primo 0 trovato
+  while (riga < dimensione && esito) { 
     colonna = 0;
-    while (colonna < dimensione && esito) { // CORREZIONE: esce al primo 0 trovato
+    while (colonna < dimensione && esito) { 
       if (leggereValGriglia(griglia, riga, colonna) == 0) {
-        esito = FALSO; // Trovata una cella vuota
+        esito = FALSO; 
       }
-      colonna = colonna + 1; // CORREZIONE: incrementa colonna
+      colonna = colonna + 1;
     }
-    riga = riga + 1; // CORREZIONE: incrementa riga
+    riga = riga + 1; 
   }
   return esito;
 }
