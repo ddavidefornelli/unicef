@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <string.h>
 #include "interfaccia_util.h"
 #include "tipiDiDato.h"
 #include "partita.h"
@@ -17,7 +18,7 @@
 #define ERR_MSG_RIGA 22
 #define ERR_MSG_COLONNA 27
 
-void loopPartita(int inputDifficolta, int inputDimensione) {
+void loopPartita(const char *nomePartita, int inputDifficolta, int inputDimensione) {
   Partita partita;
   int inputValore;
   int inputRiga;
@@ -27,6 +28,7 @@ void loopPartita(int inputDifficolta, int inputDimensione) {
   int errore = FALSO;
 
   inizializzareGrigliaPartita(&partita, inputDifficolta, inputDimensione);
+  scrivereNomePartita(&partita, (char *)nomePartita);
   convertiDifficoltaEDimensione(&inputDifficolta, &inputDimensione);
   generareSudoku(&partita, inputDimensione, inputDifficolta);
 
@@ -49,6 +51,14 @@ void loopPartita(int inputDifficolta, int inputDimensione) {
     Griglia griglia = leggereGrigliaPartita(partita); 
 
     collezionaRiga(&griglia, &inputRiga);
+    if (inputRiga == 31) {
+      char percorso[256];
+      snprintf(percorso, sizeof(percorso), "database/partita_%s.txt", partita.nomePartita);
+      salvaPartita(&partita, percorso);
+      int tmp;
+      tornareHomepage(&tmp, INPUT_RIGA + 5, 30);
+      continue;
+    }
     collezionaColonna(&griglia, &inputColonna);
     collezionaValore(&griglia, &inputValore);
 
@@ -123,7 +133,7 @@ void stampareAiutiInput() {
   spostareCursore(INPUT_RIGA_VALORE - 1, INPUT_COLONNA);
   printf("-Valore-");
   spostareCursore(25, 17);
-  printf("\033[34mDIGITA 32 e premi INVIO per tornare alla HOMEPAGE\033[0m");
+  printf("\033[34mDIGITA 32 per HOMEPAGE   |   DIGITA 31 per SALVARE\033[0m");
 }
 
 void convertiDifficoltaEDimensione(int *inputDifficolta, int *inputDimensione) {
@@ -386,7 +396,7 @@ int collezionaRiga(Griglia *griglia, int *inputRiga) {
 
     pulireBuffer();
 
-    if((*inputRiga < 1 || *inputRiga > leggereDimGriglia(*griglia)) && (*inputRiga != 32)) {
+    if((*inputRiga < 1 || *inputRiga > leggereDimGriglia(*griglia)) && (*inputRiga != 32 && *inputRiga != 31)) {
       mostrareMessaggioErrore("Numero fuori intervallo", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA);
       resetZonaInput(INPUT_RIGA_RIGA, INPUT_COLONNA);
     } else if (*inputRiga == 32) {
@@ -469,4 +479,94 @@ int controllareGrigliaPiena(Griglia griglia) {
     riga = riga + 1; 
   }
   return esito;
+}
+
+/* Salva la partita in formato testuale semplice */
+int salvaPartita(Partita *partita, const char *percorso) {
+  FILE *file = fopen(percorso, "w");
+  if (!file) return 0;
+
+  int dimensione = leggereDimGriglia(partita->grigliaPartita);
+  int difficolta = leggereDimGrigliaImp(partita->impPartita); /* reuse dimension diff value */
+
+  fprintf(file, "%d %d\n", dimensione, difficolta);
+  /* salva valori griglia */
+  for (int i = 0; i < dimensione; i++) {
+    for (int j = 0; j < dimensione; j++) {
+      fprintf(file, "%d ", leggereValGriglia(partita->grigliaPartita, i, j));
+    }
+    fprintf(file, "\n");
+  }
+  fclose(file);
+  return 1;
+}
+
+/* Carica la partita */
+int caricaPartita(Partita *partita, const char *percorso) {
+  FILE *file = fopen(percorso, "r");
+  if (!file) return 0;
+  int dimensione, difficolta;
+  if (fscanf(file, "%d %d", &dimensione, &difficolta) != 2) { fclose(file); return 0; }
+
+  /* inizializza struttura */
+  inizializzareGrigliaPartita(partita, difficolta, dimensione); // dimensione convertita dentro
+
+  /* leggi griglia */
+  for (int i = 0; i < dimensione; i++) {
+    for (int j = 0; j < dimensione; j++) {
+      int val;
+      if (fscanf(file, "%d", &val) != 1) { fclose(file); return 0; }
+      scrivereValGrigliaPartita(partita, val, i, j);
+    }
+  }
+  fclose(file);
+  return 1;
+}
+
+void loopPartitaContinuata(Partita *partita) {
+  int dimensione = leggereDimGriglia(partita->grigliaPartita);
+  int inputValore, inputRiga, inputColonna;
+  int grigliaPiena = FALSO;
+  int valido = FALSO;
+  int errore = FALSO;
+
+  while (!grigliaPiena) {
+    if (dimensione != 16) {
+      stampareTitoloPartita();
+    } else {
+      pulireSchermo();
+      printf("\n");
+    }
+
+    stampareGrigliaPartita(partita);
+    stampareAiutiInput();
+
+    if (errore) {
+      mostrareMessaggioErrore("Inserisci i valori richiesti", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA);
+      errore = FALSO;
+    }
+
+    Griglia griglia = leggereGrigliaPartita(*partita);
+
+    collezionaRiga(&griglia, &inputRiga);
+    if (inputRiga == 31) {
+      char percorso[256];
+      snprintf(percorso, sizeof(percorso), "database/partita_%s.txt", partita->nomePartita);
+      salvaPartita(partita, percorso);
+      int tmp; tornareHomepage(&tmp, INPUT_RIGA + 5, 30);
+      continue;
+    }
+    collezionaColonna(&griglia, &inputColonna);
+    collezionaValore(&griglia, &inputValore);
+
+    valido = verificaValidita(&griglia, dimensione, inputRiga - 1, inputColonna - 1, inputValore);
+    if (valido) {
+      scrivereValGrigliaPartita(partita, inputValore, inputRiga - 1, inputColonna - 1);
+      grigliaPiena = controllareGrigliaPiena(leggereGrigliaPartita(*partita));
+    } else {
+      errore = VERO;
+    }
+  }
+
+  stampareVittoria();
 }

@@ -3,6 +3,8 @@
 #include "partita.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <string.h>
 
 #define  DIFFICOLTA_FACILE  1
 #define  DIFFICOLTA_INTERMEDIA  2 
@@ -19,6 +21,8 @@
 #define INPUT_COLONNA 35 
 #define ERR_MSG_RIGA 22
 #define ERR_MSG_COLONNA 32
+#define INPUT_RIGA_NOME 27
+#define NOME_MAX 49
 
 #define OPZIONE_MIN 1
 #define OPZIONE_MAX 3
@@ -27,6 +31,7 @@
 #define MEDIA 2
 #define GRANDE 3
 
+void collezionaNomeGioco(char *dest);
 
 void stampareMenuDifficolta() {
   pulireSchermo();
@@ -37,11 +42,12 @@ void stampareMenuDifficolta() {
 void loopMenuDifficolta() {
   int inputDifficolta;
   int inputDimensione;
+  char nomePartita[NOME_MAX + 1];
   stampareMenuDifficolta();
+  collezionaNomeGioco(nomePartita);
   collezionaDifficolta(&inputDifficolta);
   collezionaDimensione(&inputDimensione);
-  loopPartita(inputDifficolta, inputDimensione);
-
+  loopPartita(nomePartita, inputDifficolta, inputDimensione);
 }
 
 void stampareTitoloImpostazioni(){
@@ -126,5 +132,18 @@ int collezionaDimensione(int *inputDimensione) {
     } else {
       return *inputDimensione;
     }
+  }
+}
+
+void collezionaNomeGioco(char *dest) {
+  spostareCursore(INPUT_RIGA_NOME - 1, 0);
+  stampareCentrato("-Inserisci il nome della partita (max 49 caratteri)-");
+  resetZonaInput(INPUT_RIGA_NOME, INPUT_COLONNA);
+  fgets(dest, NOME_MAX, stdin);
+  size_t len = strlen(dest);
+  if (len > 0 && dest[len - 1] == '\n') dest[len - 1] = '\0';
+  /* se stringa vuota assegna nome generico con timestamp */
+  if (strlen(dest) == 0) {
+    snprintf(dest, NOME_MAX, "partita_%ld", time(NULL));
   }
 }

@@ -4,7 +4,10 @@
 
 #include "tipiDiDato.h"
 
-void loopPartita(int inputDifficolta, int inputDimensione);
+void loopPartita(const char *nomePartita, int inputDifficolta, int inputDimensione);
+void loopPartitaContinuata(Partita *partita);
+int salvaPartita(Partita *partita, const char *percorso);
+int caricaPartita(Partita *partita, const char *percorso);
 void stampareTitoloPartita();
 void convertiDifficoltaEDimensione(int *inputDifficolta, int *inputDimensione);
 void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta);
