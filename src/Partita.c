@@ -18,6 +18,9 @@
 #define RIGA_ERRORE 22
 #define COLONNA_ERRORE 27
 
+#define BLU "\033[34m"
+#define RESET "\033[0m"
+
 void loopPartita(const char *nomePartita, int difficolta, int dimensione) {
     Partita partita;
     int valore, riga, colonna;
@@ -78,6 +81,7 @@ void mostraSchermo(int dimensione) {
 }
 
 void stampareTitoloPartita() {
+    printf(BLU);
     pulireSchermo();
     printf("\n");
     stampareCentrato("                    _   _ _              ");
@@ -86,6 +90,7 @@ void stampareTitoloPartita() {
     stampareCentrato("       |  _|__,|_| |_| |_|_| |__,|       ");
     stampareCentrato("       |_|                               ");
     printf("\n");
+    printf(RESET);
 }
 
 void stampareVittoria() {

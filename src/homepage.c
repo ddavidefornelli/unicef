@@ -41,6 +41,9 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
 #define OPZIONE_MIN 1
 #define OPZIONE_MAX 4
 
+#define VERDE "\033[32m"
+#define RESET "\033[0m"
+
 /************************************************************ 
  *  FUNZIONE: stampareMenuPrincipale()                      *
  *  DESCRIZIONE: Mostra il menù iniziale del gioco          *
@@ -54,12 +57,14 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
  ************************************************************/
 
 void stampareTitoloHomepage(){
+  printf(VERDE);
   printf("\n");
   stampareCentrato("        _____ _____ ____  _____ _____ _____         ___ ___        ");
   stampareCentrato(" ___   |   __|  |  |    \\|     |  |  |  |  |       |_  |_  |   ___ ");
   stampareCentrato("|___|  |__   |  |  |  |  |  |  |    -|  |  |   _   |_  |  _|  |___|");
   stampareCentrato("       |_____|_____|____/|_____|__|__|_____|  |_|  |___|___|       ");
   stampareCentrato("                                                                   ");
+  printf(RESET);
 }
 
 void stampareMenuHomepage(){

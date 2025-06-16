@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define RIGA 11
+#define COLONNA 40
 #define TITOLO_RIGA 9
 #define TITOLO_COLONNA 0
 #define OPZIONE_START_RIGA 12
@@ -16,6 +18,8 @@
 #define INPUT_COLONNA 35
 #define ERR_MSG_RIGA 22
 #define ERR_MSG_COLONNA 31
+#define ARANCIONE "\033[38;5;208m"
+#define RESET "\033[0m"
 
 int raccogliPartiteSalvate(char *nomiPartite[], int massimePartite) {
   DIR *cartella = opendir("database");
@@ -65,6 +69,40 @@ const char *trovaFile(char *nomiPartite[], int numero, const char *input) {
   return NULL;
 }
 
+void stampareTitoloCaricaPartita() {
+
+printf(ARANCIONE);
+stampareCentrato("     _____ _____ _____ _____ _____ _____     ");
+stampareCentrato("    |     |  _  | __  |     |     |  _  |    ");
+stampareCentrato("    |   --|     |    -|-   -|   --|     |    ");
+stampareCentrato("    |_____|__|__|__|__|_____|_____|__|__|    ");
+stampareCentrato("   _____ _____ _____ _____ _____ _____ _____ ");
+stampareCentrato("  |  _  |  _  | __  |_   _|     |_   _|  _  |");
+stampareCentrato("  |   __|     |    -| | | |-   -| | | |     |");
+stampareCentrato("  |__|  |__|__|__|__| |_| |_____| |_| |__|__|");
+stampareCentrato("                                             ");
+printf("\n");
+printf(RESET);
+}
+
+void stampareZonaInput() {
+  int contatore;
+
+  printf("\n\n\n\n");
+  spostareCursore(RIGA, COLONNA);
+  printf("+--------------------------------------+");
+  contatore = 0;
+  while(contatore < 4) {
+    spostareCursore(RIGA + 1 + contatore, COLONNA);
+    printf("|                                      |");
+    contatore = contatore + 1;
+  }
+  spostareCursore(RIGA + 2, COLONNA + 2);
+  printf("Digita numero o nome (0 per uscire): ");
+  spostareCursore(RIGA + 5, COLONNA);
+  printf("+--------------------------------------+");
+}
+
 void stampareMenuCaricaPartita(){
   char *nomiPartite[100];
   int numeroPartite;
@@ -73,28 +111,30 @@ void stampareMenuCaricaPartita(){
   int input;
 
   pulireSchermo();
-  stampareCentrato("CARICA PARTITA");
+  stampareTitoloCaricaPartita();
 
   numeroPartite = raccogliPartiteSalvate(nomiPartite, 100);
 
   if (numeroPartite == 0) {
     printf("Nessuna partita salvata.\n");
-    tornareHomepage(&input, TITOLO_RIGA + 2, TITOLO_COLONNA);
+    tornareHomepage(&input, TITOLO_RIGA + 2, TITOLO_COLONNA -10);
   }
 
   i = 0;
   while (i < numeroPartite) {
-    printf("[%d] %s\n", i + 1, nomiPartite[i]);
+    printf("  [%d] %s\n", i + 1, nomiPartite[i]);
     i = i + 1;
   }
 
-  printf("Digita numero o nome (0 per uscire): ");
+  stampareZonaInput();
 
   int continua = 1;
   while (continua) {
+    spostareCursore(RIGA + 3, COLONNA + 14);
+    printf(">> ");
+    spostareCursore(RIGA + 3, COLONNA + 17);
     if (fgets(nomeScelto, 128, stdin) != NULL) {
       nomeScelto[strlen(nomeScelto) - 1] = '\0';
-
       if (strcmp(nomeScelto, "0") == 0) {
         loopMenuPrincipale();
         continua = 0;
@@ -133,3 +173,5 @@ void stampareMenuCaricaPartita(){
 
   liberaPartite(nomiPartite, numeroPartite);
 }
+
+

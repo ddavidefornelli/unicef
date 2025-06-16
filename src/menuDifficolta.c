@@ -27,6 +27,8 @@
 #define MEDIA 2
 #define GRANDE 3
 
+#define CIANO "\033[36m"
+#define RESET "\033[0m"
 
 void stampareMenuDifficolta() {
   pulireSchermo();
@@ -46,12 +48,14 @@ void loopMenuDifficolta() {
 }
 
 void stampareTitoloImpostazioni(){
+  printf(CIANO);
   printf("\n");
   stampareCentrato("        _                   _           _         _        ");
   stampareCentrato(" ___   |_|_____ ___ ___ ___| |_ ___ ___|_|___ ___|_|   ___ ");
   stampareCentrato("|___|  | |     | . | . |_ -|  _| .'|- _| | . |   | |  |___|");
   stampareCentrato("       |_|_|_|_|  _|___|___|_| |__,|___|_|___|_|_|_|       ");
   stampareCentrato("               |_|                                         ");
+  printf(RESET);
 }
 
 void stampareMenuImpostazioni(){
