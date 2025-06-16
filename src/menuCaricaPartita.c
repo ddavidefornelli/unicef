@@ -1,4 +1,5 @@
 #include "interfaccia_util.h"
+#include "homepage.h"
 #include "partita.h"
 #include <dirent.h>
 #include <string.h>
@@ -69,6 +70,7 @@ void stampareMenuCaricaPartita(){
   int numeroPartite;
   char nomeScelto[128];
   int i;
+  int input;
 
   pulireSchermo();
   stampareCentrato("CARICA PARTITA");
@@ -77,8 +79,7 @@ void stampareMenuCaricaPartita(){
 
   if (numeroPartite == 0) {
     printf("Nessuna partita salvata.\n");
-    getchar();
-    return;
+    tornareHomepage(&input, TITOLO_RIGA + 2, TITOLO_COLONNA);
   }
 
   i = 0;
@@ -95,6 +96,7 @@ void stampareMenuCaricaPartita(){
       nomeScelto[strlen(nomeScelto) - 1] = '\0';
 
       if (strcmp(nomeScelto, "0") == 0) {
+        loopMenuPrincipale();
         continua = 0;
       } else {
         const char *file = trovaFile(nomiPartite, numeroPartite, nomeScelto);
