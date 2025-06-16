@@ -16,187 +16,117 @@
 #define ERR_MSG_RIGA 22
 #define ERR_MSG_COLONNA 31
 
-/*
- * Funzione di utilità per contare e memorizzare i nomi delle partite salvate
- * all'interno della cartella "database". Vengono considerati solamente i file
- * che iniziano con il prefisso "partita_".
- * Ritorna il numero di file trovati mentre riempie l'array nomiPartite con
- * i nomi dei file (allocati dinamicamente tramite strdup).
- */
-static int raccogliPartiteSalvate(char *nomiPartite[], int maxPartite) {
-  DIR *dir = opendir("database");
-  struct dirent *entry;
+int raccogliPartiteSalvate(char *nomiPartite[], int massimePartite) {
+  DIR *cartella = opendir("database");
+  struct dirent *voce;
   int conteggio = 0;
 
-  if (dir == NULL) {
-    return 0; /* cartella mancante o non accessibile */
+  if (cartella == NULL) {
+    return 0;
   }
-
-  while ((entry = readdir(dir)) != NULL && conteggio < maxPartite) {
-    /* Considera solo i file che iniziano con "partita_" */
-    if (strncmp(entry->d_name, "partita_", 8) == 0) {
-      /* Alloca dinamicamente una copia del nome */
-      size_t len = strlen(entry->d_name) + 1;
-      char *copia = (char *)malloc(len);
-      if (copia == NULL) {
-        continue; /* out-of-memory -> salta */
-      }
-      memcpy(copia, entry->d_name, len);
-      nomiPartite[conteggio++] = copia;
+  
+  while ((voce = readdir(cartella)) != NULL && conteggio < massimePartite) {
+    if (strncmp(voce->d_name, "partita_", 8) == 0) {
+      nomiPartite[conteggio] = malloc(strlen(voce->d_name) + 1);
+      strcpy(nomiPartite[conteggio], voce->d_name);
+      conteggio = conteggio + 1;
     }
   }
-  closedir(dir);
+  closedir(cartella);
   return conteggio;
 }
 
-static void liberaPartite(char *nomiPartite[], int numero) {
-  for (int i = 0; i < numero; i++) {
-    free(nomiPartite[i]);
+void liberaPartite(char *nomiPartite[], int numero) {
+  int i = 0;
+  while (i < numero) {
+    if (nomiPartite[i] != NULL) {
+      free(nomiPartite[i]);
+    }
+    i = i + 1;
   }
 }
 
-/* Rimuove il carattere di newline finale da una stringa ottenuta con fgets */
-static void rimuoviNewline(char *str) {
-  size_t len = strlen(str);
-  if (len > 0 && str[len - 1] == '\n') {
-    str[len - 1] = '\0';
+const char *trovaFile(char *nomiPartite[], int numero, const char *input) {
+  long indice = strtol(input, NULL, 10);
+  int i = 0;
+  
+  if (indice >= 1 && indice <= numero) {
+    return nomiPartite[indice - 1];
   }
-}
-
-/* Ritorna il nome del file corrispondente all'input utente.
- * L'utente può digitare:
- *   - l'indice numerico mostrato nella lista (1, 2, ...)
- *   - il nome completo del file (es. "partita_testo.txt")
- *   - il nome senza prefisso (es. "testo.txt" o "testo")
- *   - il nome senza prefisso e senza estensione (es. "testo")
- * Restituisce puntatore al nome del file presente in nomiPartite, o NULL se
- * nessuna corrispondenza. Non duplicare nuovamente la stringa. */
-static const char *matchFile(char *nomiPartite[], int numero, const char *input) {
-  /* Se l'input è un numero valido */
-  char *endptr;
-  long idx = strtol(input, &endptr, 10);
-  if (*endptr == '\0' && idx >= 1 && idx <= numero) {
-    return nomiPartite[idx - 1];
-  }
-
-  /* Normalizza l'input rimuovendo il prefisso eventuale */
-  const char *nome = input;
-  if (strncmp(nome, "partita_", 8) == 0) {
-    nome += 8;
-  }
-
-  /* Rimuove eventuale ".txt" finale per confronto */
-  char buffer[128];
-  strncpy(buffer, nome, sizeof(buffer) - 1);
-  buffer[sizeof(buffer) - 1] = '\0';
-  size_t len = strlen(buffer);
-  if (len > 4 && strcmp(buffer + len - 4, ".txt") == 0) {
-    buffer[len - 4] = '\0';
-  }
-
-  /* Confronta con ogni file salvato */
-  for (int i = 0; i < numero; ++i) {
-    const char *fileSalvato = nomiPartite[i];
-
-    /* Verifica uguaglianza completa */
-    if (strcmp(input, fileSalvato) == 0) {
-      return fileSalvato;
+  
+  while (i < numero) {
+    if (strstr(nomiPartite[i], input) != NULL) {
+      return nomiPartite[i];
     }
-
-    /* Rimuove prefisso ed estensione dal nome file per confronto */
-    const char *base = fileSalvato;
-    if (strncmp(base, "partita_", 8) == 0) {
-      base += 8;
-    }
-    char temp[128];
-    strncpy(temp, base, sizeof(temp) - 1);
-    temp[sizeof(temp) - 1] = '\0';
-    size_t l = strlen(temp);
-    if (l > 4 && strcmp(temp + l - 4, ".txt") == 0) {
-      temp[l - 4] = '\0';
-    }
-
-    if (strcmp(buffer, temp) == 0) {
-      return fileSalvato;
-    }
+    i = i + 1;
   }
+  
   return NULL;
 }
 
 void stampareMenuCaricaPartita(){
-  char *nomiPartite[100]; /* limite massimo di partite elencabili */
+  char *nomiPartite[100];
   int numeroPartite;
   char nomeScelto[128];
-  int inputHomepage;
+  int i;
 
-  /* --- OUTPUT GRAFICO DEL TITOLO --- */
   pulireSchermo();
-  stampareCentrato("                    _   _ _                  _         _              ");
-  stampareCentrato(" ___    ___ ___ ___| |_|_| |_ ___    ___ ___| |_ _ ___| |_ ___    ___ ");
-  stampareCentrato("|___|  | . | .'|  _|  _| |  _| -_|  |_ -| .'| | | | .'|  _| -_|  |___|");
-  stampareCentrato("       |  _|__,|_| |_| |_|_| |___|  |___|__,|_|\\_/|__,|_| |___|       ");
-  stampareCentrato("       |_|                                                            ");
+  stampareCentrato("CARICA PARTITA");
 
-  /* --- RACCOLTA PARTITE SALVATE --- */
   numeroPartite = raccogliPartiteSalvate(nomiPartite, 100);
 
   if (numeroPartite == 0) {
-    printf("\n\n");
-    stampareCentrato("Nessuna partita salvata trovata.");
-    tornareHomepage(&inputHomepage, INPUT_RIGA, INPUT_COLONNA);
+    printf("Nessuna partita salvata.\n");
+    getchar();
     return;
   }
 
-  /* --- STAMPA ELENCO PARTITE --- */
-  for (int i = 0; i < numeroPartite; i++) {
-    spostareCursore(OPZIONE_START_RIGA + i, OPZIONE_COLONNA);
-    printf("[%d] %s", i + 1, nomiPartite[i]);
+  i = 0;
+  while (i < numeroPartite) {
+    printf("[%d] %s\n", i + 1, nomiPartite[i]);
+    i = i + 1;
   }
 
-  /* --- PROMPT DI INPUT PER IL NOME --- */
-  spostareCursore(PROMPT_RIGA, PROMPT_COLONNA);
-  printf("Digita il NUMERO o NOME della partita da caricare");
+  printf("Digita numero o nome (0 per uscire): ");
 
-  int inMenuCarica = 1;
-  while (inMenuCarica) {
-    resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+  int continua = 1;
+  while (continua) {
+    if (fgets(nomeScelto, 128, stdin) != NULL) {
+      nomeScelto[strlen(nomeScelto) - 1] = '\0';
 
-    /* Legge l'intera linea dall'utente */
-    if (fgets(nomeScelto, sizeof(nomeScelto), stdin) == NULL) {
-      continue; /* errore di lettura, riprova */
+      if (strcmp(nomeScelto, "0") == 0) {
+        continua = 0;
+      } else {
+        const char *file = trovaFile(nomiPartite, numeroPartite, nomeScelto);
+        if (file != NULL) {
+          char percorso[256];
+          Partita partita;
+          sprintf(percorso, "database/%s", file);
+          
+          if (caricaPartita(&partita, percorso)) {
+            const char *underscore = strrchr(file, '_');
+            if (underscore) {
+              char nome[128];
+              strcpy(nome, underscore + 1);
+              char *punto = strstr(nome, ".txt");
+              if (punto) {
+                *punto = '\0';
+              }
+              scrivereNomePartita(&partita, nome);
+            }
+            loopPartitaContinuata(&partita);
+            continua = 0;
+          } else {
+            printf("Errore caricamento\n");
+          }
+        } else {
+          printf("Partita non trovata\n");
+        }
+        if (continua) {
+          printf("Riprova: ");
+        }
+      }
     }
-    rimuoviNewline(nomeScelto);
-
-    /* Consente all'utente di tornare indietro digitando 0 */
-    if (strcmp(nomeScelto, "0") == 0) {
-      tornareHomepage(&inputHomepage, INPUT_RIGA + 2, INPUT_COLONNA);
-      break;
-    }
-
-    const char *fileMatch = matchFile(nomiPartite, numeroPartite, nomeScelto);
-    if (fileMatch == NULL) {
-      mostrareMessaggioErrore("Partita non trovata", ERR_MSG_RIGA, ERR_MSG_COLONNA);
-      continue;
-    }
-
-    char percorso[256];
-    snprintf(percorso, sizeof(percorso), "database/%s", fileMatch);
-
-    /* Placeholder: caricamento effettivo */
-    Partita partita;
-    if (!caricaPartita(&partita, percorso)) {
-      mostrareMessaggioErrore("Errore nel caricamento", ERR_MSG_RIGA, ERR_MSG_COLONNA);
-      continue;
-    }
-
-    /* Estrai nome dal file path per memorizzarlo */
-    const char *lastSlash = strrchr(fileMatch, '_');
-    if (lastSlash) {
-      scrivereNomePartita(&partita, (char *)(lastSlash + 1));
-    }
-
-    loopPartitaContinuata(&partita);
-    inMenuCarica = 0;
   }
 
   liberaPartite(nomiPartite, numeroPartite);
