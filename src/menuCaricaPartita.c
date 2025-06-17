@@ -170,7 +170,6 @@ void stampareMenuCaricaPartita(){
       }
     }
   }
-
   liberaPartite(nomiPartite, numeroPartite);
 }
 

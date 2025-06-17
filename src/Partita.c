@@ -302,7 +302,6 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
             }
         }
     }
-    
     return risultato;
 }
 
@@ -618,6 +617,5 @@ void loopPartitaContinuata(Partita *partita) {
             }
         }
     }
-
     stampareVittoria();
 }
