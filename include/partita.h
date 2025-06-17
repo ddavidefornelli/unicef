@@ -16,8 +16,8 @@
 #define COLONNA_ERRORE 27
 
 // Funzioni principali del gioco
-void loopPartita(const char *nomePartita, int difficolta, int dimensione);
-void loopPartitaContinuata(Partita *partita);
+void avviarePartita(const char *nomePartita, int difficolta, int dimensione);
+void avviarePartitaContinuata(Partita *partita);
 
 // Funzioni di visualizzazione
 void mostraSchermo(int dimensione);
@@ -36,7 +36,7 @@ void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrat
 // Funzioni di utilità per dimensioni e difficoltà
 void convertiDimensione(int *dimensione);
 int calcolaSottoquadrato(int dimensione);
-int calcolaCelleRimuovere(int difficolta);
+int calcolareCelleDaRimuovere(int difficolta);
 
 // Funzioni di generazione e riempimento Sudoku
 void generareSudoku(Partita *partita, int dimensione, int difficolta);

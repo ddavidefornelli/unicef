@@ -13,29 +13,37 @@
 #define RIGA_INPUT_VALORE 19
 #define RIGA_INPUT 28
 #define COLONNA_INPUT 67
+#define CELLA_VUOTA 0
 #define FALSO 0
 #define VERO 1
+#define DIFFICOLTA_FACILE 2
+#define DIFFICOLTA_MEDIA 2
+#define DIFFICOLTA_DIFFICILE 3
 #define RIGA_ERRORE 22
 #define COLONNA_ERRORE 27
 
 #define BLU "\033[34m"
 #define RESET "\033[0m"
 
-void loopPartita(const char *nomePartita, int difficolta, int dimensione) {
+void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensione) {
     Partita partita;
-    int valore, riga, colonna;
+    int valDaInserire, riga, colonna;
     int grigliaPiena = FALSO;
     int valido = FALSO;
+    
+    /*indica se l'input dell'utente è errato*/
     int errore = FALSO;
+    
+    /*valore inserito dall'utente(31 per salvare la partita, 32 per uscire dalla partita)*/
     int inputSpeciale = FALSO;
 
-    inizializzareGrigliaPartita(&partita, dimensione);
-    scrivereNomePartita(&partita, (char *)nomePartita);
-    convertiDimensione(&dimensione);
-    generareSudoku(&partita, dimensione, difficolta);
+    inizializzareGrigliaPartita(&partita, inputDimensione);
+    scrivereNomePartita(&partita, (char *)inputNome);
+    convertiDimensione(&inputDimensione);
+    generareSudoku(&partita, inputDimensione, inputDifficolta);
 
     while (grigliaPiena == FALSO) {
-        mostraSchermo(dimensione);
+        mostraSchermo(inputDimensione);
         stampareGrigliaPartita(&partita);
         stampareAiutiInput();
 
@@ -48,18 +56,18 @@ void loopPartita(const char *nomePartita, int difficolta, int dimensione) {
         inputSpeciale = FALSO;
 
         collezionaRiga(&griglia, &riga);
-        if (riga == 31 || colonna == 31 || valore == 31) {
+        if (riga == 31 || colonna == 31 || valDaInserire == 31) {
             salvaPartitaCorrente(&partita);
             inputSpeciale = VERO;
         }
         
         if (inputSpeciale == FALSO) {
             collezionaColonna(&griglia, &colonna);
-            collezionaValore(&griglia, &valore);
+            collezionaValore(&griglia, &valDaInserire);
 
-            valido = verificaValidita(&griglia, dimensione, riga - 1, colonna - 1, valore);
+            valido = verificaValidita(&griglia, inputDimensione, riga - 1, colonna - 1, valDaInserire);
             if (valido == VERO) {
-                scrivereValGrigliaPartita(&partita, valore, riga - 1, colonna - 1);
+                scrivereValGrigliaPartita(&partita, valDaInserire, riga - 1, colonna - 1);
                 grigliaPiena = controllareGrigliaPiena(leggereGrigliaPartita(partita));
             } else {
                 errore = VERO;
@@ -162,31 +170,31 @@ void convertiDimensione(int *dimensione) {
 
 void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
     int cellaGriglia = dimensione * dimensione;
-    int celleRimuovere = cellaGriglia * calcolaCelleRimuovere(difficolta) / 100;
+    int celleDaRimuovere = cellaGriglia * calcolareCelleDaRimuovere(difficolta) / 100;
     int rimosse = 0;
     int riga, colonna;
     
     srand(time(NULL));
 
-    while (rimosse < celleRimuovere) {
+    while (rimosse < celleDaRimuovere) {
         riga = rand() % dimensione;
         colonna = rand() % dimensione;
 
-        if (leggereValGriglia(*griglia, riga, colonna) != 0) {
-            scrivereValGriglia(griglia, riga, colonna, 0);
+        if (leggereValGriglia(*griglia, riga, colonna) != CELLA_VUOTA) {
+            scrivereValGriglia(griglia, riga, colonna, CELLA_VUOTA);
             rimosse = rimosse + 1;
         }
     }
 }
 
-int calcolaCelleRimuovere(int difficolta) {
-    int risultato = 20;
-    if (difficolta == 2) {
+int calcolareCelleDaRimuovere(int difficolta) {
+    int risultato;
+    if(difficolta == DIFFICOLTA_FACILE)  {
+        risultato = 20;
+    } else if (difficolta == DIFFICOLTA_MEDIA) {
         risultato = 40;
     } else {
-        if (difficolta == 3) {
-            risultato = 70;
-        }
+        risultato = 70;
     }
     return risultato;
 }
@@ -267,35 +275,41 @@ int verificaSottoquadrato(Griglia *griglia, int dimensione, int riga, int colonn
 int riempireGriglia(Griglia *griglia, int dimensione) {
     int riga = 0;
     int colonna = 0;
-    int trovato = 0;
-    int numero = 1;
-    int risultato = FALSO;
+    /*indica se all'interno della griglia ci sono celle vuote*/
+    int cellaVuota;
+    
+    /*valore da inserire all'interno della griglia*/
+    int valDaInserire = 1;
+    
+    /*indica se la griglia è piena*/
+    int grigliaPiena = FALSO;
 
-    trovato = trovaCellaVuota(griglia, dimensione, &riga, &colonna);
-    if (trovato == FALSO) {
-        risultato = VERO;
+    cellaVuota = trovaCellaVuota(griglia, dimensione, &riga, &colonna);
+    if (cellaVuota == FALSO) {
+        grigliaPiena = VERO;
     } else {
-        while (numero <= dimensione && risultato == FALSO) {
-            if (verificaValidita(griglia, dimensione, riga, colonna, numero) == VERO) {
-                scrivereValGriglia(griglia, riga, colonna, numero);
+        while (valDaInserire <= dimensione && grigliaPiena == FALSO) {
+            if (verificaValidita(griglia, dimensione, riga, colonna, valDaInserire) == VERO) {
+                scrivereValGriglia(griglia, riga, colonna, valDaInserire);
 
                 if (riempireGriglia(griglia, dimensione) == VERO) {
-                    risultato = VERO;
+                    grigliaPiena = VERO;
                 } else {
-                    scrivereValGriglia(griglia, riga, colonna, 0);
+                    /*pone la cella con valore non valido a 0 in modo tale che il nuovo valore verrà inserito in quella cella*/
+                    scrivereValGriglia(griglia, riga, colonna, CELLA_VUOTA);
                 }
             }
-            if (risultato == FALSO) {
-                numero = numero + 1;
+            if (grigliaPiena == FALSO) {
+                valDaInserire = valDaInserire + 1;
             }
         }
     }
-    return risultato;
+    return grigliaPiena;
 }
 
 int trovaCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna) {
     int i = 0;
-    int j = 0;
+    int j;
     int trovato = FALSO;
     
     while (i < dimensione && trovato == FALSO) {
@@ -565,7 +579,7 @@ int caricaValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     return risultato;
 }
 
-void loopPartitaContinuata(Partita *partita) {
+void avviarePartitaContinuata(Partita *partita) {
     int dimensione = leggereDimGriglia(partita->grigliaPartita);
     int valore, riga, colonna;
     int grigliaPiena = FALSO;

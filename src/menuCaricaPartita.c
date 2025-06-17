@@ -156,7 +156,7 @@ void stampareMenuCaricaPartita(){
               }
               scrivereNomePartita(&partita, nome);
             }
-            loopPartitaContinuata(&partita);
+            avviarePartitaContinuata(&partita);
             continua = 0;
           } else {
             printf("Errore caricamento\n");

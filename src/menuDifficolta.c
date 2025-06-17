@@ -44,7 +44,7 @@ void loopMenuDifficolta() {
   collezionaDifficolta(&inputDifficolta);
   collezionaDimensione(&inputDimensione);
   collezionaNomeGioco(nomePartita);
-  loopPartita(nomePartita, inputDifficolta, inputDimensione);
+  avviarePartita(nomePartita, inputDifficolta, inputDimensione);
 }
 
 void stampareTitoloImpostazioni(){
