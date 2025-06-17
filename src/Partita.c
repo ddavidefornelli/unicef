@@ -29,9 +29,9 @@ void loopPartita(const char *nomePartita, int difficolta, int dimensione) {
     int errore = FALSO;
     int inputSpeciale = FALSO;
 
-    inizializzareGrigliaPartita(&partita, difficolta, dimensione);
+    inizializzareGrigliaPartita(&partita, dimensione);
     scrivereNomePartita(&partita, (char *)nomePartita);
-    convertiDifficoltaEDimensione(&difficolta, &dimensione);
+    convertiDimensione(&dimensione);
     generareSudoku(&partita, dimensione, difficolta);
 
     while (grigliaPiena == FALSO) {
@@ -48,9 +48,8 @@ void loopPartita(const char *nomePartita, int difficolta, int dimensione) {
         inputSpeciale = FALSO;
 
         collezionaRiga(&griglia, &riga);
-        if (riga == 31) {
+        if (riga == 31 || colonna == 31 || valore == 31) {
             salvaPartitaCorrente(&partita);
-
             inputSpeciale = VERO;
         }
         
@@ -147,19 +146,7 @@ void disegnareCornice() {
     printf("+------------+\n");
 }
 
-void convertiDifficoltaEDimensione(int *difficolta, int *dimensione) {
-    if (*difficolta == 1) {
-        *difficolta = 4;
-    } else {
-        if (*difficolta == 2) {
-            *difficolta = 9;
-        } else {
-            if (*difficolta == 3) {
-                *difficolta = 16;
-            }
-        }
-    }
-
+void convertiDimensione(int *dimensione) {
     if (*dimensione == 1) {
         *dimensione = 4;
     } else {
@@ -174,7 +161,8 @@ void convertiDifficoltaEDimensione(int *difficolta, int *dimensione) {
 }
 
 void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
-    int celleRimuovere = calcolaCelleRimuovere(difficolta);
+    int cellaGriglia = dimensione * dimensione;
+    int celleRimuovere = cellaGriglia * calcolaCelleRimuovere(difficolta) / 100;
     int rimosse = 0;
     int riga, colonna;
     
@@ -192,12 +180,12 @@ void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
 }
 
 int calcolaCelleRimuovere(int difficolta) {
-    int risultato = 6;
-    if (difficolta == 9) {
+    int risultato = 20;
+    if (difficolta == 2) {
         risultato = 40;
     } else {
-        if (difficolta == 16) {
-            risultato = 150;
+        if (difficolta == 3) {
+            risultato = 70;
         }
     }
     return risultato;
@@ -541,7 +529,7 @@ int caricaPartita(Partita *partita, const char *percorso) {
     
     if (file != NULL) {
         if (fscanf(file, "%d %d", &dimensione, &difficolta) == 2) {
-            inizializzareGrigliaPartita(partita, difficolta, dimensione);
+            inizializzareGrigliaPartita(partita, dimensione);
             
             if (caricaValoriGriglia(file, partita, dimensione) == VERO) {
                 risultato = 1;

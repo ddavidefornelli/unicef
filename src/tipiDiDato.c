@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "tipiDiDato.h"
+#include "partita.h"
 
 // Funzioni per Griglia
 int leggereDimGriglia(Griglia griglia) {
@@ -70,12 +71,12 @@ void scrivereValGrigliaPartita(Partita *partita, int valore, int riga, int colon
 // Dichiarazione della funzione esterna
 void convertiDifficoltaEDimensione(int *inputDifficolta, int *inputDimensione);
 
-void inizializzareGrigliaPartita(Partita *partita, int inputDifficolta, int inputDimensione) {
+void inizializzareGrigliaPartita(Partita *partita, int inputDimensione) {
     int i = 0;  // Inizializza i
     int j;
     
     // Converti i valori prima di usarli
-    convertiDifficoltaEDimensione(&inputDifficolta, &inputDimensione);
+    convertiDimensione(&inputDimensione);
     
     scrivereDimGrigliaPartita(partita, inputDimensione);
          

@@ -34,7 +34,7 @@ void stampareRigheGriglia(Griglia griglia, int dimensione, int numeroSottoquadra
 void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrato, int riga);
 
 // Funzioni di utilità per dimensioni e difficoltà
-void convertiDifficoltaEDimensione(int *difficolta, int *dimensione);
+void convertiDimensione(int *dimensione);
 int calcolaSottoquadrato(int dimensione);
 int calcolaCelleRimuovere(int difficolta);
 
