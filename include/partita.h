@@ -23,7 +23,7 @@ void avviarePartitaContinuata(Partita *partita);
 void mostraSchermo(int dimensione);
 void stampareTitoloPartita(void);
 void stampareVittoria(void);
-void stampareAiutiInput(void);
+void stampareTabellaInput(void);
 void disegnareCornice(void);
 
 // Funzioni di gestione griglia e stampa
@@ -45,10 +45,10 @@ void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta);
 int trovaCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna);
 
 // Funzioni di validazione
-int verificaValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero);
-int verificaRiga(Griglia *griglia, int dimensione, int riga, int numero);
-int verificaColonna(Griglia *griglia, int dimensione, int colonna, int numero);
-int verificaSottoquadrato(Griglia *griglia, int dimensione, int riga, int colonna, int numero);
+int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero);
+int verificareRiga(Griglia *griglia, int dimensione, int riga, int numero);
+int verificareColonna(Griglia *griglia, int dimensione, int colonna, int numero);
+int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colonna, int numero);
 
 // Funzioni di input
 int collezionaInput(Griglia *griglia, int *input, int rigaInput);

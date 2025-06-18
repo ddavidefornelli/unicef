@@ -21,6 +21,8 @@
 #define DIFFICOLTA_DIFFICILE 3
 #define RIGA_ERRORE 22
 #define COLONNA_ERRORE 27
+#define SALVA_PARTITA 31
+#define TORNA_MENU 29
 
 #define BLU "\033[34m"
 #define RESET "\033[0m"
@@ -29,6 +31,7 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
     Partita partita;
     int valDaInserire, riga, colonna;
     int grigliaPiena = FALSO;
+    /*indica se l'input dell'utente è errato*/
     int valido = FALSO;
     
     /*indica se l'input dell'utente è errato*/
@@ -45,7 +48,7 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
     while (grigliaPiena == FALSO) {
         mostraSchermo(inputDimensione);
         stampareGrigliaPartita(&partita);
-        stampareAiutiInput();
+        stampareTabellaInput();
 
         if (errore == VERO) {
             mostrareMessaggioErrore("Inserisci valori corretti", RIGA_ERRORE + 2, COLONNA_ERRORE);
@@ -56,8 +59,8 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
         inputSpeciale = FALSO;
 
         collezionaRiga(&griglia, &riga);
-        if (riga == 31 || colonna == 31 || valDaInserire == 31) {
-            salvaPartitaCorrente(&partita);
+        if (riga == SALVA_PARTITA || colonna == SALVA_PARTITA || valDaInserire == SALVA_PARTITA) {
+            salvarePartitaCorrente(&partita);
             inputSpeciale = VERO;
         }
         
@@ -65,7 +68,7 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
             collezionaColonna(&griglia, &colonna);
             collezionaValore(&griglia, &valDaInserire);
 
-            valido = verificaValidita(&griglia, inputDimensione, riga - 1, colonna - 1, valDaInserire);
+            valido = verificareValidita(&griglia, inputDimensione, riga - 1, colonna - 1, valDaInserire);
             if (valido == VERO) {
                 scrivereValGrigliaPartita(&partita, valDaInserire, riga - 1, colonna - 1);
                 grigliaPiena = controllareGrigliaPiena(leggereGrigliaPartita(partita));
@@ -117,11 +120,13 @@ void stampareVittoria() {
     stampareCentrato(" \\ \\ / / | ||  \\| | | || | | |");
     stampareCentrato("  \\ V /  | || |\\  | | || |_| |");
     stampareCentrato("   \\_/  |___|_| \\_| |_| \\___/ ");
+    printf("\n\n\n\n\n");
+    stampareCentrato("gruppo 29 al rogo");
 
     tornareHomepage(&input, RIGA_INPUT - 10, 30);
 }
 
-void stampareAiutiInput() {
+void stampareTabellaInput() {
     disegnareCornice();
     
     spostareCursore(RIGA_INPUT_RIGA - 1, COLONNA_INPUT + 1);
@@ -199,16 +204,16 @@ int calcolareCelleDaRimuovere(int difficolta) {
     return risultato;
 }
 
-int verificaValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
+int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
     int risultato = VERO;
     
-    if (verificaRiga(griglia, dimensione, riga, numero) == FALSO) {
+    if (verificareRiga(griglia, dimensione, riga, numero) == FALSO) {
         risultato = FALSO;
     } else {
-        if (verificaColonna(griglia, dimensione, colonna, numero) == FALSO) {
+        if (verificareColonna(griglia, dimensione, colonna, numero) == FALSO) {
             risultato = FALSO;
         } else {
-            if (verificaSottoquadrato(griglia, dimensione, riga, colonna, numero) == FALSO) {
+            if (verificareSottoquadrato(griglia, dimensione, riga, colonna, numero) == FALSO) {
                 risultato = FALSO;
             }
         }
@@ -217,7 +222,7 @@ int verificaValidita(Griglia *griglia, int dimensione, int riga, int colonna, in
     return risultato;
 }
 
-int verificaRiga(Griglia *griglia, int dimensione, int riga, int numero) {
+int verificareRiga(Griglia *griglia, int dimensione, int riga, int numero) {
     int i = 0;
     int risultato = VERO;
     
@@ -232,7 +237,7 @@ int verificaRiga(Griglia *griglia, int dimensione, int riga, int numero) {
     return risultato;
 }
 
-int verificaColonna(Griglia *griglia, int dimensione, int colonna, int numero) {
+int verificareColonna(Griglia *griglia, int dimensione, int colonna, int numero) {
     int i = 0;
     int risultato = VERO;
     
@@ -247,7 +252,7 @@ int verificaColonna(Griglia *griglia, int dimensione, int colonna, int numero) {
     return risultato;
 }
 
-int verificaSottoquadrato(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
+int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
     int dimensioneQuadrato = (int)sqrt(dimensione);
     int inizioRiga = riga - riga % dimensioneQuadrato;
     int inizioColonna = colonna - colonna % dimensioneQuadrato;
@@ -289,7 +294,7 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
         grigliaPiena = VERO;
     } else {
         while (valDaInserire <= dimensione && grigliaPiena == FALSO) {
-            if (verificaValidita(griglia, dimensione, riga, colonna, valDaInserire) == VERO) {
+            if (verificareValidita(griglia, dimensione, riga, colonna, valDaInserire) == VERO) {
                 scrivereValGriglia(griglia, riga, colonna, valDaInserire);
 
                 if (riempireGriglia(griglia, dimensione) == VERO) {
@@ -427,32 +432,32 @@ void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrat
     printf(" |\n");
 }
 
-int collezionaInput(Griglia *griglia, int *input, int rigaInput) {
+int collezionaInput(Griglia *griglia, int *inputRiga, int posRiga) {
     int valida = FALSO;
-    int inputOk = FALSO;
+    int inputOk;
 
     while (valida == FALSO) {
-        resetZonaInput(rigaInput, COLONNA_INPUT);
+        resetZonaInput(posRiga, COLONNA_INPUT);
         inputOk = FALSO;
 
         while (inputOk == FALSO) {
-            if (scanf("%d", input) == 1) {
+            if (scanf("%d", inputRiga) == 1) {
                 inputOk = VERO;
             } else {
                 pulireBuffer();
-                resetZonaInput(rigaInput, COLONNA_INPUT);
+                resetZonaInput(posRiga, COLONNA_INPUT);
                 mostrareMessaggioErrore("Digita un Numero", RIGA_ERRORE + 2, COLONNA_ERRORE);
-                resetZonaInput(rigaInput, COLONNA_INPUT);
+                resetZonaInput(posRiga, COLONNA_INPUT);
             }
         }
 
         pulireBuffer();
 
-        if ((*input < 1 || *input > leggereDimGriglia(*griglia)) && (*input != 32 && *input != 31)) {
+        if ((*inputRiga < 1 || *inputRiga > leggereDimGriglia(*griglia)) && (*inputRiga != 32 && *inputRiga != 31)) {
             mostrareMessaggioErrore("Numero fuori intervallo", RIGA_ERRORE + 2, COLONNA_ERRORE);
-            resetZonaInput(rigaInput, COLONNA_INPUT);
+            resetZonaInput(posRiga, COLONNA_INPUT);
         } else {
-            if (*input == 32) {
+            if (*inputRiga == 32) {
                 loopMenuPrincipale();
             } else {
                 valida = VERO;
@@ -460,7 +465,7 @@ int collezionaInput(Griglia *griglia, int *input, int rigaInput) {
         }
     }
     
-    return *input;
+    return *inputRiga;
 }
 
 int collezionaRiga(Griglia *griglia, int *inputRiga) {
@@ -498,32 +503,32 @@ int controllareGrigliaPiena(Griglia griglia) {
     return esito;
 }
 
-void salvaPartitaCorrente(Partita *partita) {
+void salvarePartitaCorrente(Partita *partita) {
     char percorso[100];
     snprintf(percorso, sizeof(percorso), "database/partita_%s.txt", partita->nomePartita);
-    salvaPartita(partita, percorso);
+    salvarePartita(partita, percorso);
 }
 
-int salvaPartita(Partita *partita, const char *percorso) {
+int salvarePartita(Partita *partita, const char *percorso) {
     FILE *file = fopen(percorso, "w");
-    int risultato = 0;
+    int risultato = FALSO;
     
     if (file != NULL) {
         int dimensione = leggereDimGriglia(partita->grigliaPartita);
         int difficolta = leggereDimGrigliaImp(partita->impPartita);
 
         fprintf(file, "%d %d\n", dimensione, difficolta);
-        salvaValoriGriglia(file, partita, dimensione);
+        salvareValoriGriglia(file, partita, dimensione);
         fclose(file);
-        risultato = 1;
+        risultato = VERO;
     }
     
     return risultato;
 }
 
-void salvaValoriGriglia(FILE *file, Partita *partita, int dimensione) {
+void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     int i = 0;
-    int j = 0;
+    int j;
     
     while (i < dimensione) {
         j = 0;
@@ -590,7 +595,7 @@ void avviarePartitaContinuata(Partita *partita) {
     while (grigliaPiena == FALSO) {
         mostraSchermo(dimensione);
         stampareGrigliaPartita(partita);
-        stampareAiutiInput();
+        stampareTabellaInput();
 
         if (errore == VERO) {
             mostrareMessaggioErrore("Inserisci valori corretti", RIGA_ERRORE + 2, COLONNA_ERRORE);
@@ -602,7 +607,7 @@ void avviarePartitaContinuata(Partita *partita) {
 
         collezionaRiga(&griglia, &riga);
         if (riga == 31) {
-            salvaPartitaCorrente(partita);
+            salvarePartitaCorrente(partita);
             inputSpeciale = VERO;
         }
         
@@ -610,7 +615,7 @@ void avviarePartitaContinuata(Partita *partita) {
             collezionaColonna(&griglia, &colonna);
             collezionaValore(&griglia, &valore);
 
-            valido = verificaValidita(&griglia, dimensione, riga - 1, colonna - 1, valore);
+            valido = verificareValidita(&griglia, dimensione, riga - 1, colonna - 1, valore);
             if (valido == VERO) {
                 scrivereValGrigliaPartita(partita, valore, riga - 1, colonna - 1);
                 grigliaPiena = controllareGrigliaPiena(leggereGrigliaPartita(*partita));
