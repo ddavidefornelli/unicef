@@ -59,15 +59,15 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
         Griglia griglia = leggereGrigliaPartita(partita);
         inputSpeciale = FALSO;
 
-        collezionaRiga(&griglia, &riga);
+        collezionareRiga(&griglia, &riga);
         if (riga == SALVA_PARTITA || colonna == SALVA_PARTITA || valDaInserire == SALVA_PARTITA) {
             salvarePartitaCorrente(&partita);
             inputSpeciale = VERO;
         }
         
         if (inputSpeciale == FALSO) {
-            collezionaColonna(&griglia, &colonna);
-            collezionaValore(&griglia, &valDaInserire);
+            collezionareColonna(&griglia, &colonna);
+            collezionareValore(&griglia, &valDaInserire);
 
             valido = verificareValidita(&griglia, inputDimensione, riga - 1, colonna - 1, valDaInserire);
             if (valido == VERO) {
@@ -344,7 +344,7 @@ void generareSudoku(Partita *partita, int dimensione, int difficolta) {
 void stampareGrigliaPartita(Partita *partita) {
     Griglia griglia = leggereGrigliaPartita(*partita);
     int dimensione = leggereDimGriglia(griglia);
-    int numeroSottoquadrato = calcolaSottoquadrato(dimensione);
+    int numeroSottoquadrato = calcolareSottoquadrato(dimensione);
     int startRiga = 2;
 
     if (dimensione == 4) {
@@ -359,7 +359,7 @@ void stampareGrigliaPartita(Partita *partita) {
     stampareLineaOrizzontale(dimensione, numeroSottoquadrato);
 }
 
-int calcolaSottoquadrato(int dimensione) {
+int calcolareSottoquadrato(int dimensione) {
     int risultato = 2;
     if (dimensione == 9) {
         risultato = 3;
@@ -475,15 +475,15 @@ int collezionaInput(Griglia *griglia, int *inputRiga, int posRiga) {
     return *inputRiga;
 }
 
-int collezionaRiga(Griglia *griglia, int *inputRiga) {
+int collezionareRiga(Griglia *griglia, int *inputRiga) {
     return collezionaInput(griglia, inputRiga, RIGA_INPUT_RIGA);
 }
 
-int collezionaColonna(Griglia *griglia, int *inputColonna) {
+int collezionareColonna(Griglia *griglia, int *inputColonna) {
     return collezionaInput(griglia, inputColonna, RIGA_INPUT_COLONNA);
 }
 
-int collezionaValore(Griglia *griglia, int *inputValore) {
+int collezionareValore(Griglia *griglia, int *inputValore) {
     return collezionaInput(griglia, inputValore, RIGA_INPUT_VALORE);
 }
 
@@ -548,7 +548,7 @@ void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     }
 }
 
-int caricaPartita(Partita *partita, const char *percorso) {
+int caricarePartita(Partita *partita, const char *percorso) {
     FILE *file = fopen(percorso, "r");
     int risultato = 0;
     int dimensione, difficolta;
@@ -612,15 +612,15 @@ void avviarePartitaContinuata(Partita *partita) {
         Griglia griglia = leggereGrigliaPartita(*partita);
         inputSpeciale = FALSO;
 
-        collezionaRiga(&griglia, &riga);
+        collezionareRiga(&griglia, &riga);
         if (riga == 31) {
             salvarePartitaCorrente(partita);
             inputSpeciale = VERO;
         }
         
         if (inputSpeciale == FALSO) {
-            collezionaColonna(&griglia, &colonna);
-            collezionaValore(&griglia, &valore);
+            collezionareColonna(&griglia, &colonna);
+            collezionareValore(&griglia, &valore);
 
             valido = verificareValidita(&griglia, dimensione, riga - 1, colonna - 1, valore);
             if (valido == VERO) {

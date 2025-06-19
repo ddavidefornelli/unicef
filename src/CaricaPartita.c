@@ -146,7 +146,7 @@ void stampareMenuCaricaPartita(){
           Partita partita;
           sprintf(percorso, "database/%s", file);
           
-          if (caricaPartita(&partita, percorso)) {
+          if (caricarePartita(&partita, percorso)) {
             const char *underscore = strrchr(file, '_');
             if (underscore) {
               char nome[128];

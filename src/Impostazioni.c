@@ -43,7 +43,7 @@ void avviareMenuDifficolta() {
   stampareMenuDifficolta();
   collezionareDifficolta(&inputDifficolta);
   collezionareDimensione(&inputDimensione);
-  collezionaNomeGioco(nomePartita);
+  collezionareNomeGioco(nomePartita);
   avviarePartita(nomePartita, inputDifficolta, inputDimensione);
 }
 
@@ -137,7 +137,7 @@ int collezionareDimensione(int *inputDimensione) {
   }
 }
 
-void collezionaNomeGioco(char *nomeParitita) {
+void collezionareNomeGioco(char *nomeParitita) {
   resetZonaInput(INPUT_RIGA_NOME, INPUT_COLONNA + 35);
   fgets(nomeParitita, NOME_MAX, stdin);
   int lunghezza = strlen(nomeParitita);

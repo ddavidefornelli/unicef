@@ -35,7 +35,7 @@ void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrat
 
 // Funzioni di utilità per dimensioni e difficoltà
 void convertireDimensione(int *dimensione);
-int calcolaSottoquadrato(int dimensione);
+int calcolareSottoquadrato(int dimensione);
 int calcolareCelleDaRimuovere(int difficolta);
 
 // Funzioni di generazione e riempimento Sudoku
@@ -52,9 +52,9 @@ int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colo
 
 // Funzioni di input
 int collezionaInput(Griglia *griglia, int *input, int rigaInput);
-int collezionaRiga(Griglia *griglia, int *inputRiga);
-int collezionaColonna(Griglia *griglia, int *inputColonna);
-int collezionaValore(Griglia *griglia, int *inputValore);
+int collezionareRiga(Griglia *griglia, int *inputRiga);
+int collezionareColonna(Griglia *griglia, int *inputColonna);
+int collezionareValore(Griglia *griglia, int *inputValore);
 
 // Funzioni di controllo stato partita
 int controllareGrigliaPiena(Griglia griglia);
@@ -63,7 +63,7 @@ int controllareGrigliaPiena(Griglia griglia);
 void salvarePartitaCorrente(Partita *partita);
 int salvarePartita(Partita *partita, const char *percorso);
 void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione);
-int caricaPartita(Partita *partita, const char *percorso);
+int caricarePartita(Partita *partita, const char *percorso);
 int caricaValoriGriglia(FILE *file, Partita *partita, int dimensione);
 
 #endif // PARTITA_H
