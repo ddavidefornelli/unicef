@@ -105,7 +105,7 @@ void stampareMenuPrincipale()
  *  2025/04/06 - Terza versione                             *
  *************************************************************/
 
-void loopMenuPrincipale(){
+void avviareMenuPrincipale(){
   int input;
   stampareMenuPrincipale();
   collezionareInput(&input); 

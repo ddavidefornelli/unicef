@@ -3,7 +3,7 @@
 
 int main() 
 {
-  loopMenuPrincipale();
+  avviareMenuPrincipale();
   getchar();
   return 0;
 }
