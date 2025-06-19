@@ -16,7 +16,7 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
 #include <stdlib.h>
 #include "homepage.h"
 #include "interfaccia_util.h"
-#include "caricapartita.h"
+#include "caricaPartita.h"
 #include "impostazioni.h"
 
 #define LARGHEZZA_TERMINALE 80

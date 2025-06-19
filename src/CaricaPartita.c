@@ -1,11 +1,11 @@
-#include "interfaccia_util.h"
 #include "homepage.h"
 #include "partita.h"
-#include "caricapartita.h"
 #include <dirent.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "caricaPartita.h"
+#include "interfaccia_util.h"
 
 #define RIGA 11
 #define COLONNA 40

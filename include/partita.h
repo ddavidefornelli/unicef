@@ -42,7 +42,7 @@ int calcolareCelleDaRimuovere(int difficolta);
 void generareSudoku(Partita *partita, int dimensione, int difficolta);
 int riempireGriglia(Griglia *griglia, int dimensione);
 void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta);
-int trovaCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna);
+int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna);
 
 // Funzioni di validazione
 int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero);

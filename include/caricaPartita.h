@@ -5,7 +5,6 @@
 
 void stampareMenuCaricaPartita();
 void stampareTitoloCaricaPartita();
-
 void stampareZonaInput();
 
 #endif

@@ -31,6 +31,7 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
     Partita partita;
     int valDaInserire, riga, colonna;
     int grigliaPiena = FALSO;
+
     /*indica se l'input dell'utente è errato*/
     int valido = FALSO;
     
@@ -76,8 +77,9 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
                 errore = VERO;
             }
         }
-    }
 
+
+    }
     stampareVittoria();
 }
 
@@ -289,7 +291,7 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
     /*indica se la griglia è piena*/
     int grigliaPiena = FALSO;
 
-    cellaVuota = trovaCellaVuota(griglia, dimensione, &riga, &colonna);
+    cellaVuota = trovareCellaVuota(griglia, dimensione, &riga, &colonna);
     if (cellaVuota == FALSO) {
         grigliaPiena = VERO;
     } else {
@@ -312,7 +314,7 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
     return grigliaPiena;
 }
 
-int trovaCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna) {
+int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna) {
     int i = 0;
     int j;
     int trovato = FALSO;
@@ -321,8 +323,8 @@ int trovaCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna) {
         j = 0;
         while (j < dimensione && trovato == FALSO) {
             if (leggereValGriglia(*griglia, i, j) == 0) {
-                riga = &i;
-                colonna = &j;
+                *riga = i;
+                *colonna = j;
                 trovato = VERO;
             } else {
                 j = j + 1;
@@ -332,7 +334,6 @@ int trovaCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna) {
             i = i + 1;
         }
     }
-    
     return trovato;
 }
 
