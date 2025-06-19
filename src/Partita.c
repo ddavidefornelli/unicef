@@ -345,14 +345,12 @@ void stampareGrigliaPartita(Partita *partita) {
     Griglia griglia = leggereGrigliaPartita(*partita);
     int dimensione = leggereDimGriglia(griglia);
     int numeroSottoquadrato = calcolaSottoquadrato(dimensione);
-    int startRiga = 0;
+    int startRiga = 2;
 
     if (dimensione == 4) {
         startRiga = 11;
     } else if (dimensione == 9) {
         startRiga = 8;
-    } else if (dimensione == 16) {
-        startRiga = 2;
     } 
     spostareCursore(startRiga, 0);
     stampareIntestazioneColonne(dimensione, numeroSottoquadrato);
