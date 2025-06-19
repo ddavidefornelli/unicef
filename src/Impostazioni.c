@@ -41,8 +41,8 @@ void avviareMenuDifficolta() {
   int inputDimensione;
   char nomePartita[NOME_MAX + 1];
   stampareMenuDifficolta();
-  collezionaDifficolta(&inputDifficolta);
-  collezionaDimensione(&inputDimensione);
+  collezionareDifficolta(&inputDifficolta);
+  collezionareDimensione(&inputDimensione);
   collezionaNomeGioco(nomePartita);
   avviarePartita(nomePartita, inputDifficolta, inputDimensione);
 }
@@ -89,7 +89,7 @@ void stampareMenuImpostazioni(){
 
 }
 
-int collezionaDifficolta(int *inputDifficolta) {
+int collezionareDifficolta(int *inputDifficolta) {
   int inMenuDifficolta = 1;
 
   while(inMenuDifficolta) {
@@ -113,7 +113,7 @@ int collezionaDifficolta(int *inputDifficolta) {
   }
 }
 
-int collezionaDimensione(int *inputDimensione) {
+int collezionareDimensione(int *inputDimensione) {
   int inMenuDifficolta = 1;
 
   while(inMenuDifficolta) {
