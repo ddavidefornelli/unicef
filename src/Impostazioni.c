@@ -36,7 +36,7 @@ void stampareMenuDifficolta() {
   stampareMenuImpostazioni();
 }
 
-void loopMenuDifficolta() {
+void avviareMenuDifficolta() {
   int inputDifficolta;
   int inputDimensione;
   char nomePartita[NOME_MAX + 1];

@@ -22,7 +22,7 @@
 #define ARANCIONE "\033[38;5;208m"
 #define RESET "\033[0m"
 
-int raccogliPartiteSalvate(char *nomiPartite[], int massimePartite) {
+int raccoglierePartiteSalvate(char *nomiPartite[], int massimePartite) {
   DIR *cartella = opendir("database");
   struct dirent *voce;
   int conteggio = 0;
@@ -114,7 +114,7 @@ void stampareMenuCaricaPartita(){
   pulireSchermo();
   stampareTitoloCaricaPartita();
 
-  numeroPartite = raccogliPartiteSalvate(nomiPartite, 100);
+  numeroPartite = raccoglierePartiteSalvate(nomiPartite, 100);
 
   if (numeroPartite == 0) {
     printf("Nessuna partita salvata.\n");

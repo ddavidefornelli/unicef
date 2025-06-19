@@ -127,7 +127,7 @@ void collezionareInput(int *input) {
       resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
     }
     else if (*input == NUOVA_PARTITA) {
-      loopMenuDifficolta();
+      avviareMenuDifficolta();
       inMenuPrinipale = 0;
     }
     else if (*input == PARTITE_SALVATE) {
