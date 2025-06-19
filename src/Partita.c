@@ -16,7 +16,7 @@
 #define CELLA_VUOTA 0
 #define FALSO 0
 #define VERO 1
-#define DIFFICOLTA_FACILE 2
+#define DIFFICOLTA_FACILE 1
 #define DIFFICOLTA_MEDIA 2
 #define DIFFICOLTA_DIFFICILE 3
 #define RIGA_ERRORE 22
@@ -200,7 +200,7 @@ int calcolareCelleDaRimuovere(int difficolta) {
         risultato = 20;
     } else if (difficolta == DIFFICOLTA_MEDIA) {
         risultato = 40;
-    } else {
+    } else if (difficolta == DIFFICOLTA_DIFFICILE) {
         risultato = 70;
     }
     return risultato;
@@ -208,7 +208,6 @@ int calcolareCelleDaRimuovere(int difficolta) {
 
 int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
     int risultato = VERO;
-    
     if (verificareRiga(griglia, dimensione, riga, numero) == FALSO) {
         risultato = FALSO;
     } else {
