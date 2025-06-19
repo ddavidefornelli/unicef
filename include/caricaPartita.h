@@ -3,9 +3,11 @@
 
 #include "interfaccia_util.h"
 
-void stampareMenuCaricaPartita();
+int raccoglierePartiteSalvate(char *nomiPartite[], int massimePartite);
+void liberarePartite(char *nomiPartite[], int numero);
 void stampareTitoloCaricaPartita();
-void stampareZonaInput();
+void stampareZonaInput(); 
+void stampareMenuCaricaPartita();
 
 #endif
 

@@ -444,7 +444,7 @@ int collezionaInput(Griglia *griglia, int *inputRiga, int posRiga) {
     int inputOk;
 
     while (valida == FALSO) {
-        resetZonaInput(posRiga, COLONNA_INPUT);
+        impostareZonaInput(posRiga, COLONNA_INPUT);
         inputOk = FALSO;
 
         while (inputOk == FALSO) {
@@ -452,9 +452,9 @@ int collezionaInput(Griglia *griglia, int *inputRiga, int posRiga) {
                 inputOk = VERO;
             } else {
                 pulireBuffer();
-                resetZonaInput(posRiga, COLONNA_INPUT);
+                impostareZonaInput(posRiga, COLONNA_INPUT);
                 mostrareMessaggioErrore("Digita un Numero", RIGA_ERRORE + 2, COLONNA_ERRORE);
-                resetZonaInput(posRiga, COLONNA_INPUT);
+                impostareZonaInput(posRiga, COLONNA_INPUT);
             }
         }
 
@@ -462,7 +462,7 @@ int collezionaInput(Griglia *griglia, int *inputRiga, int posRiga) {
 
         if ((*inputRiga < 1 || *inputRiga > leggereDimGriglia(*griglia)) && (*inputRiga != 32 && *inputRiga != 31)) {
             mostrareMessaggioErrore("Numero fuori intervallo", RIGA_ERRORE + 2, COLONNA_ERRORE);
-            resetZonaInput(posRiga, COLONNA_INPUT);
+            impostareZonaInput(posRiga, COLONNA_INPUT);
         } else {
             if (*inputRiga == 32) {
                 avviareMenuPrincipale();
@@ -557,7 +557,7 @@ int caricarePartita(Partita *partita, const char *percorso) {
         if (fscanf(file, "%d %d", &dimensione, &difficolta) == 2) {
             inizializzareGrigliaPartita(partita, dimensione);
             
-            if (caricaValoriGriglia(file, partita, dimensione) == VERO) {
+            if (caricareValoriGriglia(file, partita, dimensione) == VERO) {
                 risultato = 1;
             }
         }
@@ -567,7 +567,7 @@ int caricarePartita(Partita *partita, const char *percorso) {
     return risultato;
 }
 
-int caricaValoriGriglia(FILE *file, Partita *partita, int dimensione) {
+int caricareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     int i = 0;
     int j = 0;
     int val;

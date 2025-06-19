@@ -64,7 +64,7 @@ void salvarePartitaCorrente(Partita *partita);
 int salvarePartita(Partita *partita, const char *percorso);
 void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione);
 int caricarePartita(Partita *partita, const char *percorso);
-int caricaValoriGriglia(FILE *file, Partita *partita, int dimensione);
+int caricareValoriGriglia(FILE *file, Partita *partita, int dimensione);
 
 #endif // PARTITA_H
 

@@ -93,20 +93,20 @@ int collezionareDifficolta(int *inputDifficolta) {
   int inMenuDifficolta = 1;
 
   while(inMenuDifficolta) {
-    resetZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
+    impostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
     
     while(scanf("%d", inputDifficolta) != 1) {
       pulireBuffer();
-      resetZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
+      impostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
       mostrareMessaggioErrore("Digita un Numero", ERR_MSG_RIGA - 6, ERR_MSG_COLONNA);
-      resetZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
+      impostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
     }
    
     pulireBuffer();
     
     if(*inputDifficolta < OPZIONE_MIN || *inputDifficolta > OPZIONE_MAX) {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA - 6, ERR_MSG_COLONNA - 5);
-      resetZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
+      impostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
     } else {
       return *inputDifficolta;
     }
@@ -117,20 +117,20 @@ int collezionareDimensione(int *inputDimensione) {
   int inMenuDifficolta = 1;
 
   while(inMenuDifficolta) {
-    resetZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
+    impostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
     
     while(scanf("%d", inputDimensione) != 1) {
       pulireBuffer();
-      resetZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
+      impostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
       mostrareMessaggioErrore("Digita un Numero", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA);
-      resetZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
+      impostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
     }
    
     pulireBuffer();
     
     if(*inputDimensione < OPZIONE_MIN || *inputDimensione > OPZIONE_MAX) {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA - 5);
-      resetZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
+      impostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
     } else {
       return *inputDimensione;
     }
@@ -138,7 +138,7 @@ int collezionareDimensione(int *inputDimensione) {
 }
 
 void collezionareNomeGioco(char *nomeParitita) {
-  resetZonaInput(INPUT_RIGA_NOME, INPUT_COLONNA + 35);
+  impostareZonaInput(INPUT_RIGA_NOME, INPUT_COLONNA + 35);
   fgets(nomeParitita, NOME_MAX, stdin);
   int lunghezza = strlen(nomeParitita);
   if (lunghezza > 0 && nomeParitita[lunghezza - 1] == '\n') { 

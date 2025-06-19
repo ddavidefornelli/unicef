@@ -11,10 +11,8 @@ collezionaInput() -> funzione utilizzata per collezionare l' input dell utente;
 spostareCursore() -> funzione utilizzata per spostare la posizione del cursore nel terminale;
 */
 
-typedef enum {
-  LARGHEZZA_TERMINALE = 80,
-  ALTEZZA_TERMINALE = 25
-} terminale;
+#define LARGHEZZA_TERMINALE  80
+#define ALTEZZA_TERMINALE  25
 
 void spostareCursore(int x, int y)
 {
@@ -106,7 +104,7 @@ void stampareASinistra(const char *testo)
   printf("%s\n", testo);
 }
 
-void resetZonaInput(int posRiga, int posColonna){
+void impostareZonaInput(int posRiga, int posColonna){
     spostareCursore(posRiga, posColonna);
     printf(">> ");
     printf("%-8s", "");
@@ -130,16 +128,16 @@ void tornareHomepage(int *input, int posRiga, int posColonna){
   spostareCursore(posRiga - 1, posColonna);
   printf("[0] torna alla homepage");
   while(inMenuCorrente) {
-    resetZonaInput(posRiga, posColonna + 8);
+    impostareZonaInput(posRiga, posColonna + 8);
 
     while(scanf("%d", input) != 1) {
         mostrareMessaggioErrore("input non valido", posRiga + 2, posColonna + 3);
-        resetZonaInput(posRiga, posColonna + 8);
+        impostareZonaInput(posRiga, posColonna + 8);
         pulireBuffer();
     }
     if(*input != 0){
         mostrareMessaggioErrore("input non valido", posRiga + 2, posColonna + 3);
-        resetZonaInput(posRiga, posColonna + 8);
+        impostareZonaInput(posRiga, posColonna + 8);
         pulireBuffer();
     }
     else if (*input == 0) {

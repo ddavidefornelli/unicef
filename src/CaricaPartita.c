@@ -42,7 +42,7 @@ int raccoglierePartiteSalvate(char *nomiPartite[], int massimePartite) {
   return conteggio;
 }
 
-void liberaPartite(char *nomiPartite[], int numero) {
+void liberarePartite(char *nomiPartite[], int numero) {
   int i = 0;
   while (i < numero) {
     if (nomiPartite[i] != NULL) {
@@ -52,7 +52,7 @@ void liberaPartite(char *nomiPartite[], int numero) {
   }
 }
 
-const char *trovaFile(char *nomiPartite[], int numero, const char *input) {
+const char *trovareFile(char *nomiPartite[], int numero, const char *input) {
   long indice = strtol(input, NULL, 10);
   int i = 0;
   
@@ -140,7 +140,7 @@ void stampareMenuCaricaPartita(){
         avviareMenuPrincipale();
         continua = 0;
       } else {
-        const char *file = trovaFile(nomiPartite, numeroPartite, nomeScelto);
+        const char *file = trovareFile(nomiPartite, numeroPartite, nomeScelto);
         if (file != NULL) {
           char percorso[256];
           Partita partita;
@@ -171,7 +171,7 @@ void stampareMenuCaricaPartita(){
       }
     }
   }
-  liberaPartite(nomiPartite, numeroPartite);
+  liberarePartite(nomiPartite, numeroPartite);
 }
 
 
