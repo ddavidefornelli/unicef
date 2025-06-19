@@ -43,11 +43,11 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
 
     inizializzareGrigliaPartita(&partita, inputDimensione);
     scrivereNomePartita(&partita, (char *)inputNome);
-    convertiDimensione(&inputDimensione);
+    convertireDimensione(&inputDimensione);
     generareSudoku(&partita, inputDimensione, inputDifficolta);
 
     while (grigliaPiena == FALSO) {
-        mostraSchermo(inputDimensione);
+        mostrareSchermo(inputDimensione);
         stampareGrigliaPartita(&partita);
         stampareTabellaInput();
 
@@ -83,7 +83,7 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
     stampareVittoria();
 }
 
-void mostraSchermo(int dimensione) {
+void mostrareSchermo(int dimensione) {
     if (dimensione != 16) {
         stampareTitoloPartita();
     } else {
@@ -161,7 +161,7 @@ void disegnareCornice() {
     printf("+------------+\n");
 }
 
-void convertiDimensione(int *dimensione) {
+void convertireDimensione(int *dimensione) {
     if (*dimensione == 1) {
         *dimensione = 4;
     } else {
@@ -600,7 +600,7 @@ void avviarePartitaContinuata(Partita *partita) {
     int inputSpeciale = FALSO;
 
     while (grigliaPiena == FALSO) {
-        mostraSchermo(dimensione);
+        mostrareSchermo(dimensione);
         stampareGrigliaPartita(partita);
         stampareTabellaInput();
 

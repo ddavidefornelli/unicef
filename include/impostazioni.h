@@ -3,7 +3,7 @@
 
 #include "interfaccia_util.h"
 
-void loopMenuDifficolta();
+void avviareMenuDifficolta();
 int collezionaDifficolta(int *inputDifficolta);
 int collezionaDimensione(int *inputDimensione);
 void stampareMenuDifficolta();

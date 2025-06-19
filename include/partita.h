@@ -20,7 +20,7 @@ void avviarePartita(const char *nomePartita, int difficolta, int dimensione);
 void avviarePartitaContinuata(Partita *partita);
 
 // Funzioni di visualizzazione
-void mostraSchermo(int dimensione);
+void mostrareSchermo(int dimensione);
 void stampareTitoloPartita(void);
 void stampareVittoria(void);
 void stampareTabellaInput(void);
@@ -34,7 +34,7 @@ void stampareRigheGriglia(Griglia griglia, int dimensione, int numeroSottoquadra
 void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrato, int riga);
 
 // Funzioni di utilità per dimensioni e difficoltà
-void convertiDimensione(int *dimensione);
+void convertireDimensione(int *dimensione);
 int calcolaSottoquadrato(int dimensione);
 int calcolareCelleDaRimuovere(int difficolta);
 

@@ -68,20 +68,18 @@ void scrivereValGrigliaPartita(Partita *partita, int valore, int riga, int colon
     scrivereValGriglia(&partita->grigliaPartita, riga, colonna, valore);
 }
 
-// Dichiarazione della funzione esterna
-void convertiDifficoltaEDimensione(int *inputDifficolta, int *inputDimensione);
-
 void inizializzareGrigliaPartita(Partita *partita, int inputDimensione) {
-    int i = 0;  // Inizializza i
+    int i ;  
     int j;
     
     // Converti i valori prima di usarli
-    convertiDimensione(&inputDimensione);
+    convertireDimensione(&inputDimensione);
     
     scrivereDimGrigliaPartita(partita, inputDimensione);
          
     partita->grigliaPartita.valoriGriglia = malloc(inputDimensione * sizeof(int *));
     
+    i = 0;
     while (i < inputDimensione) {
         partita->grigliaPartita.valoriGriglia[i] = malloc(inputDimensione * sizeof(int));
         j = 0;  // Inizializza j per ogni riga
