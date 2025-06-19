@@ -1,5 +1,5 @@
-#ifndef MENUCARICAPARTITA_H 
-#define MENUCARICAPARTITA_H
+#ifndef CARICAPARTITA_H 
+#define CARICAPARTITA_H
 
 #include "interfaccia_util.h"
 

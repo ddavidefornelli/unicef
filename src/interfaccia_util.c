@@ -143,7 +143,7 @@ void tornareHomepage(int *input, int posRiga, int posColonna){
         pulireBuffer();
     }
     else if (*input == 0) {
-      loopMenuPrincipale();
+      avviareMenuPrincipale();
       inMenuCorrente = 0;
     }
   }

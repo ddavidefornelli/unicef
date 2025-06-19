@@ -1,5 +1,5 @@
-#ifndef MENUDIFFICOLTA_H 
-#define MENUDIFFICOLTA_H
+#ifndef IMPOSTAZIONI_H 
+#define IMPOSTAZIONI_H
 
 #include "interfaccia_util.h"
 

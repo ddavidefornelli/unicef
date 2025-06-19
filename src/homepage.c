@@ -16,9 +16,8 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
 #include <stdlib.h>
 #include "homepage.h"
 #include "interfaccia_util.h"
-#include "menuCaricaPartita.h"
-#include "menuDifficolta.h"
-#include "menuStatistiche.h"
+#include "caricapartita.h"
+#include "impostazioni.h"
 
 #define LARGHEZZA_TERMINALE 80
 
@@ -35,8 +34,7 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
 
 #define NUOVA_PARTITA 1
 #define PARTITE_SALVATE 2
-#define STATISTICHE 3
-#define ESCI 4
+#define ESCI 3
 
 #define OPZIONE_MIN 1
 #define OPZIONE_MAX 4
@@ -75,8 +73,6 @@ void stampareMenuHomepage(){
   spostareCursore(OPZIONE_START_RIGA + 1, OPZIONE_COLONNA);
   printf("[2] Partite Salvate");
   spostareCursore(OPZIONE_START_RIGA + 2, OPZIONE_COLONNA);
-  printf("[3] Statistiche");
-  spostareCursore(OPZIONE_START_RIGA + 3, OPZIONE_COLONNA);
   printf("[4] Esci");
   spostareCursore(PROMPT_RIGA, PROMPT_COLONNA);
   printf("Inserisci una scelta (1 - 4)");
@@ -136,10 +132,6 @@ void collezionareInput(int *input) {
     }
     else if (*input == PARTITE_SALVATE) {
       stampareMenuCaricaPartita();
-      inMenuPrinipale = 0;
-    }
-    else if (*input == STATISTICHE) {
-      stampareMenuStatistiche();
       inMenuPrinipale = 0;
     }
     else if (*input == ESCI) {

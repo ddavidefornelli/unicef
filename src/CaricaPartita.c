@@ -1,6 +1,7 @@
 #include "interfaccia_util.h"
 #include "homepage.h"
 #include "partita.h"
+#include "caricapartita.h"
 #include <dirent.h>
 #include <string.h>
 #include <stdio.h>
@@ -136,7 +137,7 @@ void stampareMenuCaricaPartita(){
     if (fgets(nomeScelto, 128, stdin) != NULL) {
       nomeScelto[strlen(nomeScelto) - 1] = '\0';
       if (strcmp(nomeScelto, "0") == 0) {
-        loopMenuPrincipale();
+        avviareMenuPrincipale();
         continua = 0;
       } else {
         const char *file = trovaFile(nomiPartite, numeroPartite, nomeScelto);

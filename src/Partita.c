@@ -312,7 +312,7 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
     return grigliaPiena;
 }
 
-int trovaCellaVuota(Griglia *griglia, int dimensione) {
+int trovaCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna) {
     int i = 0;
     int j;
     int trovato = FALSO;
@@ -321,6 +321,8 @@ int trovaCellaVuota(Griglia *griglia, int dimensione) {
         j = 0;
         while (j < dimensione && trovato == FALSO) {
             if (leggereValGriglia(*griglia, i, j) == 0) {
+                riga = &i;
+                colonna = &j;
                 trovato = VERO;
             } else {
                 j = j + 1;
@@ -456,7 +458,7 @@ int collezionaInput(Griglia *griglia, int *inputRiga, int posRiga) {
             resetZonaInput(posRiga, COLONNA_INPUT);
         } else {
             if (*inputRiga == 32) {
-                loopMenuPrincipale();
+                avviareMenuPrincipale();
             } else {
                 valida = VERO;
             }
