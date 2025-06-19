@@ -1,5 +1,5 @@
 #include "interfaccia_util.h"
-#include "menuDifficolta.h"
+#include "Impostazioni.h"
 #include "partita.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,7 +44,7 @@ void loopMenuDifficolta() {
   collezionaDifficolta(&inputDifficolta);
   collezionaDimensione(&inputDimensione);
   collezionaNomeGioco(nomePartita);
-  loopPartita(nomePartita, inputDifficolta, inputDimensione);
+  avviarePartita(nomePartita, inputDifficolta, inputDimensione);
 }
 
 void stampareTitoloImpostazioni(){
