@@ -1,3 +1,29 @@
+/*
+AUTORI: Onofrio de Robertis
+        Michele Amato
+
+DATA INIZIO: 27/05/2025
+
+NOME FILE: tipiDiDato.c
+
+Scopo delle funzioni presenti:
+- leggereDimGriglia: restituisce la dimensione della griglia.
+- leggereValGriglia: restituisce il valore in una cella specifica della griglia.
+- scrivereDimGriglia: imposta la dimensione della griglia.
+- scrivereValGriglia: imposta un valore in una cella specifica della griglia.
+- leggereDifficoltaImp: restituisce il campo difficoltà di Impostazioni.
+- leggereDimGrigliaImp: restituisce il campo dimensione della griglia di Impostazioni.
+- scrivereDifficoltaImp: imposta il campo difficoltà di Impostazioni.
+- scrivereDimensioneImp: imposta il cmapo dimensione della griglia di Impostazioni.
+- leggereImpPartita: restituisce il campo Impostazioni da una Partita.
+- leggereGrigliaPartita: restituisce il campo Griglia di Partita.
+- leggereNomePartita: restituisce il nome della partita.
+- scrivereImpPartita: imposta i campi difficoltà e dimensione del campo impostazioni di Partita.
+- scrivereNomePartita: imposta il nome della partita.
+- scrivereDimGrigliaPartita: imposta il campo dimensione della griglia del campo Griglia di Partita.
+- scrivereValGrigliaPartita: imposta un valore in una cella della Griglia di Partita.
+- inizializzareGrigliaPartita: alloca e inizializza a zero la griglia di gioco con dimensione scelta.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

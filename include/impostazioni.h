@@ -6,6 +6,8 @@
 void avviareMenuDifficolta();
 int collezionareDifficolta(int *inputDifficolta);
 int collezionareDimensione(int *inputDimensione);
+int collezionareDifficolta(int *inputDifficolta);
+int collezionareDimensione(int *inputDimensione);
 void stampareMenuDifficolta();
 void stampareTitoloImpostazioni();
 void stampareMenuImpostazioni();
