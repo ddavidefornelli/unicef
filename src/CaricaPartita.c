@@ -1,3 +1,21 @@
+/*
+AUTORI: Davide Fornelli
+        Antoniciello Giuliano
+
+DATA INIZIO: 04/05/2025
+
+NOME FILE: Home Page sudoku
+
+Scopo di ogni funzione presente:
+- raccoglierePartiteSalvate: legge dalla cartella database i file che rappresentano le partite salvate dall’utente. Restituisce il numero totale di partite trovate.
+- liberaPartite: liberare la memoria utilizzata per contenere i nomi delle partite.
+- trovaFile: ricerca all'interno della cartella database(dove vengono salvate le partite) la partita che l'utente desidera giocare.
+- stampareTitoloCaricaPartita: stampa la scritta 'CARICA PARTITA'.
+- stampareZonaInput: stampa la cornice che identifica la zona dove digitare i valori da inserire all'interno della griglia del sudoku
+- stampareMenuCaricaPartita: Gestisce il caricamento di una partita salvata.
+
+*/
+
 #include "interfaccia_util.h"
 #include "homepage.h"
 #include "partita.h"
@@ -173,5 +191,3 @@ void stampareMenuCaricaPartita(){
   }
   liberaPartite(nomiPartite, numeroPartite);
 }
-
-

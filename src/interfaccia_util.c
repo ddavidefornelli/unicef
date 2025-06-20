@@ -1,15 +1,22 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "homepage.h"
-
 /*
+AUTORI: Davide Fornelli
+
+DATA INIZIO: 27/05/2025
+
+NOME FILE: interfaccia_util.c
+
+Scopo delle funzioni presenti:
 stampaASinistra() -> funzione utilizzata per centrare a sinistra sul terminale;
 stampaCentrato() -> funzione utilizzata per centrare sul terminale il menù di partenza;
 mostraMenu() -> funzione utilizzata per stampare a video il menù di partenza;
 collezionaInput() -> funzione utilizzata per collezionare l' input dell utente;
 spostareCursore() -> funzione utilizzata per spostare la posizione del cursore nel terminale;
 */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "homepage.h"
 
 typedef enum {
   LARGHEZZA_TERMINALE = 80,

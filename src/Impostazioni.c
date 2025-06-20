@@ -1,3 +1,25 @@
+/*
+AUTORI: Davide Fornelli
+        Giuliano Antoniciello
+
+DATA INIZIO: 27/05/2025
+
+NOME FILE: tipiDiDato.c
+
+Scopo delle funzioni presenti:
+- stampareMenuDifficolta: Pulisce lo schermo e mostra a video il titolo e il menu delle impostazioni.
+- avviareMenuDifficolta: Gestisce l’avvio di una nuova partita. Mostra il menu delle impostazioni e raccoglie: difficoltà, la dimensione della griglia
+                        e il nome della partita e infine avvia la partita con i parametri raccolti.
+- stampareTitoloImpostazioni: Stampa il titolo per la sezione "Impostazioni".
+- stampareMenuImpostazioni: Stampa le opzioni del menu delle impostazioni, incluse:
+                        difficoltà: facile, intermedia, difficile
+                        dimensione della griglia: piccola, media, grande
+                        spazio per l' inserimento del nome della partita
+- collezionaDifficolta: Richiede all’utente di inserire un valore intero che rappresenti la difficoltà della partita.
+- collezionaDimensione: Richiede all’utente un valore numerico corrispondente alla dimensione della griglia di gioco.
+- collezionaNomeGioco: Richiede all’utente il nome da assegnare alla nuova partita.
+ */
+
 #include "interfaccia_util.h"
 #include "Impostazioni.h"
 #include "partita.h"

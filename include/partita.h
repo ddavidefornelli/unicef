@@ -34,15 +34,15 @@ void stampareRigheGriglia(Griglia griglia, int dimensione, int numeroSottoquadra
 void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrato, int riga);
 
 // Funzioni di utilità per dimensioni e difficoltà
-void convertiDimensione(int *dimensione);
-int calcolaSottoquadrato(int dimensione);
+void convertireDimensione(int *dimensione);
+int calcolareSottoquadrato(int dimensione);
 int calcolareCelleDaRimuovere(int difficolta);
 
 // Funzioni di generazione e riempimento Sudoku
 void generareSudoku(Partita *partita, int dimensione, int difficolta);
 int riempireGriglia(Griglia *griglia, int dimensione);
 void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta);
-int trovaCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna);
+int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna);
 
 // Funzioni di validazione
 int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero);

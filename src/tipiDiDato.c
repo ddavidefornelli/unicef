@@ -24,6 +24,7 @@ Scopo delle funzioni presenti:
 - scrivereValGrigliaPartita: imposta un valore in una cella della Griglia di Partita.
 - inizializzareGrigliaPartita: alloca e inizializza a zero la griglia di gioco con dimensione scelta.
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

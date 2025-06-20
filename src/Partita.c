@@ -1,3 +1,65 @@
+/*
+AUTORI: Giuliano Antoniciello
+        Davide Fornelli
+        Onofrio de Robertis
+        Michele Amato
+
+DATA INIZIO: 28/05/2025
+
+NOME FILE: partita.c
+
+Scopo delle funzioni presenti:
+- avviarePartita: gestisce l'intero ciclo di gioco, dall'inizializzazione alla vittoria.
+- mostraSchermo: stampa la schermata iniziale della partita in base alla dimensione.
+- stampareTitoloPartita: stampa il titolo della partita.
+- stampareVittoria: mostra il messaggio finale di vittoria.
+- stampareTabellaInput: disegna la tabella per l'inserimento di riga, colonna e valore.
+- disegnareCornice: stampa la cornice decorativa per l'input utente.
+- convertireDimensione: converte un input numerico in dimensione reale della griglia (4, 9, 16).
+- rimuovereNumeri: rimuove celle dalla griglia in base alla difficoltà scelta.
+- calcolareCelleDaRimuovere: calcola la percentuale di celle da rimuovere in base alla difficoltà.
+- verificareValidita: verifica se un numero può essere inserito in una cella (riga, colonna, quadrato).
+- verificareRiga: controlla se un numero è già presente nella riga.
+- verificareColonna: controlla se un numero è già presente nella colonna.
+- verificareSottoquadrato: controlla se un numero è già presente nel quadrato interno.
+- riempireGriglia: riempie ricorsivamente la griglia con una soluzione valida.
+- trovareCellaVuota: trova una cella ancora vuota nella griglia.
+- generareSudoku: genera una griglia completa e ne rimuove celle in base alla difficoltà.
+- stampareGrigliaPartita: gestisce la stampa completa della griglia di gioco.
+- calcolareSottoquadrato: calcola la dimensione del sotto-quadrato in base alla dimensione totale.
+- stampareIntestazioneColonne: stampa l’intestazione delle colonne numerate.
+- stampareLineaOrizzontale: stampa una riga di separazione tra righe della griglia.
+- stampareRigheGriglia: stampa tutte le righe della griglia.
+- stampareRigaGriglia: stampa una singola riga della griglia.
+- collezionaInput: raccoglie input utente con controlli di validità e messaggi d’errore.
+- collezionaRiga: raccoglie l’input per la riga.
+- collezionaColonna: raccoglie l’input per la colonna.
+- collezionaValore: raccoglie l’input per il valore da inserire.
+- controllareGrigliaPiena: verifica se tutte le celle della griglia sono state riempite.
+- salvarePartitaCorrente: salva lo stato attuale della partita su file.
+- salvarePartita: scrive su file tutti i dati della partita.
+- salvareValoriGriglia: scrive i valori della griglia sul file.
+- caricaPartita: carica una partita precedentemente salvata da file.
+- caricaValoriGriglia: legge e carica i valori della griglia da file.
+- avviarePartitaContinuata: permette di continuare una partita precedentemente salvata.
+
+MODIFICHE APPORTATE:
+Nel giorno 17/06/25, Davide Fornelli ha aggiornato la funzione: verificareValidita() per renderla più leggibile separandola nelle sottofunzioni:
+                    su riga, colonna e sottoquadrato(verificareRiga, verificareColonna, verificareSottoquadrato), per avere un codice più leggibile e modulare
+
+Nel giorno 18/06/25, Giuliano Antoniciello ha inserito la funziona: calcolaSottoquadrato() per calcolare dinamicamente la dimensione del quadrante in base alla dimensione della griglia.
+                    In questo modo il codice è più dinamico e flessibile.
+
+Nel giorno 20/06/25, Giuliano Antoniciello ha inserito le funzioni per il salvataggio e caricamento partita (salvarePartita, caricaPartita), per permettere di interrompere e riprendere 
+                    una partita in momenti successivi
+
+Nel giorno 20/06/25, Michele Amato ha inserito la funzione: stampareGrigliaPartita() per aumentare la leggibilità della griglia sul terminale
+
+Nel giorno 21/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato le funzioni: collezionaInput(), riempireGriglia() e mostraSchermo() per rendere il codice più compatto
+                    e metterlo al sicuro da eventuali arresti anomali
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -42,7 +104,7 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
 
     inizializzareGrigliaPartita(&partita, inputDimensione);
     scrivereNomePartita(&partita, (char *)inputNome);
-    convertiDimensione(&inputDimensione);
+    convertireDimensione(&inputDimensione);
     generareSudoku(&partita, inputDimensione, inputDifficolta);
 
     while (grigliaPiena == FALSO) {
@@ -159,7 +221,7 @@ void disegnareCornice() {
     printf("+------------+\n");
 }
 
-void convertiDimensione(int *dimensione) {
+void convertireDimensione(int *dimensione) {
     if (*dimensione == 1) {
         *dimensione = 4;
     } else {
@@ -289,7 +351,7 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
     /*indica se la griglia è piena*/
     int grigliaPiena = FALSO;
 
-    cellaVuota = trovaCellaVuota(griglia, dimensione, &riga, &colonna);
+    cellaVuota = trovareCellaVuota(griglia, dimensione, &riga, &colonna);
     if (cellaVuota == FALSO) {
         grigliaPiena = VERO;
     } else {
@@ -312,7 +374,7 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
     return grigliaPiena;
 }
 
-int trovaCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna) {
+int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna) {
     int i = 0;
     int j;
     int trovato = FALSO;
@@ -344,7 +406,7 @@ void generareSudoku(Partita *partita, int dimensione, int difficolta) {
 void stampareGrigliaPartita(Partita *partita) {
     Griglia griglia = leggereGrigliaPartita(*partita);
     int dimensione = leggereDimGriglia(griglia);
-    int numeroSottoquadrato = calcolaSottoquadrato(dimensione);
+    int numeroSottoquadrato = calcolareSottoquadrato(dimensione);
     
     stampareIntestazioneColonne(dimensione, numeroSottoquadrato);
     stampareLineaOrizzontale(dimensione, numeroSottoquadrato);
@@ -352,7 +414,7 @@ void stampareGrigliaPartita(Partita *partita) {
     stampareLineaOrizzontale(dimensione, numeroSottoquadrato);
 }
 
-int calcolaSottoquadrato(int dimensione) {
+int calcolareSottoquadrato(int dimensione) {
     int risultato = 2;
     if (dimensione == 9) {
         risultato = 3;

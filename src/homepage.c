@@ -1,17 +1,22 @@
 /*
-Autori:
-Fornelli Davide
-Antoniciello Giuliano
+Autori: Davide Fornelli
+        Antoniciello Giuliano
+
 Data di inizio di scrittura del file: 
-04/04/2025
+        04/05/2025
+
 Nome del file:
-Home Page sudoku
+        Home Page sudoku
+
 Scopo di ogni funzione presente:
-mostraMenu() -> funzione utilizzata per stamparere a video il menù di partenza;
-Modifiche apportate:
-Nel giorno 06/04/2025, Fornelli Davide e Antonciello Giuliano, hanno inserito la funzioni stampareASinistra() e modificato layout e interfaccia
-la modifica è stata effettuata per permettere una comprensione più chiara del menù di gioco
+- stampareTitoloHomepage: Visualizza il titolo del gioco al centro del terminale.
+- stampareMenuHomepage: Stampa le opzioni del menu principale.
+- stampareMenuPrincipale: Pulisce lo schermo e mostra sia il titolo che il menu principale del gioco.
+- avviareMenuPrincipale: Avvia il menu principale mostrando il contenuto a schermo.
+- collezionareInput: Gestisce l’acquisizione dell’input numerico da parte dell’utente nel menu principale.
+
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "homepage.h"
@@ -42,18 +47,6 @@ la modifica è stata effettuata per permettere una comprensione più chiara del 
 #define VERDE "\033[32m"
 #define RESET "\033[0m"
 
-/************************************************************ 
- *  FUNZIONE: stampareMenuPrincipale()                      *
- *  DESCRIZIONE: Mostra il menù iniziale del gioco          *
- *                                                          *
- *  ARGOMENTI: //                                           *
- *                                                          *
- *  RITORNO: //                                             *
- *                                                          *
- *  MODIFICHE:                                              *
- *  2025/03/26 - Prima versione                             *
- ************************************************************/
-
 void stampareTitoloHomepage(){
   printf(VERDE);
   printf("\n");
@@ -65,6 +58,18 @@ void stampareTitoloHomepage(){
   printf(RESET);
 }
 
+
+/************************************************************ 
+ *  FUNZIONE: stampareMenuPrincipale()                      *
+ *  DESCRIZIONE: Mostra il menù iniziale del gioco          *
+ *                                                          *
+ *  ARGOMENTI: //                                           *
+ *                                                          *
+ *  RITORNO: //                                             *
+ *                                                          *
+ *  MODIFICHE:                                              *
+ *  2025/03/26 - Prima versione                             *
+ ************************************************************/
 void stampareMenuHomepage(){
   spostareCursore(TITOLO_RIGA, TITOLO_COLONNA);
   printf("- MENU -");
@@ -85,6 +90,14 @@ void stampareMenuPrincipale()
   stampareMenuHomepage();
 }
 
+
+void avviareMenuPrincipale(){
+  int input;
+  stampareMenuPrincipale();
+  collezionareInput(&input); 
+}
+
+
 /************************************************************ 
  *  FUNZIONE: collezionareInput()                             *
  *  DESCRIZIONE: richiede un qualsiasi input con la stampare  *
@@ -100,13 +113,6 @@ void stampareMenuPrincipale()
  *  2025/03/28 - Seconda versione                           *
  *  2025/04/06 - Terza versione                             *
  *************************************************************/
-
-void avviareMenuPrincipale(){
-  int input;
-  stampareMenuPrincipale();
-  collezionareInput(&input); 
-}
-
 void collezionareInput(int *input) {
   int inMenuPrinipale; 
 
