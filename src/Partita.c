@@ -47,7 +47,7 @@ MODIFICHE APPORTATE:
 Nel giorno 17/06/25, Davide Fornelli ha aggiornato la funzione: verificareValidita() per renderla più leggibile separandola nelle sottofunzioni:
                     su riga, colonna e sottoquadrato(verificareRiga, verificareColonna, verificareSottoquadrato), per avere un codice più leggibile e modulare
 
-Nel giorno 18/06/25, Giuliano Antoniciello ha inserito la funziona: calcolaSottoquadrato() per calcolare dinamicamente la dimensione del quadrante in base alla dimensione della griglia.
+Nel giorno 18/06/25, Giuliano Antoniciello ha inserito la funziona: calcolareSottoquadrato() per calcolare dinamicamente la dimensione del quadrante in base alla dimensione della griglia.
                     In questo modo il codice è più dinamico e flessibile.
 
 Nel giorno 20/06/25, Giuliano Antoniciello ha inserito le funzioni per il salvataggio e caricamento partita (salvarePartita, caricaPartita), per permettere di interrompere e riprendere 
@@ -89,6 +89,24 @@ Nel giorno 21/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato le
 #define BLU "\033[34m"
 #define RESET "\033[0m"
 
+
+/*******************************************************
+* FUNZIONE: avviarePartita                             *
+*                                                      *
+* DESCRIZIONE: Avvia una nuova partita di Sudoku,      *
+*              gestendo la logica di gioco fino alla   *
+*              sua conclusione.                        *
+*                                                      *
+* ARGOMENTI:                                           *
+* inputNome: nome della partita (stringa)              *
+* inputDifficolta: livello di difficoltà               *
+* inputDimensione: dimensione della griglia            *
+*                                                      *
+* RITORNO: permette all'utente di giocare al Sudoku    *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensione) {
     Partita partita;
     int valDaInserire, riga, colonna;
@@ -143,6 +161,22 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
     stampareVittoria();
 }
 
+
+/*******************************************************
+* FUNZIONE: mostraSchermo                              *
+*                                                      *
+* DESCRIZIONE: Pulisce lo schermo e, se la dimensione  *
+*              non è 16, stampa anche il titolo del    *
+*              gioco.                                  *
+*                                                      *
+* ARGOMENTI:                                           *
+* dimensione: dimensione della griglia di gioco        *
+*                                                      *
+* RITORNO: Terminale aggiornato                        *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void mostraSchermo(int dimensione) {
     if (dimensione != 16) {
         stampareTitoloPartita();
@@ -152,6 +186,21 @@ void mostraSchermo(int dimensione) {
     }
 }
 
+
+/*******************************************************
+* FUNZIONE: stampareTitoloPartita                      *
+*                                                      *
+* DESCRIZIONE: Pulisce lo schermo e stampa il titolo   *
+*              artistico del gioco in formato ASCII,   *
+*              centrato e colorato.                    *
+*                                                      *
+* ARGOMENTI: Nessuno                                   *
+*                                                      *
+* RITORNO: Titolo stampato al centro del terminale     *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void stampareTitoloPartita() {
     printf(BLU);
     pulireSchermo();
@@ -165,6 +214,20 @@ void stampareTitoloPartita() {
     printf(RESET);
 }
 
+
+/*********************************************************
+* FUNZIONE: stampareVittoria                             *
+*                                                        *
+* DESCRIZIONE: Pulisce lo schermo e stampa a video un    *
+*              messaggio di vittoria.                    *
+*                                                        *
+* ARGOMENTI: Nessuno                                     *
+*                                                        *
+* RITORNO: Terminale aggiornato con la stampa del titolo *
+*                                                        *
+* MODIFICHE:                                             *
+* 2025/06/23 - Prima versione                            *
+*********************************************************/
 void stampareVittoria() {
     int input;
     pulireSchermo();
@@ -188,6 +251,23 @@ void stampareVittoria() {
     tornareHomepage(&input, RIGA_INPUT - 10, 30);
 }
 
+
+/*******************************************************
+* FUNZIONE: stampareTabellaInput                       *
+*                                                      *
+* DESCRIZIONE: Disegna la cornice e stampa la tabella  *
+*              con le etichette per l'inserimento di   *
+*              riga, colonna e valore. Mostra anche le *
+*              istruzioni per salvare o tornare alla   *
+*              homepage.                               *
+*                                                      *
+* ARGOMENTI: Nessuno                                   *
+*                                                      *
+* RITORNO: Terminale aggiornato                        *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void stampareTabellaInput() {
     disegnareCornice();
     
@@ -201,6 +281,21 @@ void stampareTabellaInput() {
     printf("\033[34mDIGITA 32 per HOMEPAGE   |   DIGITA 31 per SALVARE\033[0m");
 }
 
+
+/*******************************************************
+* FUNZIONE: disegnareCornice                           *
+*                                                      *
+* DESCRIZIONE: Disegna a schermo una cornice grafica   *
+*              per l'input, con intestazione e         *
+*              spazio per riga, colonna e valore.      *
+*                                                      *
+* ARGOMENTI: Nessuno                                   *
+*                                                      *
+* RITORNO: Terminale aggiornato                        *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void disegnareCornice() {
     int i = 0;
     
@@ -221,6 +316,23 @@ void disegnareCornice() {
     printf("+------------+\n");
 }
 
+
+/*******************************************************
+* FUNZIONE: convertireDimensione                       *
+*                                                      *
+* DESCRIZIONE: Converte un valore numerico associato   *
+*              a una scelta dell’utente (1, 2 o 3)     *
+*              nella dimensione effettiva della griglia*
+*              (4, 9 o 16).                            *
+*                                                      *
+* ARGOMENTI:                                           *
+* dimensione: puntatore alla dimensione scelta         *
+*                                                      *
+* RITORNO: valore di dimensione aggiornato             *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void convertireDimensione(int *dimensione) {
     if (*dimensione == 1) {
         *dimensione = 4;
@@ -235,6 +347,25 @@ void convertireDimensione(int *dimensione) {
     }
 }
 
+
+/********************************************************
+* FUNZIONE: rimuovereNumeri                             *
+*                                                       *
+* DESCRIZIONE: Rimuove un certo numero di celle dalla   *
+*              griglia del Sudoku, in base alla         *
+*              difficoltà selezionata. Le celle vengono *
+*              scelte casualmente.                      *
+*                                                       *
+* ARGOMENTI:                                            *
+* griglia: puntatore alla griglia di gioco              *
+* dimensione: dimensione della griglia                  *
+* difficolta: livello di difficoltà selezionato         *
+*                                                       *
+* RITORNO: griglia di gioco aggiornata                  *
+*                                                       *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
     int cellaGriglia = dimensione * dimensione;
     int celleDaRimuovere = cellaGriglia * calcolareCelleDaRimuovere(difficolta) / 100;
@@ -254,6 +385,23 @@ void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
     }
 }
 
+
+/*******************************************************
+* FUNZIONE: calcolareCelleDaRimuovere                  *
+*                                                      *
+* DESCRIZIONE: Restituisce la percentuale di celle da  *
+*              rimuovere in base alla difficoltà       *
+*              scelta dall’utente.                     *
+*                                                      *
+* ARGOMENTI:                                           *
+* difficolta: livello di difficoltà selezionato        *
+*                                                      *
+* RITORNO: Intero che rappresenta la percentuale di    *
+*          celle da rimuovere                          *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 int calcolareCelleDaRimuovere(int difficolta) {
     int risultato;
     if(difficolta == DIFFICOLTA_FACILE)  {
@@ -266,6 +414,30 @@ int calcolareCelleDaRimuovere(int difficolta) {
     return risultato;
 }
 
+
+/**********************************************************
+* FUNZIONE: verificareValidita                            *
+*                                                         *
+* DESCRIZIONE: Verifica se un numero può essere           *
+*              inserito in una specifica posizione        *
+*              della griglia Sudoku, controllando la      *
+*              validità rispetto a riga, colonna e        *
+*              sottoquadrato.                             *
+*                                                         *
+* ARGOMENTI:                                              *
+* griglia: puntatore alla struttura della griglia         *
+* dimensione: dimensione della griglia                    *
+* riga: indice della riga in cui inserire il numero       *
+* colonna: indice della colonna in cui inserire il numero *
+* numero: numero da inserire                              *
+*                                                         *
+* RITORNO:                                                *
+* VERO se il numero può essere inserito senza violare     *
+* le regole del Sudoku, FALSO altrimenti                  *
+*                                                         *
+* MODIFICHE:                                              *
+* 2025/06/23 - Prima versione                             *
+**********************************************************/
 int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
     int risultato = VERO;
     
@@ -284,6 +456,27 @@ int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, 
     return risultato;
 }
 
+
+/*******************************************************
+* FUNZIONE: verificareRiga                             *
+*                                                      *
+* DESCRIZIONE: Controlla se un numero è già presente   *
+*              in una specifica riga della griglia     *
+*              Sudoku.                                 *
+*                                                      *
+* ARGOMENTI:                                           *
+* griglia: puntatore alla struttura della griglia      *
+* dimensione: dimensione della griglia                 *
+* riga: indice della riga da controllare               *
+* numero: numero da cercare nella riga                 *
+*                                                      *
+* RITORNO:                                             *
+* VERO se il numero non è presente nella riga,         *
+* FALSO se invece è già presente                       *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 int verificareRiga(Griglia *griglia, int dimensione, int riga, int numero) {
     int i = 0;
     int risultato = VERO;
@@ -299,6 +492,27 @@ int verificareRiga(Griglia *griglia, int dimensione, int riga, int numero) {
     return risultato;
 }
 
+
+/*******************************************************
+* FUNZIONE: verificareColonna                          *
+*                                                      *
+* DESCRIZIONE: Controlla se un numero è già presente   *
+*              in una specifica colonna della griglia  *
+*              Sudoku.                                 *
+*                                                      *
+* ARGOMENTI:                                           *
+* griglia: puntatore alla struttura della griglia      *
+* dimensione: dimensione della griglia                 *
+* colonna: indice della colonna da controllare         *
+* numero: numero da cercare nella colonna              *
+*                                                      *
+* RITORNO:                                             *
+* VERO se il numero non è presente nella colonna,      *
+* FALSO se invece è già presente                       *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 int verificareColonna(Griglia *griglia, int dimensione, int colonna, int numero) {
     int i = 0;
     int risultato = VERO;
@@ -314,6 +528,29 @@ int verificareColonna(Griglia *griglia, int dimensione, int colonna, int numero)
     return risultato;
 }
 
+
+/**********************************************************
+* FUNZIONE: verificareSottoquadrato                        *
+*                                                          *
+* DESCRIZIONE: Controlla se un numero è già presente       *
+*              nel sottoquadrato (blocco) della griglia    *
+*              Sudoku corrispondente alla posizione        *
+*              specificata da riga e colonna.              *
+*                                                          *
+* ARGOMENTI:                                               *
+* griglia: puntatore alla struttura della griglia          *
+* dimensione: dimensione della griglia                     *
+* riga: indice della riga della cella da controllare       *
+* colonna: indice della colonna della cella da controllare *
+* numero: numero da cercare nel sottoquadrato              *
+*                                                          *
+* RITORNO:                                                 *
+* VERO se il numero non è presente nel sottoquadrato,      *
+* FALSO se invece è già presente                           *
+*                                                          *
+* MODIFICHE:                                               *
+* 2025/06/23 - Prima versione                              *
+***********************************************************/
 int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
     int dimensioneQuadrato = (int)sqrt(dimensione);
     int inizioRiga = riga - riga % dimensioneQuadrato;
@@ -339,6 +576,26 @@ int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colo
     return risultato;
 }
 
+
+/*******************************************************
+* FUNZIONE: riempireGriglia                            *
+*                                                      *
+* DESCRIZIONE: Riempie ricorsivamente la griglia       *
+*              Sudoku utilizzando backtracking,        *
+*              cercando di inserire numeri validi      *
+*              in celle vuote fino al completamento.   *
+*                                                      *
+* ARGOMENTI:                                           *
+* griglia: puntatore alla struttura della griglia      *
+* dimensione: dimensione della griglia                 *
+*                                                      *
+* RITORNO:                                             *
+* VERO se la griglia è stata riempita correttamente,   *
+* FALSO se non è possibile completare la griglia       *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 int riempireGriglia(Griglia *griglia, int dimensione) {
     int riga = 0;
     int colonna = 0;
@@ -374,6 +631,30 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
     return grigliaPiena;
 }
 
+
+/*******************************************************
+* FUNZIONE: trovareCellaVuota                          *
+*                                                      *
+* DESCRIZIONE: Cerca la prima cella vuota (valore 0)   *
+*              nella griglia Sudoku, e ne restituisce  *
+*              la posizione tramite i puntatori riga e *
+*              colonna.                                *
+*                                                      *
+* ARGOMENTI:                                           *
+* griglia: puntatore alla struttura della griglia      *
+* dimensione: dimensione della griglia                 *
+* riga: puntatore a intero per memorizzare l'indice    *
+*       della riga della cella vuota                   *
+* colonna: puntatore a intero per memorizzare l'indice *
+*         della colonna della cella vuota              *
+*                                                      *
+* RITORNO:                                             *
+* VERO se è stata trovata una cella vuota,             *
+* FALSO se non ci sono celle vuote                     *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna) {
     int i = 0;
     int j;
@@ -398,11 +679,49 @@ int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna)
     return trovato;
 }
 
+
+/*********************************************************
+* FUNZIONE: generareSudoku                               *
+*                                                        *
+* DESCRIZIONE: Genera una nuova griglia Sudoku           *
+*              completa e ne rimuove alcuni numeri       *
+*              in base al livello di difficoltà scelto.  *
+*                                                        *
+* ARGOMENTI:                                             *
+* partita: puntatore alla struttura partita che contiene *
+*          la griglia Sudoku                             *
+* dimensione: dimensione della griglia                   *
+* difficolta: livello di difficoltà che determina quanti *
+*            numeri verranno rimossi                     *
+*                                                        *
+* RITORNO: partita aggiornata con la griglia di gioco    *
+*          creata                                        *
+*                                                        *
+* MODIFICHE:                                             *
+* 2025/06/23 - Prima versione                            *
+*********************************************************/
 void generareSudoku(Partita *partita, int dimensione, int difficolta) {
     riempireGriglia(&partita->grigliaPartita, dimensione);
     rimuovereNumeri(&partita->grigliaPartita, dimensione, difficolta);
 }
 
+
+/*******************************************************
+* FUNZIONE: stampareGrigliaPartita                      *
+*                                                       *
+* DESCRIZIONE: Stampa a video la griglia Sudoku         *
+*              corrente della partita, includendo       *
+*              intestazioni di colonna e linee          *
+*              orizzontali per una migliore leggibilità *
+*                                                       *
+* ARGOMENTI:                                            *
+* partita: puntatore alla struttura della partita       *
+*                                                       *
+* RITORNO: Terminale aggiornato                         *
+*                                                       *
+* MODIFICHE:                                            *
+* 20/06/25 - Prima versione                             *
+********************************************************/
 void stampareGrigliaPartita(Partita *partita) {
     Griglia griglia = leggereGrigliaPartita(*partita);
     int dimensione = leggereDimGriglia(griglia);
@@ -414,6 +733,25 @@ void stampareGrigliaPartita(Partita *partita) {
     stampareLineaOrizzontale(dimensione, numeroSottoquadrato);
 }
 
+
+/********************************************************
+* FUNZIONE: calcolareSottoquadrato                       *
+*                                                        *
+* DESCRIZIONE: Calcola la dimensione del sottoquadrato   *
+*              (blocco) di una griglia Sudoku            *
+*              in base alla dimensione totale della      *
+*              griglia.                                  *
+*                                                        *
+* ARGOMENTI:                                             *
+* dimensione: dimensione della griglia Sudoku            *
+*                                                        *
+* RITORNO:                                               *
+* Intero che rappresenta la dimensione del sottoquadrato *
+* (ad esempio, 3 per una griglia 9x9, 4 per 16x16)       *
+*                                                        *
+* MODIFICHE:                                             *
+* -18/06/25 Prima versione                               *
+*********************************************************/
 int calcolareSottoquadrato(int dimensione) {
     int risultato = 2;
     if (dimensione == 9) {
@@ -426,6 +764,26 @@ int calcolareSottoquadrato(int dimensione) {
     return risultato;
 }
 
+
+/*******************************************************
+* FUNZIONE: stampareIntestazioneColonne                 *
+*                                                       *
+* DESCRIZIONE: Stampa l'intestazione delle colonne      *
+*              numerate della griglia Sudoku,           *
+*              formattando gli spazi in base alla       *
+*              dimensione e alla dimensione del         *
+*              sottoquadrato per una migliore           *
+*              leggibilità.                             *
+*                                                       *
+* ARGOMENTI:                                            *
+* dimensione: numero totale di colonne della griglia    *
+* numeroSottoquadrato: dimensione del sottoquadrato     *
+*                                                       *
+* RITORNO: Terminale aggiornato                         *
+*                                                       *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 void stampareIntestazioneColonne(int dimensione, int numeroSottoquadrato) {
     int j = 0;
     printf("    ");
@@ -443,6 +801,23 @@ void stampareIntestazioneColonne(int dimensione, int numeroSottoquadrato) {
     printf("\n");
 }
 
+
+/*******************************************************
+* FUNZIONE: stampareLineaOrizzontale                   *
+*                                                      *
+* DESCRIZIONE: Stampa una linea orizzontale            *
+*              formattata per separare i sottoquadrati *
+*              nella griglia Sudoku durante la stampa. *
+*                                                      *
+* ARGOMENTI:                                           *
+* dimensione: dimensione della griglia                 *
+* numeroSottoquadrato: dimensione del sottoquadrato    *
+*                                                      *
+* RITORNO: Terminale aggiornato                        *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void stampareLineaOrizzontale(int dimensione, int numeroSottoquadrato) {
     int j = 0;
     printf("   +");
@@ -456,6 +831,25 @@ void stampareLineaOrizzontale(int dimensione, int numeroSottoquadrato) {
     printf("-+\n");
 }
 
+
+/*******************************************************
+* FUNZIONE: stampareRigheGriglia                       *
+*                                                      *
+* DESCRIZIONE: Stampa tutte le righe della griglia     *
+*              Sudoku, separando i sottoquadrati con   *
+*              linee orizzontali per una migliore      *
+*              leggibilità.                            *
+*                                                      *
+* ARGOMENTI:                                           *
+* griglia: struttura della griglia Sudoku              *
+* dimensione: dimensione della griglia                 *
+* numeroSottoquadrato: dimensione del sottoquadrato    *
+*                                                      *
+* RITORNO: Terminale aggiornato                        *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void stampareRigheGriglia(Griglia griglia, int dimensione, int numeroSottoquadrato) {
     int i = 0;
     while (i < dimensione) {
@@ -468,6 +862,25 @@ void stampareRigheGriglia(Griglia griglia, int dimensione, int numeroSottoquadra
     }
 }
 
+
+/*******************************************************
+* FUNZIONE: stampareRigaGriglia                        *
+*                                                      *
+* DESCRIZIONE: Stampa una singola riga della griglia   *
+*              Sudoku, visualizzando i numeri o un     *
+*              punto ('.') per celle vuote, con        *
+*              separatori per i sottoquadrati.         *
+*                                                      *
+* ARGOMENTI:                                           *
+* griglia: struttura della griglia Sudoku              *
+* dimensione: dimensione della griglia                 *
+* numeroSottoquadrato: dimensione del sottoquadrato    *
+* riga: indice della riga da stampare                  *
+*                                                      *
+* RITORNO: Terminale aggiornato                        *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrato, int riga) {
     int j = 0;
     int valore;
@@ -494,6 +907,32 @@ void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrat
     printf(" |\n");
 }
 
+
+/*******************************************************
+* FUNZIONE: collezionaInput                             *
+*                                                       *
+* DESCRIZIONE: Gestisce la raccolta sicura di un        *
+*              input numerico da tastiera, effettuando  *
+*              controlli di validità e fornendo         *
+*              messaggi di errore fino a ottenere un    *
+*              valore corretto o l'uscita al menu       *
+*              principale.                              *
+*                                                       *
+* ARGOMENTI:                                            *
+* griglia: puntatore alla struttura della griglia       *
+* inputRiga: puntatore a intero dove memorizzare        *
+*           l'input acquisito                           *
+* posRiga: posizione verticale dello spazio di input    *
+*          nella UI (per la gestione dei messaggi)      *
+*                                                       *
+* RITORNO:                                              *
+* Valore intero inserito dall'utente, se valido, o      *
+* attivazione del menu principale in caso di input      *
+* speciale (32).                                        *
+*                                                       *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 int collezionaInput(Griglia *griglia, int *inputRiga, int posRiga) {
     int valida = FALSO;
     int inputOk;
@@ -542,6 +981,24 @@ int collezionaValore(Griglia *griglia, int *inputValore) {
     return collezionaInput(griglia, inputValore, RIGA_INPUT_VALORE);
 }
 
+
+/*******************************************************
+* FUNZIONE: controllareGrigliaPiena                    *
+*                                                      *
+* DESCRIZIONE: Verifica se la griglia Sudoku è         *
+*              completamente riempita, cioè se non ci  *
+*              sono celle vuote (valore 0).            *
+*                                                      *
+* ARGOMENTI:                                           *
+* griglia: struttura della griglia Sudoku              *
+*                                                      *
+* RITORNO:                                             *
+* VERO se la griglia è piena,                          *
+* FALSO se esiste almeno una cella vuota               *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 int controllareGrigliaPiena(Griglia griglia) {
     int dimensione = leggereDimGriglia(griglia);
     int riga = 0;
@@ -561,16 +1018,51 @@ int controllareGrigliaPiena(Griglia griglia) {
             riga = riga + 1;
         }
     }
-    
     return esito;
 }
 
+
+/*******************************************************
+* FUNZIONE: salvarePartitaCorrente                     *
+*                                                      *
+* DESCRIZIONE: Salva la partita corrente su file,      *
+*              creando il percorso del file basato sul *
+*              nome della partita e richiamando la     *
+*              funzione di salvataggio specifica.      *
+*                                                      *
+* ARGOMENTI:                                           *
+* partita: puntatore alla struttura della partita      *
+*                                                      *
+* RITORNO: file con partita salvata                    *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void salvarePartitaCorrente(Partita *partita) {
     char percorso[100];
     snprintf(percorso, sizeof(percorso), "database/partita_%s.txt", partita->nomePartita);
     salvarePartita(partita, percorso);
 }
 
+
+/*******************************************************
+* FUNZIONE: salvarePartita                             *
+*                                                      *
+* DESCRIZIONE: Salva su file le informazioni della     *
+*              partita Sudoku, inclusi dimensione,     *
+*              difficoltà e valori della griglia,      *
+*              nel percorso specificato.               *
+*                                                      *
+* ARGOMENTI:                                           *
+* partita: puntatore alla struttura della partita      *
+* percorso: stringa contenente il percorso del file    *
+*                                                      *
+* RITORNO:                                             *
+* VERO se il salvataggio è avvenuto con successo,      *
+* FALSO in caso di errore nell'apertura del file       *
+*                                                      *
+* MODIFICHE:                                           *
+* 20/06/25 - Prima versione                            *
+*******************************************************/
 int salvarePartita(Partita *partita, const char *percorso) {
     FILE *file = fopen(percorso, "w");
     int risultato = FALSO;
@@ -584,10 +1076,26 @@ int salvarePartita(Partita *partita, const char *percorso) {
         fclose(file);
         risultato = VERO;
     }
-    
     return risultato;
 }
 
+
+/*******************************************************
+* FUNZIONE: salvareValoriGriglia                        *
+*                                                       *
+* DESCRIZIONE: Scrive su file i valori contenuti nella  *
+*              griglia della partita Sudoku, riga per   *
+*              riga, separando i numeri con spazi.      *
+*                                                       *
+* ARGOMENTI:                                            *
+* file: puntatore al file aperto in scrittura           *
+* partita: puntatore alla struttura della partita       *
+* dimensione: dimensione della griglia                  *
+*                                                       *
+* RITORNO: file aggiornato                              *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     int i = 0;
     int j;
@@ -603,6 +1111,27 @@ void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     }
 }
 
+
+/*******************************************************
+* FUNZIONE: caricaPartita                              *
+*                                                      *
+* DESCRIZIONE: Carica da file le informazioni di una   *
+*              partita Sudoku, leggendo dimensione,    *
+*              difficoltà e valori della griglia,      *
+*              e inizializza la struttura partita      *
+*              corrispondente.                         *
+*                                                      *
+* ARGOMENTI:                                           *
+* partita: puntatore alla struttura della partita      *
+* percorso: stringa contenente il percorso del file    *
+*                                                      *
+* RITORNO:                                             *
+* 1 se il caricamento ha successo,                     *
+* 0 in caso di errore o file non trovato               *
+*                                                      *
+* MODIFICHE:                                           *
+* 20/06/25 - Prima versione                            *
+*******************************************************/
 int caricaPartita(Partita *partita, const char *percorso) {
     FILE *file = fopen(percorso, "r");
     int risultato = 0;
@@ -618,10 +1147,29 @@ int caricaPartita(Partita *partita, const char *percorso) {
         }
         fclose(file);
     }
-    
     return risultato;
 }
 
+
+/*********************************************************
+* FUNZIONE: caricaValoriGriglia                          *
+*                                                        *
+* DESCRIZIONE: Legge da file i valori della griglia      *
+*              della partita Sudoku e li scrive nella    *
+*              struttura della partita riga per riga.    *
+*                                                        *
+* ARGOMENTI:                                             *
+* file: puntatore al file aperto in lettura              *
+* partita: puntatore alla struttura della partita        *
+* dimensione: dimensione della griglia                   *
+*                                                        *
+* RITORNO:                                               *
+* VERO se tutti i valori sono stati letti correttamente  *
+* FALSO in caso di errore di lettura                     *
+*                                                        *
+* MODIFICHE:                                             *
+* 2025/06/23 - Prima versione                            *
+*********************************************************/
 int caricaValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     int i = 0;
     int j = 0;
@@ -646,6 +1194,24 @@ int caricaValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     return risultato;
 }
 
+
+/*************************************************************
+* FUNZIONE: avviarePartitaContinuata                          *
+*                                                             *
+* DESCRIZIONE: Gestisce il ciclo di gioco di una              *
+*              partita Sudoku già iniziata,                   *
+*              permettendo all'utente di inserire             *
+*              valori, salvare la partita e controllare       *
+*              la validità delle mosse fino al completamento. *
+*                                                             *
+* ARGOMENTI:                                                  *
+* partita: puntatore alla struttura della partita             *
+*                                                             *
+* RITORNO: permette all'utente di giocare                     *
+*                                                             *
+* MODIFICHE:                                                  *
+* 2025/06/23 - Prima versione                                 *
+*************************************************************/
 void avviarePartitaContinuata(Partita *partita) {
     int dimensione = leggereDimGriglia(partita->grigliaPartita);
     int valore, riga, colonna;
