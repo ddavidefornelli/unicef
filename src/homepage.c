@@ -20,7 +20,7 @@ Scopo di ogni funzione presente:
 #include <stdio.h>
 #include <stdlib.h>
 #include "homepage.h"
-#include "interfaccia_util.h"
+#include "funzioni_utilita.h"
 #include "caricapartita.h"
 #include "impostazioni.h"
 
@@ -47,6 +47,21 @@ Scopo di ogni funzione presente:
 #define VERDE "\033[32m"
 #define RESET "\033[0m"
 
+
+/********************************************************
+* FUNZIONE: stampareTitoloHomepage                      *
+*                                                       *
+* DESCRIZIONE: Stampa a schermo il titolo grafico       *
+*              colorato della homepage, centrato        *
+*              orizzontalmente nel terminale.           *
+*                                                       *
+* ARGOMENTI: Nessuno                                    *
+*                                                       *
+* RITORNO: Terminale aggiornato                         *
+*                                                       *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 void stampareTitoloHomepage(){
   printf(VERDE);
   printf("\n");
@@ -83,6 +98,21 @@ void stampareMenuHomepage(){
   printf("Inserisci una scelta (1 - 4)");
 }
 
+
+/********************************************************
+* FUNZIONE: stampareMenuPrincipale                      *
+*                                                       *
+* DESCRIZIONE: Pulisce lo schermo e visualizza il       *
+*              titolo della homepage seguito dal menu   *
+*              principale.                              *
+*                                                       *
+* ARGOMENTI: Nessuno                                    *
+*                                                       *
+* RITORNO: Terminale aggiornato                         *
+*                                                       *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 void stampareMenuPrincipale() 
 {
   pulireSchermo();
@@ -91,6 +121,19 @@ void stampareMenuPrincipale()
 }
 
 
+/********************************************************
+* FUNZIONE: avviareMenuPrincipale                       *
+*                                                       *
+* DESCRIZIONE: Avvia il menu principale visualizzandolo *
+*              e raccogliendo l'input dell'utente.      *
+*                                                       *
+* ARGOMENTI: Nessuno                                    *
+*                                                       *
+* RITORNO: Terminale aggiornato                         *
+*                                                       *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 void avviareMenuPrincipale(){
   int input;
   stampareMenuPrincipale();

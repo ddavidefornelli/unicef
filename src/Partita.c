@@ -65,7 +65,7 @@ Nel giorno 21/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato le
 #include <time.h>
 #include <math.h>
 #include <string.h>
-#include "interfaccia_util.h"
+#include "funzioni_utilita.h"
 #include "tipiDiDato.h"
 #include "partita.h"
 #include "homepage.h"

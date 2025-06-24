@@ -35,12 +35,11 @@ void spostareCursore(int x, int y)
  *  ARGOMENTI:                                              *
  *  const char *testo: stringa da allineare                 *
  *                                                          *
- *  RITORNO: //                                             *
+ *  RITORNO: Terminale aggiornato                           *
  *                                                          *
  *  MODIFICHE:                                              *
  *  2025/03/26 - Prima versione                             *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-
 void stampareCentrato(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
@@ -75,12 +74,11 @@ void stampareCentrato(const char *testo)
  *  ARGOMENTI:                                              *
  *  const char *testo: stringa da allineare                 *
  *                                                          *
- *  RITORNO: //                                             *
+ *  RITORNO: Terminale aggiornato                           *
  *                                                          *
  *  MODIFICHE:                                              *
  *  2025/03/27 - Prima versione                             *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-
 void stampareASinistra(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
@@ -113,6 +111,26 @@ void stampareASinistra(const char *testo)
   printf("%s\n", testo);
 }
 
+
+/*******************************************************
+* FUNZIONE: resetZonaInput                             *
+*                                                      *
+* DESCRIZIONE: Ripulisce e reimposta la zona di input  *
+*              nella posizione specificata sullo       *
+*              schermo. Mostra il prompt ">> " e       *
+*              cancella eventuali caratteri residui.   *
+*                                                      *
+* ARGOMENTI:                                           *
+* posRiga: riga dello schermo dove posizionare il      *
+*          cursore per l'input                         *
+* posColonna: colonna dello schermo dove posizionare   *
+*              il cursore per l'input                  *
+*                                                      *
+* RITORNO: Terminale aggiornato                        *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void resetZonaInput(int posRiga, int posColonna){
     spostareCursore(posRiga, posColonna);
     printf(">> ");
@@ -124,6 +142,25 @@ void pulireBuffer(){
       while(getchar() != '\n'); // pulisce il buffer
 }
 
+
+/*******************************************************
+* FUNZIONE: mostrareMessaggioErrore                    *
+*                                                      *
+* DESCRIZIONE: Mostra un messaggio di errore colorato  *
+*              in rosso in una posizione specifica     *
+*              dello schermo. Cancella prima la riga   *
+*              per evitare sovrapposizioni di testo.   *
+*                                                      *
+* ARGOMENTI:                                           *
+* testo: stringa del messaggio da visualizzare         *
+* posRiga: riga in cui mostrare il messaggio           *
+* posColonna: colonna in cui mostrare il messaggio     *
+*                                                      *
+* RITORNO: Terminale aggiornato                        *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void mostrareMessaggioErrore(const char *testo, int posRiga, int posColonna) {
       spostareCursore(posRiga, 0);
       printf("%-80s", "");
@@ -131,6 +168,29 @@ void mostrareMessaggioErrore(const char *testo, int posRiga, int posColonna) {
       printf("%s %s %s",COLOR_RED, testo, COLOR_RESET);
 }
 
+
+/*******************************************************
+* FUNZIONE: tornareHomepage                            *
+*                                                      *
+* DESCRIZIONE: Mostra un'opzione per tornare alla      *
+*              homepage del menu principale. Attende   *
+*              l'inserimento del valore "0" da parte   *
+*              dell'utente, verificando che l'input    *
+*              sia corretto. In caso di input errato,  *
+*              mostra un messaggio d'errore e richiede *
+*              nuovamente l'inserimento.               *
+*                                                      *
+* ARGOMENTI:                                           *
+* input: puntatore a intero in cui viene memorizzato   *
+*        il valore inserito dall'utente                *
+* posRiga: riga in cui visualizzare il prompt          *
+* posColonna: colonna in cui visualizzare il prompt    *
+*                                                      *
+* RITORNO: Terminale aggiornato                        *
+*                                                      *
+* MODIFICHE:                                           *
+* 2025/06/23 - Prima versione                          *
+*******************************************************/
 void tornareHomepage(int *input, int posRiga, int posColonna){
   int inMenuCorrente = 1;
 

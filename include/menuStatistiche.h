@@ -1,7 +1,7 @@
 #ifndef MENUSTATISTICHE_H 
 #define MENUSTATISTICHE_H
 
-#include "interfaccia_util.h"
+#include "funzioni_utilita.h"
 
 typedef struct{
   int partiteGiocateTotali;

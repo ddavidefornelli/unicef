@@ -16,7 +16,7 @@ Scopo di ogni funzione presente:
 
 */
 
-#include "interfaccia_util.h"
+#include "funzioni_utilita.h"
 #include "homepage.h"
 #include "partita.h"
 #include "caricapartita.h"
@@ -40,6 +40,27 @@ Scopo di ogni funzione presente:
 #define ARANCIONE "\033[38;5;208m"
 #define RESET "\033[0m"
 
+
+/********************************************************
+* FUNZIONE: raccoglierePartiteSalvate                    *
+*                                                        *
+* DESCRIZIONE: Scansiona la cartella "database" per      *
+*              trovare file che iniziano con "partita_"  *
+*              e ne raccoglie i nomi in un array.        *
+*                                                        *
+* ARGOMENTI:                                             *
+* - nomiPartite: array di stringhe dove salvare i nomi   *
+*   dei file.                                            *
+* - massimePartite: numero massimo di elementi           *
+*   che l’array può contenere.                           *
+*                                                        *
+* RITORNO:                                               *
+* - int: numero di file rilevati e copiati nell’array;   *
+*        0 se la cartella non esiste o in caso di errore *
+*                                                        *
+* MODIFICHE:                                             *
+* 2025/06/23 - Prima versione                            *
+*********************************************************/
 int raccoglierePartiteSalvate(char *nomiPartite[], int massimePartite) {
   DIR *cartella = opendir("database");
   struct dirent *voce;
@@ -60,6 +81,7 @@ int raccoglierePartiteSalvate(char *nomiPartite[], int massimePartite) {
   return conteggio;
 }
 
+
 void liberaPartite(char *nomiPartite[], int numero) {
   int i = 0;
   while (i < numero) {
@@ -70,6 +92,27 @@ void liberaPartite(char *nomiPartite[], int numero) {
   }
 }
 
+
+/********************************************************
+* FUNZIONE: trovaFile                                    *
+*                                                        *
+* DESCRIZIONE: Cerca un nome di file partite nell’array  *
+*              secondo l’indice numerico o una sottostr. *
+*                                                        *
+* ARGOMENTI:                                             *
+* - char *nomiPartite[]: array di nomi di file.          *
+* - int numero: numero di elementi validi nell’array.    *
+* - const char *input: stringa inserita dall’utente,     *
+*   che può essere un numero (come stringa) o parte del  *
+*   nome del file.                                       *
+*                                                        *
+* RITORNO:                                               *
+* - puntatore al nome di file trovato;                   *
+*   NULL se non viene trovata nessuna corrispondenza.    *
+*                                                        *
+* MODIFICHE:                                             *
+* 2025/06/23 - Prima versione                            *
+*********************************************************/
 const char *trovaFile(char *nomiPartite[], int numero, const char *input) {
   long indice = strtol(input, NULL, 10);
   int i = 0;
@@ -88,6 +131,21 @@ const char *trovaFile(char *nomiPartite[], int numero, const char *input) {
   return NULL;
 }
 
+
+/********************************************************
+* FUNZIONE: stampareTitoloCaricaPartita                 *
+*                                                       *
+* DESCRIZIONE: Mostra a schermo un titolo artistico     *
+*              colorato per la schermata di caricamento *
+*              delle partite salvate.                   *
+*                                                       *
+* ARGOMENTI: Nessuno                                    *
+*                                                       *
+* RITORNO: Terminale aggiornato                         *
+*                                                       *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 void stampareTitoloCaricaPartita() {
 
 printf(ARANCIONE);
@@ -104,6 +162,21 @@ printf("\n");
 printf(RESET);
 }
 
+
+/********************************************************
+* FUNZIONE: stampareZonaInput                           *
+*                                                       *
+* DESCRIZIONE: Disegna un riquadro sullo schermo per    *
+*              l’inserimento del nome o indice della    *
+*              partita salvata, con prompt esplicito.   *
+*                                                       *
+* ARGOMENTI: Nessuno                                    *
+*                                                       *
+* RITORNO: Terminale aggiornato                         *
+*                                                       *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 void stampareZonaInput() {
   int contatore;
 
@@ -122,6 +195,31 @@ void stampareZonaInput() {
   printf("+--------------------------------------+");
 }
 
+
+/********************************************************
+* FUNZIONE: stampareMenuCaricaPartita                   *
+*                                                       *
+* DESCRIZIONE: Mostra l'elenco delle partite salvate    *
+*              presenti nella cartella "database",      *
+*              consente all’utente di scegliere una     *
+*              partita da caricare digitando il nome    *
+*              o il numero corrispondente.              *
+*                                                       *
+* COMPORTAMENTO:                                        *
+* - Se non ci sono partite salvate, l'utente viene      *
+*   reindirizzato alla homepage.                        *
+* - L’utente può digitare “0” per tornare al menu       *
+*   principale.                                         *
+* - Se la partita esiste ed è caricabile, viene avviata.*
+*                                                       *
+* ARGOMENTI: Nessuno                                    *
+*                                                       *
+* RITORNO: Nessuno (effetto collaterale: avvia una      *
+*          partita oppure torna alla homepage)          *
+*                                                       *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 void stampareMenuCaricaPartita(){
   char *nomiPartite[100];
   int numeroPartite;

@@ -20,7 +20,7 @@ Scopo delle funzioni presenti:
 - collezionaNomeGioco: Richiede all’utente il nome da assegnare alla nuova partita.
  */
 
-#include "interfaccia_util.h"
+#include "funzioni_utilita.h"
 #include "Impostazioni.h"
 #include "partita.h"
 #include <stdio.h>
@@ -50,12 +50,44 @@ Scopo delle funzioni presenti:
 #define CIANO "\033[36m"
 #define RESET "\033[0m"
 
+
+/********************************************************
+* FUNZIONE: stampareMenuDifficolta                      *
+*                                                       *
+* DESCRIZIONE: Pulisce lo schermo e stampa il titolo e  *
+*              il menu delle impostazioni di difficoltà *
+*              per iniziare una nuova partita.          *
+*                                                       *
+* ARGOMENTI: Nessuno                                    *
+*                                                       *
+* RITORNO: Terminale aggiornato                         *
+*                                                       *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 void stampareMenuDifficolta() {
   pulireSchermo();
   stampareTitoloImpostazioni();
   stampareMenuImpostazioni();
 }
 
+
+/********************************************************
+* FUNZIONE: avviareMenuDifficolta                       *
+*                                                       *
+* DESCRIZIONE: Avvia il processo per iniziare una       *
+*              nuova partita. Mostra il menu di scelta  *
+*              della difficoltà, raccoglie i parametri  *
+*              necessari (difficoltà, dimensione, nome  *
+*              della partita) e avvia il gioco.         *
+*                                                       *
+* ARGOMENTI: Nessuno                                    *
+*                                                       *
+* RITORNO: Terminale aggiornato                         *
+*                                                       *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 void avviareMenuDifficolta() {
   int inputDifficolta;
   int inputDimensione;
@@ -63,10 +95,26 @@ void avviareMenuDifficolta() {
   stampareMenuDifficolta();
   collezionaDifficolta(&inputDifficolta);
   collezionaDimensione(&inputDimensione);
-  collezionaNomeGioco(nomePartita);
+  collezionaNomePartita(nomePartita);
   avviarePartita(nomePartita, inputDifficolta, inputDimensione);
 }
 
+
+/********************************************************
+* FUNZIONE: stampareTitoloImpostazioni                  *
+*                                                       *
+* DESCRIZIONE: Mostra un titolo artistico centrato      *
+*              sullo schermo per introdurre il menu di  *
+*              impostazioni, utilizzando caratteri ANSI *
+*              colorati per evidenziare il testo.       *
+*                                                       *
+* ARGOMENTI: Nessuno                                    *
+*                                                       *
+* RITORNO: Nessuno                                      *
+*                                                       *
+* MODIFICHE:                                            *
+* 2025/06/23 - Prima versione                           *
+********************************************************/
 void stampareTitoloImpostazioni(){
   printf(CIANO);
   printf("\n");
@@ -78,6 +126,23 @@ void stampareTitoloImpostazioni(){
   printf(RESET);
 }
 
+
+/***********************************************************
+* FUNZIONE: stampareMenuImpostazioni                       *
+*                                                          *
+* DESCRIZIONE: Stampa sullo schermo il menu per la         *
+*              selezione della difficoltà, della           *
+*              dimensione della griglia e dell'inserimento *
+*              del nome partita. Posiziona il cursore      *
+*              nelle aree designate.                       *
+*                                                          *
+* ARGOMENTI: Nessuno                                       *
+*                                                          *
+* RITORNO: Terminale aggiornato                            *
+*                                                          *
+* MODIFICHE:                                               *
+* 2025/06/23 - Prima versione                              *
+***********************************************************/
 void stampareMenuImpostazioni(){
 
   spostareCursore(OPZIONE_START_RIGA - 2, OPZIONE_COLONNA - 7);
@@ -109,6 +174,24 @@ void stampareMenuImpostazioni(){
 
 }
 
+
+/********************************************************
+* FUNZIONE: collezionaDifficolta                         *
+*                                                        *
+* DESCRIZIONE: Permette all'utente di inserire un valore *
+*              numerico per la difficoltà del gioco.     *
+*              Controlla che l'input sia numerico e      *
+*              compreso tra OPZIONE_MIN e OPZIONE_MAX.   *
+*                                                        *
+* ARGOMENTI:                                             *
+* - int *inputDifficolta: puntatore alla variabile che   *
+*   conterrà il valore scelto dall'utente.               *
+*                                                        *
+* RITORNO: valore della difficoltà selezionata           *
+*                                                        *
+* MODIFICHE:                                             *
+* 2025/06/23 - Prima versione                            *
+********************************************************/
 int collezionaDifficolta(int *inputDifficolta) {
   int inMenuDifficolta = 1;
 
@@ -133,6 +216,24 @@ int collezionaDifficolta(int *inputDifficolta) {
   }
 }
 
+
+/********************************************************
+* FUNZIONE: collezionaDimensione                         *
+*                                                        *
+* DESCRIZIONE: Permette all'utente di inserire un valore *
+*              numerico per la dimensione della griglia. *
+*              Valida l’input assicurandosi che rientri  *
+*              nell’intervallo OPZIONE_MIN - OPZIONE_MAX *
+*                                                        *
+* ARGOMENTI:                                             *
+* - int *inputDimensione: puntatore alla variabile che   *
+*   conterrà il valore scelto dall’utente.               *
+*                                                        *
+* RITORNO: valore della dimensione selezionata           *
+*                                                        *
+* MODIFICHE:                                             *
+* 2025/06/23 - Prima versione                            *
+********************************************************/
 int collezionaDimensione(int *inputDimensione) {
   int inMenuDifficolta = 1;
 
@@ -157,7 +258,25 @@ int collezionaDimensione(int *inputDimensione) {
   }
 }
 
-void collezionaNomeGioco(char *nomeParitita) {
+
+/**************************************************************
+* FUNZIONE: collezionaNomePartita                             *
+*                                                             *
+* DESCRIZIONE: Permette all’utente di inserire un nome per la *
+*              partita. Se non viene inserito alcun nome,     *
+*              ne genera uno automaticamente in base al tempo *
+*              corrente.                                      *
+*                                                             *
+* ARGOMENTI:                                                  *
+* - char *nomeParitita: puntatore a buffer dove salvare il    *
+*   nome della partita.                                       *
+*                                                             *
+* RITORNO: partita aggiornata                                 *
+*                                                             *
+* MODIFICHE:                                                  *
+* 2025/06/23 - Prima versione                                 *
+**************************************************************/
+void collezionaNomePartita(char *nomeParitita) {
   resetZonaInput(INPUT_RIGA_NOME, INPUT_COLONNA + 35);
   fgets(nomeParitita, NOME_MAX, stdin);
   int lunghezza = strlen(nomeParitita);
