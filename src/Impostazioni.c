@@ -95,7 +95,7 @@ void avviareMenuDifficolta() {
   stampareMenuDifficolta();
   collezionaDifficolta(&inputDifficolta);
   collezionaDimensione(&inputDimensione);
-  collezionaNomePartita(nomePartita);
+  collezionareNomePartita(nomePartita);
   avviarePartita(nomePartita, inputDifficolta, inputDimensione);
 }
 
@@ -276,7 +276,7 @@ int collezionaDimensione(int *inputDimensione) {
 * MODIFICHE:                                                  *
 * 2025/06/23 - Prima versione                                 *
 **************************************************************/
-void collezionaNomePartita(char *nomeParitita) {
+void collezionareNomePartita(char *nomeParitita) {
   resetZonaInput(INPUT_RIGA_NOME, INPUT_COLONNA + 35);
   fgets(nomeParitita, NOME_MAX, stdin);
   int lunghezza = strlen(nomeParitita);

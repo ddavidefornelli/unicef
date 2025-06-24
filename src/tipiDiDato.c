@@ -95,8 +95,6 @@ void scrivereValGrigliaPartita(Partita *partita, int valore, int riga, int colon
     scrivereValGriglia(&partita->grigliaPartita, riga, colonna, valore);
 }
 
-// Dichiarazione della funzione esterna
-void convertireDifficoltaEDimensione(int *inputDifficolta, int *inputDimensione);
 
 void inizializzareGrigliaPartita(Partita *partita, int inputDimensione) {
     int i = 0;  // Inizializza i

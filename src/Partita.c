@@ -27,14 +27,14 @@ Scopo delle funzioni presenti:
 - generareSudoku: genera una griglia completa e ne rimuove celle in base alla difficoltà.
 - stampareGrigliaPartita: gestisce la stampa completa della griglia di gioco.
 - calcolareSottoquadrato: calcola la dimensione del sotto-quadrato in base alla dimensione totale.
-- stampareIntestazioneColonne: stampa l’intestazione delle colonne numerate.
+- stampareIntestazioneColonne: stampa l'intestazione delle colonne numerate.
 - stampareLineaOrizzontale: stampa una riga di separazione tra righe della griglia.
 - stampareRigheGriglia: stampa tutte le righe della griglia.
 - stampareRigaGriglia: stampa una singola riga della griglia.
-- collezionaInput: raccoglie input utente con controlli di validità e messaggi d’errore.
-- collezionaRiga: raccoglie l’input per la riga.
-- collezionaColonna: raccoglie l’input per la colonna.
-- collezionaValore: raccoglie l’input per il valore da inserire.
+- collezionaInput: raccoglie input utente con controlli di validità e messaggi d'errore.
+- collezionaRiga: raccoglie l'input per la riga.
+- collezionaColonna: raccoglie l'input per la colonna.
+- collezionaValore: raccoglie l'input per il valore da inserire.
 - controllareGrigliaPiena: verifica se tutte le celle della griglia sono state riempite.
 - salvarePartitaCorrente: salva lo stato attuale della partita su file.
 - salvarePartita: scrive su file tutti i dati della partita.
@@ -78,7 +78,7 @@ Nel giorno 21/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato le
 #define CELLA_VUOTA 0
 #define FALSO 0
 #define VERO 1
-#define DIFFICOLTA_FACILE 2
+#define DIFFICOLTA_FACILE 1
 #define DIFFICOLTA_MEDIA 2
 #define DIFFICOLTA_DIFFICILE 3
 #define RIGA_ERRORE 22
@@ -139,14 +139,14 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
         inputSpeciale = FALSO;
 
         collezionaRiga(&griglia, &riga);
+        collezionaColonna(&griglia, &colonna);
+        collezionaValore(&griglia, &valDaInserire);
         if (riga == SALVA_PARTITA || colonna == SALVA_PARTITA || valDaInserire == SALVA_PARTITA) {
             salvarePartitaCorrente(&partita);
             inputSpeciale = VERO;
         }
         
         if (inputSpeciale == FALSO) {
-            collezionaColonna(&griglia, &colonna);
-            collezionaValore(&griglia, &valDaInserire);
 
             valido = verificareValidita(&griglia, inputDimensione, riga - 1, colonna - 1, valDaInserire);
             if (valido == VERO) {
@@ -321,7 +321,7 @@ void disegnareCornice() {
 * FUNZIONE: convertireDimensione                       *
 *                                                      *
 * DESCRIZIONE: Converte un valore numerico associato   *
-*              a una scelta dell’utente (1, 2 o 3)     *
+*              a una scelta dell'utente (1, 2 o 3)     *
 *              nella dimensione effettiva della griglia*
 *              (4, 9 o 16).                            *
 *                                                      *
@@ -368,7 +368,7 @@ void convertireDimensione(int *dimensione) {
 ********************************************************/
 void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
     int cellaGriglia = dimensione * dimensione;
-    int celleDaRimuovere = cellaGriglia * calcolareCelleDaRimuovere(difficolta) / 100;
+    int celleDaRimuovere = (cellaGriglia * calcolareCelleDaRimuovere(difficolta)) / 100;
     int rimosse = 0;
     int riga, colonna;
     
@@ -391,7 +391,7 @@ void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
 *                                                      *
 * DESCRIZIONE: Restituisce la percentuale di celle da  *
 *              rimuovere in base alla difficoltà       *
-*              scelta dall’utente.                     *
+*              scelta dall'utente.                     *
 *                                                      *
 * ARGOMENTI:                                           *
 * difficolta: livello di difficoltà selezionato        *
@@ -664,8 +664,8 @@ int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna)
         j = 0;
         while (j < dimensione && trovato == FALSO) {
             if (leggereValGriglia(*griglia, i, j) == 0) {
-                riga = &i;
-                colonna = &j;
+                *riga = i;
+                *colonna = j;
                 trovato = VERO;
             } else {
                 j = j + 1;
@@ -675,7 +675,6 @@ int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna)
             i = i + 1;
         }
     }
-    
     return trovato;
 }
 
@@ -933,7 +932,7 @@ void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrat
 * MODIFICHE:                                            *
 * 2025/06/23 - Prima versione                           *
 ********************************************************/
-int collezionaInput(Griglia *griglia, int *inputRiga, int posRiga) {
+int collezionaInput(Griglia *griglia, int *input, int posRiga) {
     int valida = FALSO;
     int inputOk;
 
@@ -942,7 +941,7 @@ int collezionaInput(Griglia *griglia, int *inputRiga, int posRiga) {
         inputOk = FALSO;
 
         while (inputOk == FALSO) {
-            if (scanf("%d", inputRiga) == 1) {
+            if (scanf("%d", input) == 1) {
                 inputOk = VERO;
             } else {
                 pulireBuffer();
@@ -954,11 +953,11 @@ int collezionaInput(Griglia *griglia, int *inputRiga, int posRiga) {
 
         pulireBuffer();
 
-        if ((*inputRiga < 1 || *inputRiga > leggereDimGriglia(*griglia)) && (*inputRiga != 32 && *inputRiga != 31)) {
+        if ((*input < 1 || *input > leggereDimGriglia(*griglia)) && (*input != 32 && *input != 31)) {
             mostrareMessaggioErrore("Numero fuori intervallo", RIGA_ERRORE + 2, COLONNA_ERRORE);
             resetZonaInput(posRiga, COLONNA_INPUT);
         } else {
-            if (*inputRiga == 32) {
+            if (*input == 32) {
                 avviareMenuPrincipale();
             } else {
                 valida = VERO;
@@ -966,7 +965,7 @@ int collezionaInput(Griglia *griglia, int *inputRiga, int posRiga) {
         }
     }
     
-    return *inputRiga;
+    return *input;
 }
 
 int collezionaRiga(Griglia *griglia, int *inputRiga) {
@@ -1234,11 +1233,6 @@ void avviarePartitaContinuata(Partita *partita) {
         inputSpeciale = FALSO;
 
         collezionaRiga(&griglia, &riga);
-        if (riga == 31) {
-            salvarePartitaCorrente(partita);
-            inputSpeciale = VERO;
-        }
-        
         if (inputSpeciale == FALSO) {
             collezionaColonna(&griglia, &colonna);
             collezionaValore(&griglia, &valore);

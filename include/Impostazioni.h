@@ -10,6 +10,6 @@ void stampareMenuDifficolta();
 void stampareTitoloImpostazioni();
 void stampareMenuImpostazioni();
 
-void collezionaNomePartita(char *dest);
+void collezionareNomePartita(char *dest);
 
 #endif

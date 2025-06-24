@@ -93,7 +93,7 @@ void stampareMenuHomepage(){
   spostareCursore(OPZIONE_START_RIGA + 1, OPZIONE_COLONNA);
   printf("[2] Partite Salvate");
   spostareCursore(OPZIONE_START_RIGA + 2, OPZIONE_COLONNA);
-  printf("[4] Esci");
+  printf("[3] Esci");
   spostareCursore(PROMPT_RIGA, PROMPT_COLONNA);
   printf("Inserisci una scelta (1 - 4)");
 }
