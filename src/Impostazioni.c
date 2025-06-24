@@ -24,8 +24,6 @@ Scopo delle funzioni presenti:
 #include "Impostazioni.h"
 #include "partita.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 #include <string.h>
 
 #define  DIFFICOLTA_FACILE  1
@@ -165,9 +163,5 @@ void collezionaNomeGioco(char *nomeParitita) {
   int lunghezza = strlen(nomeParitita);
   if (lunghezza > 0 && nomeParitita[lunghezza - 1] == '\n') { 
     nomeParitita[lunghezza - 1] = '\0'; 
-  }
-  // Se il nome è vuoto, genera un nome random 
-  if (strlen(nomeParitita) == 0) {
-    snprintf(nomeParitita, NOME_MAX, "partita_%ld", time(NULL));
   }
 }
