@@ -21,8 +21,8 @@ Scopo di ogni funzione presente:
 #include <stdlib.h>
 #include "homepage.h"
 #include "funzioni_utilita.h"
-#include "caricapartita.h"
-#include "impostazioni.h"
+#include "CaricaPartita.h"
+#include "Impostazioni.h"
 
 #define LARGHEZZA_TERMINALE 80
 

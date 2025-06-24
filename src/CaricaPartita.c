@@ -19,7 +19,7 @@ Scopo di ogni funzione presente:
 #include "funzioni_utilita.h"
 #include "homepage.h"
 #include "partita.h"
-#include "caricapartita.h"
+#include "CaricaPartita.h"
 #include <dirent.h>
 #include <string.h>
 #include <stdio.h>

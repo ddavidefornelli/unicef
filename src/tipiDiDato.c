@@ -96,14 +96,14 @@ void scrivereValGrigliaPartita(Partita *partita, int valore, int riga, int colon
 }
 
 // Dichiarazione della funzione esterna
-void convertiDifficoltaEDimensione(int *inputDifficolta, int *inputDimensione);
+void convertireDifficoltaEDimensione(int *inputDifficolta, int *inputDimensione);
 
 void inizializzareGrigliaPartita(Partita *partita, int inputDimensione) {
     int i = 0;  // Inizializza i
     int j;
     
     // Converti i valori prima di usarli
-    convertiDimensione(&inputDimensione);
+    convertireDimensione(&inputDimensione);
     
     scrivereDimGrigliaPartita(partita, inputDimensione);
          
