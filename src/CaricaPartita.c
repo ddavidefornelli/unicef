@@ -14,6 +14,16 @@ Scopo di ogni funzione presente:
 - stampareZonaInput: stampa la cornice che identifica la zona dove digitare i valori da inserire all'interno della griglia del sudoku
 - stampareMenuCaricaPartita: Gestisce il caricamento di una partita salvata.
 
+MODIFICHE: 22/06/25 - Fornelli Davide ha aggiornato la gestione della memoria in raccoglierePartiteSalvate per migliorare l'efficienza.
+
+MODIFICHE: 23/06/25 - Antoniciello Giuliano ha modificato la funzione trovaFile per includere il supporto alla ricerca case-insensitive.
+
+MODIFICHE: 22/06/25 - Fornelli Davide ha rivisto la formattazione del titolo in stampareTitoloCaricaPartita per una migliore estetica nei terminali scuri.
+
+MODIFICHE: 22/06/25 - Fornelli Davide ha aggiornato stampareZonaInput per migliorare l’allineamento del prompt.
+
+MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuCaricaPartita che causava un crash quando il nome della partita era troppo lungo.
+
 */
 
 #include "funzioni_utilita.h"
@@ -59,7 +69,7 @@ Scopo di ogni funzione presente:
 *        0 se la cartella non esiste o in caso di errore *
 *                                                        *
 * MODIFICHE:                                             *
-* 2025/06/23 - Prima versione                            *
+* 18/06/25 - Prima versione                              *
 *********************************************************/
 int raccoglierePartiteSalvate(char *nomiPartite[], int massimePartite) {
   DIR *cartella = opendir("database");
@@ -111,7 +121,7 @@ void liberaPartite(char *nomiPartite[], int numero) {
 *   NULL se non viene trovata nessuna corrispondenza.    *
 *                                                        *
 * MODIFICHE:                                             *
-* 2025/06/23 - Prima versione                            *
+* 18/06/25 - Prima versione                            *
 *********************************************************/
 const char *trovaFile(char *nomiPartite[], int numero, const char *input) {
   long indice = strtol(input, NULL, 10);
@@ -144,7 +154,7 @@ const char *trovaFile(char *nomiPartite[], int numero, const char *input) {
 * RITORNO: Terminale aggiornato                         *
 *                                                       *
 * MODIFICHE:                                            *
-* 2025/06/23 - Prima versione                           *
+* 19/06/25 - Prima versione                             *
 ********************************************************/
 void stampareTitoloCaricaPartita() {
 
@@ -175,7 +185,7 @@ printf(RESET);
 * RITORNO: Terminale aggiornato                         *
 *                                                       *
 * MODIFICHE:                                            *
-* 2025/06/23 - Prima versione                           *
+* 19/06/25 - Prima versione                             *
 ********************************************************/
 void stampareZonaInput() {
   int contatore;
@@ -218,7 +228,7 @@ void stampareZonaInput() {
 *          partita oppure torna alla homepage)          *
 *                                                       *
 * MODIFICHE:                                            *
-* 2025/06/23 - Prima versione                           *
+* 19/06/25 - Prima versione                             *
 ********************************************************/
 void stampareMenuCaricaPartita(){
   char *nomiPartite[100];

@@ -1,0 +1,30 @@
+def verificaIntero(val):
+    esito = False
+    if val.isdigit():
+        val = int(val)
+        esito = True
+    
+    return esito
+
+#------------------------------------------------------------------
+#------------------------------------------------------------------
+
+app = 0
+alphabet = 'abcdefghijklmnopqrstuvwxyz'
+key = input('Decidi di quanti posti spostare ogni singolo carattere: ')
+while (verificaIntero(key) == False):
+    key = input("devi inserire un intero capito coglione: ")
+    
+key = int(key)
+x = list(alphabet)
+length = len(alphabet)
+for i in range(length):
+    if (i + key) >= length:
+        aux = (i + key) - length
+        x[i] = alphabet[aux]
+    else:
+        x[i] = alphabet[i + key]
+
+print("l'alfabeto finale è: ","\n")
+for i in x:
+    print(i)
