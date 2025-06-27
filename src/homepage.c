@@ -60,7 +60,7 @@ Scopo di ogni funzione presente:
 * RITORNO: Terminale aggiornato                         *
 *                                                       *
 * MODIFICHE:                                            *
-* 2025/06/23 - Prima versione                           *
+* 23/06/25 - Prima versione                             *
 ********************************************************/
 void stampareTitoloHomepage(){
   printf(VERDE);
@@ -83,7 +83,7 @@ void stampareTitoloHomepage(){
  *  RITORNO: //                                             *
  *                                                          *
  *  MODIFICHE:                                              *
- *  2025/03/26 - Prima versione                             *
+ *  23/06/25 - Prima versione                               *
  ************************************************************/
 void stampareMenuHomepage(){
   spostareCursore(TITOLO_RIGA, TITOLO_COLONNA);
@@ -111,7 +111,7 @@ void stampareMenuHomepage(){
 * RITORNO: Terminale aggiornato                         *
 *                                                       *
 * MODIFICHE:                                            *
-* 2025/06/23 - Prima versione                           *
+* 23/06/25 - Prima versione                             *
 ********************************************************/
 void stampareMenuPrincipale() 
 {
@@ -132,7 +132,7 @@ void stampareMenuPrincipale()
 * RITORNO: Terminale aggiornato                         *
 *                                                       *
 * MODIFICHE:                                            *
-* 2025/06/23 - Prima versione                           *
+* 24/06/25 - Prima versione                             *
 ********************************************************/
 void avviareMenuPrincipale(){
   int input;
@@ -144,17 +144,17 @@ void avviareMenuPrincipale(){
 /************************************************************ 
  *  FUNZIONE: collezionareInput()                             *
  *  DESCRIZIONE: richiede un qualsiasi input con la stampare  *
- *               di un  testo, come la richiesta.           *
- *                                                          *
- *  ARGOMENTI:                                              *
- *  *int intput: variabile dedicata all'input da terminale  *
- *                                                          *
- *  RITORNO: //                                             *
- *                                                          *
- *  MODIFICHE:                                              *
- *  2025/03/26 - Prima versione                             *
- *  2025/03/28 - Seconda versione                           *
- *  2025/04/06 - Terza versione                             *
+ *               di un  testo, come la richiesta.             *
+ *                                                            *
+ *  ARGOMENTI:                                                *
+ *  *int intput: variabile dedicata all'input da terminale    *
+ *                                                            *
+ *  RITORNO: //                                               *
+ *                                                            *
+ *  MODIFICHE:                                                *
+ *  23/06/25 - Prima versione                                 *
+ *  25/06/25 - Seconda versione                               *  
+ *  26/06/25 - Terza versione                                 *
  *************************************************************/
 void collezionareInput(int *input) {
   int inMenuPrinipale; 

@@ -63,7 +63,7 @@ Scopo delle funzioni presenti:
 * RITORNO: Terminale aggiornato                         *
 *                                                       *
 * MODIFICHE:                                            *
-* 2025/06/23 - Prima versione                           *
+* 23/06/25 - Prima versione                             *
 ********************************************************/
 void stampareMenuDifficolta() {
   pulireSchermo();
@@ -86,7 +86,7 @@ void stampareMenuDifficolta() {
 * RITORNO: Terminale aggiornato                         *
 *                                                       *
 * MODIFICHE:                                            *
-* 2025/06/23 - Prima versione                           *
+* 23/06/25 - Prima versione                             *
 ********************************************************/
 void avviareMenuDifficolta() {
   int inputDifficolta;
@@ -113,7 +113,7 @@ void avviareMenuDifficolta() {
 * RITORNO: Nessuno                                      *
 *                                                       *
 * MODIFICHE:                                            *
-* 2025/06/23 - Prima versione                           *
+* 23/06/25 - Prima versione                             *
 ********************************************************/
 void stampareTitoloImpostazioni(){
   printf(CIANO);
@@ -141,7 +141,7 @@ void stampareTitoloImpostazioni(){
 * RITORNO: Terminale aggiornato                            *
 *                                                          *
 * MODIFICHE:                                               *
-* 2025/06/23 - Prima versione                              *
+* 24/06/25 - Prima versione                                *
 ***********************************************************/
 void stampareMenuImpostazioni(){
 
@@ -190,7 +190,7 @@ void stampareMenuImpostazioni(){
 * RITORNO: valore della difficoltà selezionata           *
 *                                                        *
 * MODIFICHE:                                             *
-* 2025/06/23 - Prima versione                            *
+* 24/06/25 - Prima versione                              *
 ********************************************************/
 int collezionaDifficolta(int *inputDifficolta) {
   int inMenuDifficolta = 1;
@@ -232,7 +232,7 @@ int collezionaDifficolta(int *inputDifficolta) {
 * RITORNO: valore della dimensione selezionata           *
 *                                                        *
 * MODIFICHE:                                             *
-* 2025/06/23 - Prima versione                            *
+* 24/06/25 - Prima versione                              *
 ********************************************************/
 int collezionaDimensione(int *inputDimensione) {
   int inMenuDifficolta = 1;
@@ -274,7 +274,7 @@ int collezionaDimensione(int *inputDimensione) {
 * RITORNO: partita aggiornata                                 *
 *                                                             *
 * MODIFICHE:                                                  *
-* 2025/06/23 - Prima versione                                 *
+* 25/06/25 - Prima versione                                   *
 **************************************************************/
 void collezionareNomePartita(char *nomeParitita) {
   resetZonaInput(INPUT_RIGA_NOME, INPUT_COLONNA + 35);
