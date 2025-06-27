@@ -76,10 +76,6 @@ int raccoglierePartiteSalvate(char *nomiPartite[], int massimePartite) {
   struct dirent *voce;
   int conteggio = 0;
 
-  if (cartella == NULL) {
-    return 0;
-  }
-  
   while ((voce = readdir(cartella)) != NULL && conteggio < massimePartite) {
     if (strncmp(voce->d_name, "partita_", 8) == 0) {
       nomiPartite[conteggio] = malloc(strlen(voce->d_name) + 1);
@@ -125,20 +121,20 @@ void liberarePartite(char *nomiPartite[], int numero) {
 *********************************************************/
 const char *trovareFile(char *nomiPartite[], int numero, const char *input) {
   long indice = strtol(input, NULL, 10);
+  char *risultato = NULL;
   int i = 0;
-  
+
   if (indice >= 1 && indice <= numero) {
-    return nomiPartite[indice - 1];
+    risultato = nomiPartite[indice - 1];
   }
-  
+
   while (i < numero) {
     if (strstr(nomiPartite[i], input) != NULL) {
-      return nomiPartite[i];
+      risultato = nomiPartite[i];
     }
     i = i + 1;
   }
-  
-  return NULL;
+  return risultato;
 }
 
 
@@ -354,7 +350,7 @@ void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
 *******************************************************/
 int caricarePartita(Partita *partita, const char *percorso) {
     FILE *file = fopen(percorso, "r");
-    int risultato = 0;
+    int risultato = FALSO;
     int dimensione, difficolta;
     
     if (file != NULL) {
@@ -362,7 +358,7 @@ int caricarePartita(Partita *partita, const char *percorso) {
             inizializzareGrigliaPartita(partita, dimensione);
             
             if (caricareValoriGriglia(file, partita, dimensione) == VERO) {
-                risultato = 1;
+                risultato = VERO;
             }
         }
         fclose(file);
@@ -417,7 +413,7 @@ int salvarePartita(Partita *partita, const char *percorso) {
     
     if (file != NULL) {
         int dimensione = leggereDimGriglia(partita->grigliaPartita);
-        int difficolta = leggereDimGrigliaImp(partita->impPartita);
+        int difficolta = leggereDifficoltaImp(partita->impPartita);
 
         fprintf(file, "%d %d\n", dimensione, difficolta);
         salvareValoriGriglia(file, partita, dimensione);
