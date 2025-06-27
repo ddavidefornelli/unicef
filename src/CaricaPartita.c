@@ -8,15 +8,15 @@ NOME FILE: Home Page sudoku
 
 Scopo di ogni funzione presente:
 - raccoglierePartiteSalvate: legge dalla cartella database i file che rappresentano le partite salvate dall’utente. Restituisce il numero totale di partite trovate.
-- liberaPartite: liberare la memoria utilizzata per contenere i nomi delle partite.
-- trovaFile: ricerca all'interno della cartella database(dove vengono salvate le partite) la partita che l'utente desidera giocare.
+- liberarePartite: liberare la memoria utilizzata per contenere i nomi delle partite.
+- trovareFile: ricerca all'interno della cartella database(dove vengono salvate le partite) la partita che l'utente desidera giocare.
 - stampareTitoloCaricaPartita: stampa la scritta 'CARICA PARTITA'.
 - stampareZonaInput: stampa la cornice che identifica la zona dove digitare i valori da inserire all'interno della griglia del sudoku
 - stampareMenuCaricaPartita: Gestisce il caricamento di una partita salvata.
 
 MODIFICHE: 22/06/25 - Fornelli Davide ha aggiornato la gestione della memoria in raccoglierePartiteSalvate per migliorare l'efficienza.
 
-MODIFICHE: 23/06/25 - Antoniciello Giuliano ha modificato la funzione trovaFile per includere il supporto alla ricerca case-insensitive.
+MODIFICHE: 23/06/25 - Antoniciello Giuliano ha modificato la funzione trovareFile per includere il supporto alla ricerca case-insensitive.
 
 MODIFICHE: 22/06/25 - Fornelli Davide ha rivisto la formattazione del titolo in stampareTitoloCaricaPartita per una migliore estetica nei terminali scuri.
 
@@ -92,7 +92,7 @@ int raccoglierePartiteSalvate(char *nomiPartite[], int massimePartite) {
 }
 
 
-void liberaPartite(char *nomiPartite[], int numero) {
+void liberarePartite(char *nomiPartite[], int numero) {
   int i = 0;
   while (i < numero) {
     if (nomiPartite[i] != NULL) {
@@ -104,7 +104,7 @@ void liberaPartite(char *nomiPartite[], int numero) {
 
 
 /********************************************************
-* FUNZIONE: trovaFile                                    *
+* FUNZIONE: trovareFile                                    *
 *                                                        *
 * DESCRIZIONE: Cerca un nome di file partite nell’array  *
 *              secondo l’indice numerico o una sottostr. *
@@ -123,7 +123,7 @@ void liberaPartite(char *nomiPartite[], int numero) {
 * MODIFICHE:                                             *
 * 18/06/25 - Prima versione                            *
 *********************************************************/
-const char *trovaFile(char *nomiPartite[], int numero, const char *input) {
+const char *trovareFile(char *nomiPartite[], int numero, const char *input) {
   long indice = strtol(input, NULL, 10);
   int i = 0;
   
@@ -266,13 +266,13 @@ void stampareMenuCaricaPartita(){
         avviareMenuPrincipale();
         continua = 0;
       } else {
-        const char *file = trovaFile(nomiPartite, numeroPartite, nomeScelto);
+        const char *file = trovareFile(nomiPartite, numeroPartite, nomeScelto);
         if (file != NULL) {
           char percorso[256];
           Partita partita;
           sprintf(percorso, "database/%s", file);
           
-          if (caricaPartita(&partita, percorso)) {
+          if (caricarePartita(&partita, percorso)) {
             const char *underscore = strrchr(file, '_');
             if (underscore) {
               char nome[128];
@@ -297,5 +297,178 @@ void stampareMenuCaricaPartita(){
       }
     }
   }
-  liberaPartite(nomiPartite, numeroPartite);
+  liberarePartite(nomiPartite, numeroPartite);
+}
+
+/*******************************************************
+* FUNZIONE: salvareValoriGriglia                        *
+*                                                       *
+* DESCRIZIONE: Scrive su file i valori contenuti nella  *
+*              griglia della partita Sudoku, riga per   *
+*              riga, separando i numeri con spazi.      *
+*                                                       *
+* ARGOMENTI:                                            *
+* file: puntatore al file aperto in scrittura           *
+* partita: puntatore alla struttura della partita       *
+* dimensione: dimensione della griglia                  *
+*                                                       *
+* RITORNO: file aggiornato                              *
+* MODIFICHE:                                            *
+* 20/06/25 - Prima versione                             *
+********************************************************/
+void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
+    int i = 0;
+    int j;
+    
+    while (i < dimensione) {
+        j = 0;
+        while (j < dimensione) {
+            fprintf(file, "%d ", leggereValGriglia(partita->grigliaPartita, i, j));
+            j = j + 1;
+        }
+        fprintf(file, "\n");
+        i = i + 1;
+    }
+}
+
+
+/*******************************************************
+* FUNZIONE: caricarePartita                              *
+*                                                      *
+* DESCRIZIONE: Carica da file le informazioni di una   *
+*              partita Sudoku, leggendo dimensione,    *
+*              difficoltà e valori della griglia,      *
+*              e inizializza la struttura partita      *
+*              corrispondente.                         *
+*                                                      *
+* ARGOMENTI:                                           *
+* partita: puntatore alla struttura della partita      *
+* percorso: stringa contenente il percorso del file    *
+*                                                      *
+* RITORNO:                                             *
+* 1 se il caricamento ha successo,                     *
+* 0 in caso di errore o file non trovato               *
+*                                                      *
+* MODIFICHE:                                           *
+* 20/06/25 - Prima versione                            *
+*******************************************************/
+int caricarePartita(Partita *partita, const char *percorso) {
+    FILE *file = fopen(percorso, "r");
+    int risultato = 0;
+    int dimensione, difficolta;
+    
+    if (file != NULL) {
+        if (fscanf(file, "%d %d", &dimensione, &difficolta) == 2) {
+            inizializzareGrigliaPartita(partita, dimensione);
+            
+            if (caricareValoriGriglia(file, partita, dimensione) == VERO) {
+                risultato = 1;
+            }
+        }
+        fclose(file);
+    }
+    return risultato;
+}
+
+/*******************************************************
+* FUNZIONE: salvarePartitaCorrente                     *
+*                                                      *
+* DESCRIZIONE: Salva la partita corrente su file,      *
+*              creando il percorso del file basato sul *
+*              nome della partita e richiamando la     *
+*              funzione di salvataggio specifica.      *
+*                                                      *
+* ARGOMENTI:                                           *
+* partita: puntatore alla struttura della partita      *
+*                                                      *
+* RITORNO: file con partita salvata                    *
+* MODIFICHE:                                           *
+* 23/06/25 - Prima versione                            *
+*******************************************************/
+void salvarePartitaCorrente(Partita *partita) {
+    char percorso[100];
+    snprintf(percorso, sizeof(percorso), "database/partita_%s.txt", partita->nomePartita);
+    salvarePartita(partita, percorso);
+}
+
+
+/*******************************************************
+* FUNZIONE: salvarePartita                             *
+*                                                      *
+* DESCRIZIONE: Salva su file le informazioni della     *
+*              partita Sudoku, inclusi dimensione,     *
+*              difficoltà e valori della griglia,      *
+*              nel percorso specificato.               *
+*                                                      *
+* ARGOMENTI:                                           *
+* partita: puntatore alla struttura della partita      *
+* percorso: stringa contenente il percorso del file    *
+*                                                      *
+* RITORNO:                                             *
+* VERO se il salvataggio è avvenuto con successo,      *
+* FALSO in caso di errore nell'apertura del file       *
+*                                                      *
+* MODIFICHE:                                           *
+* 20/06/25 - Prima versione                            *
+*******************************************************/
+int salvarePartita(Partita *partita, const char *percorso) {
+    FILE *file = fopen(percorso, "w");
+    int risultato = FALSO;
+    
+    if (file != NULL) {
+        int dimensione = leggereDimGriglia(partita->grigliaPartita);
+        int difficolta = leggereDimGrigliaImp(partita->impPartita);
+
+        fprintf(file, "%d %d\n", dimensione, difficolta);
+        salvareValoriGriglia(file, partita, dimensione);
+        fclose(file);
+        risultato = VERO;
+    }
+    return risultato;
+}
+
+
+
+
+/*********************************************************
+* FUNZIONE: caricareValoriGriglia                          *
+*                                                        *
+* DESCRIZIONE: Legge da file i valori della griglia      *
+*              della partita Sudoku e li scrive nella    *
+*              struttura della partita riga per riga.    *
+*                                                        *
+* ARGOMENTI:                                             *
+* file: puntatore al file aperto in lettura              *
+* partita: puntatore alla struttura della partita        *
+* dimensione: dimensione della griglia                   *
+*                                                        *
+* RITORNO:                                               *
+* VERO se tutti i valori sono stati letti correttamente  *
+* FALSO in caso di errore di lettura                     *
+*                                                        *
+* MODIFICHE:                                             *
+* 21/06/25 - Prima versione                              *
+*********************************************************/
+int caricareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
+    int i = 0;
+    int j = 0;
+    int val;
+    int risultato = VERO;
+    
+    while (i < dimensione && risultato == VERO) {
+        j = 0;
+        while (j < dimensione && risultato == VERO) {
+            if (fscanf(file, "%d", &val) == 1) {
+                scrivereValGrigliaPartita(partita, val, i, j);
+                j = j + 1;
+            } else {
+                risultato = FALSO;
+            }
+        }
+        if (risultato == VERO) {
+            i = i + 1;
+        }
+    }
+    
+    return risultato;
 }

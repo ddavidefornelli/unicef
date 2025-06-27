@@ -50,7 +50,7 @@ Nel giorno 17/06/25, Davide Fornelli ha aggiornato la funzione: verificareValidi
 Nel giorno 18/06/25, Giuliano Antoniciello ha inserito la funziona: calcolareSottoquadrato() per calcolare dinamicamente la dimensione del quadrante in base alla dimensione della griglia.
                     In questo modo il codice è più dinamico e flessibile.
 
-Nel giorno 20/06/25, Giuliano Antoniciello ha inserito le funzioni per il salvataggio e caricamento partita (salvarePartita, caricaPartita), per permettere di interrompere e riprendere 
+Nel giorno 20/06/25, Giuliano Antoniciello ha inserito le funzioni per il salvataggio e caricamento partita (salvarePartita, caricarePartita), per permettere di interrompere e riprendere 
                     una partita in momenti successivi
 
 Nel giorno 20/06/25, Michele Amato ha inserito la funzione: stampareGrigliaPartita() per aumentare la leggibilità della griglia sul terminale
@@ -70,6 +70,7 @@ Nel giorno 23/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato la
 #include "funzioni_utilita.h"
 #include "tipiDiDato.h"
 #include "partita.h"
+#include "CaricaPartita.h"
 #include "homepage.h"
 
 #define RIGA_INPUT_RIGA 13
@@ -141,15 +142,22 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
         inputSpeciale = FALSO;
 
         collezionareRiga(&griglia, &riga);
-        collezionareColonna(&griglia, &colonna);
-        collezionareValore(&griglia, &valDaInserire);
-        if (riga == SALVA_PARTITA || colonna == SALVA_PARTITA || valDaInserire == SALVA_PARTITA) {
-            salvarePartitaCorrente(&partita);
-            inputSpeciale = VERO;
+        inputSpeciale = controllareSalvataggio(partita, &riga);
+        if (inputSpeciale == VERO) {
+          collezionareRiga(&griglia, &riga);
         }
-        
-        if (inputSpeciale == FALSO) {
+        collezionareColonna(&griglia, &colonna);
+        inputSpeciale = controllareSalvataggio(partita, &colonna);
+        if (inputSpeciale == VERO) {
+          collezionareColonna(&griglia, &colonna);
+        }
+        collezionareValore(&griglia, &valDaInserire);
+        inputSpeciale = controllareSalvataggio(partita, &valDaInserire);
+        if (inputSpeciale == VERO) {
+            collezionareValore(&griglia, &valDaInserire);
+        }
 
+        if (inputSpeciale ==FALSO) {
             valido = verificareValidita(&griglia, inputDimensione, riga - 1, colonna - 1, valDaInserire);
             if (valido == VERO) {
                 scrivereValGrigliaPartita(&partita, valDaInserire, riga - 1, colonna - 1);
@@ -161,6 +169,15 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
     }
 
     stampareVittoria();
+}
+
+int controllareSalvataggio(Partita partita, int *input) {
+    int esito = FALSO;
+    if (*input == SALVA_PARTITA) {
+        salvarePartitaCorrente(&partita);
+        esito = VERO;
+    }
+    return esito;
 }
 
 
@@ -939,17 +956,16 @@ int collezionareInput(Griglia *griglia, int *input, int posRiga) {
     int inputOk;
 
     while (valida == FALSO) {
-        resetZonaInput(posRiga, COLONNA_INPUT);
+        reimpostareZonaInput(posRiga, COLONNA_INPUT);
         inputOk = FALSO;
 
         while (inputOk == FALSO) {
             if (scanf("%d", input) == 1) {
                 inputOk = VERO;
             } else {
-                pulireBuffer();
-                resetZonaInput(posRiga, COLONNA_INPUT);
+                reimpostareZonaInput(posRiga, COLONNA_INPUT);
                 mostrareMessaggioErrore("Digita un Numero", RIGA_ERRORE + 2, COLONNA_ERRORE);
-                resetZonaInput(posRiga, COLONNA_INPUT);
+                reimpostareZonaInput(posRiga, COLONNA_INPUT);
             }
         }
 
@@ -957,7 +973,7 @@ int collezionareInput(Griglia *griglia, int *input, int posRiga) {
 
         if ((*input < 1 || *input > leggereDimGriglia(*griglia)) && (*input != 32 && *input != 31)) {
             mostrareMessaggioErrore("Numero fuori intervallo", RIGA_ERRORE + 2, COLONNA_ERRORE);
-            resetZonaInput(posRiga, COLONNA_INPUT);
+            reimpostareZonaInput(posRiga, COLONNA_INPUT);
         } else {
             if (*input == 32) {
                 avviareMenuPrincipale();
@@ -1023,177 +1039,6 @@ int controllareGrigliaPiena(Griglia griglia) {
 }
 
 
-/*******************************************************
-* FUNZIONE: salvarePartitaCorrente                     *
-*                                                      *
-* DESCRIZIONE: Salva la partita corrente su file,      *
-*              creando il percorso del file basato sul *
-*              nome della partita e richiamando la     *
-*              funzione di salvataggio specifica.      *
-*                                                      *
-* ARGOMENTI:                                           *
-* partita: puntatore alla struttura della partita      *
-*                                                      *
-* RITORNO: file con partita salvata                    *
-* MODIFICHE:                                           *
-* 23/06/25 - Prima versione                            *
-*******************************************************/
-void salvarePartitaCorrente(Partita *partita) {
-    char percorso[100];
-    snprintf(percorso, sizeof(percorso), "database/partita_%s.txt", partita->nomePartita);
-    salvarePartita(partita, percorso);
-}
-
-
-/*******************************************************
-* FUNZIONE: salvarePartita                             *
-*                                                      *
-* DESCRIZIONE: Salva su file le informazioni della     *
-*              partita Sudoku, inclusi dimensione,     *
-*              difficoltà e valori della griglia,      *
-*              nel percorso specificato.               *
-*                                                      *
-* ARGOMENTI:                                           *
-* partita: puntatore alla struttura della partita      *
-* percorso: stringa contenente il percorso del file    *
-*                                                      *
-* RITORNO:                                             *
-* VERO se il salvataggio è avvenuto con successo,      *
-* FALSO in caso di errore nell'apertura del file       *
-*                                                      *
-* MODIFICHE:                                           *
-* 20/06/25 - Prima versione                            *
-*******************************************************/
-int salvarePartita(Partita *partita, const char *percorso) {
-    FILE *file = fopen(percorso, "w");
-    int risultato = FALSO;
-    
-    if (file != NULL) {
-        int dimensione = leggereDimGriglia(partita->grigliaPartita);
-        int difficolta = leggereDimGrigliaImp(partita->impPartita);
-
-        fprintf(file, "%d %d\n", dimensione, difficolta);
-        salvareValoriGriglia(file, partita, dimensione);
-        fclose(file);
-        risultato = VERO;
-    }
-    return risultato;
-}
-
-
-/*******************************************************
-* FUNZIONE: salvareValoriGriglia                        *
-*                                                       *
-* DESCRIZIONE: Scrive su file i valori contenuti nella  *
-*              griglia della partita Sudoku, riga per   *
-*              riga, separando i numeri con spazi.      *
-*                                                       *
-* ARGOMENTI:                                            *
-* file: puntatore al file aperto in scrittura           *
-* partita: puntatore alla struttura della partita       *
-* dimensione: dimensione della griglia                  *
-*                                                       *
-* RITORNO: file aggiornato                              *
-* MODIFICHE:                                            *
-* 20/06/25 - Prima versione                             *
-********************************************************/
-void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
-    int i = 0;
-    int j;
-    
-    while (i < dimensione) {
-        j = 0;
-        while (j < dimensione) {
-            fprintf(file, "%d ", leggereValGriglia(partita->grigliaPartita, i, j));
-            j = j + 1;
-        }
-        fprintf(file, "\n");
-        i = i + 1;
-    }
-}
-
-
-/*******************************************************
-* FUNZIONE: caricarePartita                              *
-*                                                      *
-* DESCRIZIONE: Carica da file le informazioni di una   *
-*              partita Sudoku, leggendo dimensione,    *
-*              difficoltà e valori della griglia,      *
-*              e inizializza la struttura partita      *
-*              corrispondente.                         *
-*                                                      *
-* ARGOMENTI:                                           *
-* partita: puntatore alla struttura della partita      *
-* percorso: stringa contenente il percorso del file    *
-*                                                      *
-* RITORNO:                                             *
-* 1 se il caricamento ha successo,                     *
-* 0 in caso di errore o file non trovato               *
-*                                                      *
-* MODIFICHE:                                           *
-* 20/06/25 - Prima versione                            *
-*******************************************************/
-int caricaPartita(Partita *partita, const char *percorso) {
-    FILE *file = fopen(percorso, "r");
-    int risultato = 0;
-    int dimensione, difficolta;
-    
-    if (file != NULL) {
-        if (fscanf(file, "%d %d", &dimensione, &difficolta) == 2) {
-            inizializzareGrigliaPartita(partita, dimensione);
-            
-            if (caricareValoriGriglia(file, partita, dimensione) == VERO) {
-                risultato = 1;
-            }
-        }
-        fclose(file);
-    }
-    return risultato;
-}
-
-
-/*********************************************************
-* FUNZIONE: caricareValoriGriglia                          *
-*                                                        *
-* DESCRIZIONE: Legge da file i valori della griglia      *
-*              della partita Sudoku e li scrive nella    *
-*              struttura della partita riga per riga.    *
-*                                                        *
-* ARGOMENTI:                                             *
-* file: puntatore al file aperto in lettura              *
-* partita: puntatore alla struttura della partita        *
-* dimensione: dimensione della griglia                   *
-*                                                        *
-* RITORNO:                                               *
-* VERO se tutti i valori sono stati letti correttamente  *
-* FALSO in caso di errore di lettura                     *
-*                                                        *
-* MODIFICHE:                                             *
-* 21/06/25 - Prima versione                              *
-*********************************************************/
-int caricareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
-    int i = 0;
-    int j = 0;
-    int val;
-    int risultato = VERO;
-    
-    while (i < dimensione && risultato == VERO) {
-        j = 0;
-        while (j < dimensione && risultato == VERO) {
-            if (fscanf(file, "%d", &val) == 1) {
-                scrivereValGrigliaPartita(partita, val, i, j);
-                j = j + 1;
-            } else {
-                risultato = FALSO;
-            }
-        }
-        if (risultato == VERO) {
-            i = i + 1;
-        }
-    }
-    
-    return risultato;
-}
 
 
 /*************************************************************

@@ -4,8 +4,8 @@
 #include "funzioni_utilita.h"
 
 void avviareMenuDifficolta();
-int collezionaDifficolta(int *inputDifficolta);
-int collezionaDimensione(int *inputDimensione);
+int collezionareDifficolta(int *inputDifficolta);
+int collezionareDimensione(int *inputDimensione);
 void stampareMenuDifficolta();
 void stampareTitoloImpostazioni();
 void stampareMenuImpostazioni();

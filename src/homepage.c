@@ -137,7 +137,7 @@ void stampareMenuPrincipale()
 void avviareMenuPrincipale(){
   int input;
   stampareMenuPrincipale();
-  collezionareInput(&input); 
+  collezionareInputHomepage(&input); 
 }
 
 
@@ -156,24 +156,24 @@ void avviareMenuPrincipale(){
  *  25/06/25 - Seconda versione                               *  
  *  26/06/25 - Terza versione                                 *
  *************************************************************/
-void collezionareInput(int *input) {
+void collezionareInputHomepage(int *input) {
   int inMenuPrinipale; 
 
   inMenuPrinipale = 1;
   while(inMenuPrinipale) {
-    resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+    reimpostareZonaInput(INPUT_RIGA, INPUT_COLONNA);
     
     while(scanf("%d", input) != 1) { // input é formato da caratteri  
       pulireBuffer();
       mostrareMessaggioErrore(" Digita un Numero ", ERR_MSG_RIGA, ERR_MSG_COLONNA);
-      resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+      reimpostareZonaInput(INPUT_RIGA, INPUT_COLONNA);
     }
 
     pulireBuffer();
 
     if(*input < OPZIONE_MIN || *input > OPZIONE_MAX) {
       mostrareMessaggioErrore("Digita un Numero compreso tra 1 - 4 ", ERR_MSG_RIGA, ERR_MSG_COLONNA - 7);
-      resetZonaInput(INPUT_RIGA, INPUT_COLONNA);
+      reimpostareZonaInput(INPUT_RIGA, INPUT_COLONNA);
     }
     else if (*input == NUOVA_PARTITA) {
       avviareMenuDifficolta();

@@ -58,13 +58,9 @@ int collezionareValore(Griglia *griglia, int *inputValore);
 
 // Funzioni di controllo stato partita
 int controllareGrigliaPiena(Griglia griglia);
+int controllareSalvataggio(Partita partita, int *input);
 
 // Funzioni di salvataggio e caricamento
-void salvarePartitaCorrente(Partita *partita);
-int salvarePartita(Partita *partita, const char *percorso);
-void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione);
-int caricarePartita(Partita *partita, const char *percorso);
-int caricareValoriGriglia(FILE *file, Partita *partita, int dimensione);
 
 #endif // PARTITA_H
 

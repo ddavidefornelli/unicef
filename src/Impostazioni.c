@@ -15,8 +15,8 @@ Scopo delle funzioni presenti:
                         difficoltà: facile, intermedia, difficile
                         dimensione della griglia: piccola, media, grande
                         spazio per l' inserimento del nome della partita
-- collezionaDifficolta: Richiede all’utente di inserire un valore intero che rappresenti la difficoltà della partita.
-- collezionaDimensione: Richiede all’utente un valore numerico corrispondente alla dimensione della griglia di gioco.
+- collezionareDifficolta: Richiede all’utente di inserire un valore intero che rappresenti la difficoltà della partita.
+- collezionareDimensione: Richiede all’utente un valore numerico corrispondente alla dimensione della griglia di gioco.
 - collezionaNomeGioco: Richiede all’utente il nome da assegnare alla nuova partita.
  */
 
@@ -93,8 +93,8 @@ void avviareMenuDifficolta() {
   int inputDimensione;
   char nomePartita[NOME_MAX + 1];
   stampareMenuDifficolta();
-  collezionaDifficolta(&inputDifficolta);
-  collezionaDimensione(&inputDimensione);
+  collezionareDifficolta(&inputDifficolta);
+  collezionareDimensione(&inputDimensione);
   collezionareNomePartita(nomePartita);
   avviarePartita(nomePartita, inputDifficolta, inputDimensione);
 }
@@ -176,12 +176,12 @@ void stampareMenuImpostazioni(){
 
 
 /********************************************************
-* FUNZIONE: collezionaDifficolta                         *
+* FUNZIONE: collezionareDifficolta                         *
 *                                                        *
 * DESCRIZIONE: Permette all'utente di inserire un valore *
 *              numerico per la difficoltà del gioco.     *
 *              Controlla che l'input sia numerico e      *
-*              compreso tra OPZIONE_MIN e OPZIONE_MAX.   *
+*              compreso tara OPZIONE_MIN e OPZIONE_MAX.   *
 *                                                        *
 * ARGOMENTI:                                             *
 * - int *inputDifficolta: puntatore alla variabile che   *
@@ -192,24 +192,24 @@ void stampareMenuImpostazioni(){
 * MODIFICHE:                                             *
 * 24/06/25 - Prima versione                              *
 ********************************************************/
-int collezionaDifficolta(int *inputDifficolta) {
+int collezionareDifficolta(int *inputDifficolta) {
   int inMenuDifficolta = 1;
 
   while(inMenuDifficolta) {
-    resetZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
+    reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
     
     while(scanf("%d", inputDifficolta) != 1) {
       pulireBuffer();
-      resetZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
+      reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
       mostrareMessaggioErrore("Digita un Numero", ERR_MSG_RIGA - 6, ERR_MSG_COLONNA);
-      resetZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
+      reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
     }
    
     pulireBuffer();
     
     if(*inputDifficolta < OPZIONE_MIN || *inputDifficolta > OPZIONE_MAX) {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA - 6, ERR_MSG_COLONNA - 5);
-      resetZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
+      reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
     } else {
       return *inputDifficolta;
     }
@@ -218,7 +218,7 @@ int collezionaDifficolta(int *inputDifficolta) {
 
 
 /********************************************************
-* FUNZIONE: collezionaDimensione                         *
+* FUNZIONE: collezionareDimensione                         *
 *                                                        *
 * DESCRIZIONE: Permette all'utente di inserire un valore *
 *              numerico per la dimensione della griglia. *
@@ -234,24 +234,24 @@ int collezionaDifficolta(int *inputDifficolta) {
 * MODIFICHE:                                             *
 * 24/06/25 - Prima versione                              *
 ********************************************************/
-int collezionaDimensione(int *inputDimensione) {
+int collezionareDimensione(int *inputDimensione) {
   int inMenuDifficolta = 1;
 
   while(inMenuDifficolta) {
-    resetZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
+    reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
     
     while(scanf("%d", inputDimensione) != 1) {
       pulireBuffer();
-      resetZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
+      reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
       mostrareMessaggioErrore("Digita un Numero", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA);
-      resetZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
+      reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
     }
    
     pulireBuffer();
     
     if(*inputDimensione < OPZIONE_MIN || *inputDimensione > OPZIONE_MAX) {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA - 5);
-      resetZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
+      reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
     } else {
       return *inputDimensione;
     }
@@ -277,7 +277,7 @@ int collezionaDimensione(int *inputDimensione) {
 * 25/06/25 - Prima versione                                   *
 **************************************************************/
 void collezionareNomePartita(char *nomeParitita) {
-  resetZonaInput(INPUT_RIGA_NOME, INPUT_COLONNA + 35);
+  reimpostareZonaInput(INPUT_RIGA_NOME, INPUT_COLONNA + 35);
   fgets(nomeParitita, NOME_MAX, stdin);
   int lunghezza = strlen(nomeParitita);
   if (lunghezza > 0 && nomeParitita[lunghezza - 1] == '\n') { 

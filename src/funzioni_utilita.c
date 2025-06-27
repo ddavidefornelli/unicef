@@ -66,54 +66,8 @@ void stampareCentrato(const char *testo)
 }
 
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- *  FUNZIONE: stampaCentrato(const char *testo)             *
- *  DESCRIZIONE: Allinea la stringa "testo" a sinistra      *
- *  nel terminale                                           *
- *                                                          *
- *  ARGOMENTI:                                              *
- *  const char *testo: stringa da allineare                 *
- *                                                          *
- *  RITORNO: Terminale aggiornato                           *
- *                                                          *
- *  MODIFICHE:                                              *
- *  2025/03/27 - Prima versione                             *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-void stampareASinistra(const char *testo) 
-{
-  /* Definisco ed inizializzo le variabili */
-  int spaziDaInserire; /* contatore per il ciclo */
-  int dimStringa; 
-  int spazi;           /* rappresenta le coordinate dove deve essere stampata "testo" */
-
-  /* calcolo la lunghezza di dimStringa */
-  dimStringa = strlen(testo);
-
-  /* Calcolo il numero di spazi da inserire per spostarere il testo a sinistra (Sottraendo 5, la 
-     stringa viene spostareta verso sinistra di 5 posizioni rispetto al margine destro) */
-  spazi = (LARGHEZZA_TERMINALE - dimStringa) - 5;
-
-  /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
-  if (spazi < 0)
-  {
-    spazi = 0;
-  }
-
-  /* Stampo tanti spazi vuoti quanto basta per spostarere a sinistra il "testo" */
-  spaziDaInserire = 0;
-  while(spaziDaInserire < spazi)
-  {
-    printf(" ");
-    spaziDaInserire = spaziDaInserire + 1;
-  }
-
-  /* Stampo effettivamente "testo" */
-  printf("%s\n", testo);
-}
-
-
 /*******************************************************
-* FUNZIONE: resetZonaInput                             *
+reimpostareZonaInput                             *
 *                                                      *
 * DESCRIZIONE: Ripulisce e reimposta la zona di input  *
 *              nella posizione specificata sullo       *
@@ -131,7 +85,7 @@ void stampareASinistra(const char *testo)
 * MODIFICHE:                                           *
 * 2025/06/23 - Prima versione                          *
 *******************************************************/
-void resetZonaInput(int posRiga, int posColonna){
+void reimpostareZonaInput(int posRiga, int posColonna){
     spostareCursore(posRiga, posColonna);
     printf(">> ");
     printf("%-8s", "");
@@ -197,16 +151,16 @@ void tornareHomepage(int *input, int posRiga, int posColonna){
   spostareCursore(posRiga - 1, posColonna);
   printf("[0] torna alla homepage");
   while(inMenuCorrente) {
-    resetZonaInput(posRiga, posColonna + 8);
+    reimpostareZonaInput(posRiga, posColonna + 8);
 
     while(scanf("%d", input) != 1) {
         mostrareMessaggioErrore("input non valido", posRiga + 2, posColonna + 3);
-        resetZonaInput(posRiga, posColonna + 8);
+        reimpostareZonaInput(posRiga, posColonna + 8);
         pulireBuffer();
     }
     if(*input != 0){
         mostrareMessaggioErrore("input non valido", posRiga + 2, posColonna + 3);
-        resetZonaInput(posRiga, posColonna + 8);
+        reimpostareZonaInput(posRiga, posColonna + 8);
         pulireBuffer();
     }
     else if (*input == 0) {
