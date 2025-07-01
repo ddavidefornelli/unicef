@@ -9,12 +9,12 @@ NOME FILE: tipiDiDato.c
 Scopo delle funzioni presenti:
 - stampareMenuDifficolta: Pulisce lo schermo e mostra a video il titolo e il menu delle impostazioni.
 - avviareMenuDifficolta: Gestisce l’avvio di una nuova partita. Mostra il menu delle impostazioni e raccoglie: difficoltà, la dimensione della griglia
-                        e il nome della partita e infine avvia la partita con i parametri raccolti.
+  e il nome della partita e infine avvia la partita con i parametri raccolti.
 - stampareTitoloImpostazioni: Stampa il titolo per la sezione "Impostazioni".
 - stampareMenuImpostazioni: Stampa le opzioni del menu delle impostazioni, incluse:
-                        difficoltà: facile, intermedia, difficile
-                        dimensione della griglia: piccola, media, grande
-                        spazio per l' inserimento del nome della partita
+- difficoltà: facile, intermedia, difficile
+- dimensione della griglia: piccola, media, grande
+- spazio per l' inserimento del nome della partita
 - collezionareDifficolta: Richiede all’utente di inserire un valore intero che rappresenti la difficoltà della partita.
 - collezionareDimensione: Richiede all’utente un valore numerico corrispondente alla dimensione della griglia di gioco.
 - collezionaNomeGioco: Richiede all’utente il nome da assegnare alla nuova partita.
@@ -175,13 +175,13 @@ void stampareMenuImpostazioni(){
 }
 
 
-/********************************************************
-* FUNZIONE: collezionareDifficolta                         *
+/*********************************************************
+* FUNZIONE: collezionareDifficolta                       *
 *                                                        *
 * DESCRIZIONE: Permette all'utente di inserire un valore *
 *              numerico per la difficoltà del gioco.     *
 *              Controlla che l'input sia numerico e      *
-*              compreso tara OPZIONE_MIN e OPZIONE_MAX.   *
+*              compreso tara OPZIONE_MIN e OPZIONE_MAX.  *
 *                                                        *
 * ARGOMENTI:                                             *
 * - int *inputDifficolta: puntatore alla variabile che   *
@@ -194,6 +194,7 @@ void stampareMenuImpostazioni(){
 ********************************************************/
 int collezionareDifficolta(int *inputDifficolta) {
   int inMenuDifficolta = 1;
+  int risultato = 0;
 
   while(inMenuDifficolta) {
     reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
@@ -204,21 +205,23 @@ int collezionareDifficolta(int *inputDifficolta) {
       mostrareMessaggioErrore("Digita un Numero", ERR_MSG_RIGA - 6, ERR_MSG_COLONNA);
       reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
     }
-   
+    
     pulireBuffer();
     
-    if(*inputDifficolta < OPZIONE_MIN || *inputDifficolta > OPZIONE_MAX) {
+    if(*inputDifficolta >= OPZIONE_MIN && *inputDifficolta <= OPZIONE_MAX) {
+      risultato = *inputDifficolta;
+      inMenuDifficolta = 0;  // esce dal ciclo
+    } else {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA - 6, ERR_MSG_COLONNA - 5);
       reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
-    } else {
-      return *inputDifficolta;
     }
   }
+
+  return risultato;
 }
 
-
-/********************************************************
-* FUNZIONE: collezionareDimensione                         *
+/*********************************************************
+* FUNZIONE: collezionareDimensione                       *
 *                                                        *
 * DESCRIZIONE: Permette all'utente di inserire un valore *
 *              numerico per la dimensione della griglia. *
@@ -234,10 +237,12 @@ int collezionareDifficolta(int *inputDifficolta) {
 * MODIFICHE:                                             *
 * 24/06/25 - Prima versione                              *
 ********************************************************/
-int collezionareDimensione(int *inputDimensione) {
-  int inMenuDifficolta = 1;
 
-  while(inMenuDifficolta) {
+int collezionareDimensione(int *inputDimensione) {
+  int inMenuDimensione = 1;
+  int risultato = 0;
+
+  while(inMenuDimensione) {
     reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
     
     while(scanf("%d", inputDimensione) != 1) {
@@ -246,16 +251,19 @@ int collezionareDimensione(int *inputDimensione) {
       mostrareMessaggioErrore("Digita un Numero", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA);
       reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
     }
-   
+
     pulireBuffer();
-    
-    if(*inputDimensione < OPZIONE_MIN || *inputDimensione > OPZIONE_MAX) {
+
+    if(*inputDimensione >= OPZIONE_MIN && *inputDimensione <= OPZIONE_MAX) {
+      risultato = *inputDimensione;
+      inMenuDimensione = 0;  // uscita dal ciclo
+    } else {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA - 5);
       reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
-    } else {
-      return *inputDimensione;
     }
   }
+
+  return risultato;
 }
 
 
