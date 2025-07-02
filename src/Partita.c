@@ -67,11 +67,11 @@ Nel giorno 23/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato la
 #include <time.h>
 #include <math.h>
 #include <string.h>
-#include "funzioni_utilita.h"
-#include "tipiDiDato.h"
-#include "partita.h"
-#include "CaricaPartita.h"
-#include "homepage.h"
+#include "../include/funzioniUtilita.h"
+#include "../include/tipiDiDato.h"
+#include "../include/partita.h"
+#include "../include/CaricaPartita.h"
+#include "../include/homepage.h"
 
 #define RIGA_INPUT_RIGA 13
 #define RIGA_INPUT_COLONNA 16

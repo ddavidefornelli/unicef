@@ -1,8 +1,8 @@
 #ifndef CARICAPARTITA_H 
 #define CARICAPARTITA_H
 
-#include "funzioni_utilita.h"
-#include "tipiDiDato.h"
+#include "../include/funzioniUtilita.h"
+#include "../include/tipiDiDato.h"
 
 void stampareMenuCaricaPartita();
 void stampareTitoloCaricaPartita();

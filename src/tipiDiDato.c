@@ -28,8 +28,8 @@ Scopo delle funzioni presenti:
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "tipiDiDato.h"
-#include "partita.h"
+#include "../include/tipiDiDato.h"
+#include "../include/partita.h"
 
 // Funzioni per Griglia
 int leggereDimGriglia(Griglia griglia) {

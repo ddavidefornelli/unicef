@@ -1,7 +1,7 @@
 #ifndef IMPOSTAZIONI_H 
 #define IMPOSTAZIONI_H
 
-#include "funzioni_utilita.h"
+#include "../include/funzioniUtilita.h"
 
 void avviareMenuDifficolta();
 int collezionareDifficolta(int *inputDifficolta);

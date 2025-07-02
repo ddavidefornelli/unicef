@@ -16,7 +16,7 @@ spostareCursore() -> funzione utilizzata per spostare la posizione del cursore n
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "homepage.h"
+#include "../include/homepage.h"
 
 typedef enum {
   LARGHEZZA_TERMINALE = 80,

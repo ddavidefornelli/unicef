@@ -26,10 +26,10 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 
 */
 
-#include "funzioni_utilita.h"
-#include "homepage.h"
-#include "partita.h"
-#include "CaricaPartita.h"
+#include "../include/funzioniUtilita.h"
+#include "../include/homepage.h"
+#include "../include/partita.h"
+#include "../include/CaricaPartita.h"
 #include <dirent.h>
 #include <string.h>
 #include <stdio.h>

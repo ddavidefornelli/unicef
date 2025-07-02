@@ -20,9 +20,9 @@ Scopo delle funzioni presenti:
 - collezionaNomeGioco: Richiede all’utente il nome da assegnare alla nuova partita.
  */
 
-#include "funzioni_utilita.h"
-#include "Impostazioni.h"
-#include "partita.h"
+#include "../include/funzioniUtilita.h"
+#include "../include/Impostazioni.h"
+#include "../include/partita.h"
 #include <stdio.h>
 #include <string.h>
 

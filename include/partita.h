@@ -2,8 +2,8 @@
 #define PARTITA_H
 
 #include <stdio.h>
-#include "tipiDiDato.h"
-
+#include "../include/tipiDiDato.h"
+ 
 // Costanti
 #define RIGA_INPUT_RIGA 13
 #define RIGA_INPUT_COLONNA 16
