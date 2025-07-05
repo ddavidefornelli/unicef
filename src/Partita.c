@@ -264,9 +264,6 @@ void stampareVittoria() {
     stampareCentrato(" \\ \\ / / | ||  \\| | | || | | |");
     stampareCentrato("  \\ V /  | || |\\  | | || |_| |");
     stampareCentrato("   \\_/  |___|_| \\_| |_| \\___/ ");
-    printf("\n\n\n\n\n");
-    stampareCentrato("gruppo 29 al rogo");
-
     tornareHomepage(&input, RIGA_INPUT - 10, 30);
 }
 
