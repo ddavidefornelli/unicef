@@ -32,15 +32,12 @@ Scopo delle funzioni presenti:
 - stampareRigheGriglia: stampa tutte le righe della griglia.
 - stampareRigaGriglia: stampa una singola riga della griglia.
 - collezionareInput: raccoglie input utente con controlli di validità e messaggi d'errore.
-- collezionareRiga: raccoglie l'input per la riga.
-- collezionareColonna: raccoglie l'input per la colonna.
-- collezionareValore: raccoglie l'input per il valore da inserire.
 - controllareGrigliaPiena: verifica se tutte le celle della griglia sono state riempite.
 - salvarePartitaCorrente: salva lo stato attuale della partita su file.
 - salvarePartita: scrive su file tutti i dati della partita.
 - salvareValoriGriglia: scrive i valori della griglia sul file.
-- caricarePartita: carica una partita precedentemente salvata da file.
-- caricareValoriGriglia: legge e carica i valori della griglia da file.
+- caricaPartita: carica una partita precedentemente salvata da file.
+- caricaValoriGriglia: legge e carica i valori della griglia da file.
 - avviarePartitaContinuata: permette di continuare una partita precedentemente salvata.
 
 MODIFICHE APPORTATE:
@@ -50,15 +47,13 @@ Nel giorno 17/06/25, Davide Fornelli ha aggiornato la funzione: verificareValidi
 Nel giorno 18/06/25, Giuliano Antoniciello ha inserito la funziona: calcolareSottoquadrato() per calcolare dinamicamente la dimensione del quadrante in base alla dimensione della griglia.
                     In questo modo il codice è più dinamico e flessibile.
 
-Nel giorno 20/06/25, Giuliano Antoniciello ha inserito le funzioni per il salvataggio e caricamento partita (salvarePartita, caricarePartita), per permettere di interrompere e riprendere 
+Nel giorno 20/06/25, Giuliano Antoniciello ha inserito le funzioni per il salvataggio e caricamento partita (salvarePartita, caricaPartita), per permettere di interrompere e riprendere 
                     una partita in momenti successivi
 
 Nel giorno 20/06/25, Michele Amato ha inserito la funzione: stampareGrigliaPartita() per aumentare la leggibilità della griglia sul terminale
 
 Nel giorno 21/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato le funzioni: collezionareInput(), riempireGriglia() e mostraSchermo() per rendere il codice più compatto
                     e metterlo al sicuro da eventuali arresti anomali
-
-Nel giorno 23/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato la funzione: avviarePartita() per gestire il gioco in maniera più flessibile e funzionale
 */
 
 
@@ -71,6 +66,7 @@ Nel giorno 23/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato la
 #include "../include/tipiDiDato.h"
 #include "../include/partita.h"
 #include "../include/CaricaPartita.h"
+
 #include "../include/homepage.h"
 
 #define RIGA_INPUT_RIGA 13
@@ -81,7 +77,7 @@ Nel giorno 23/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato la
 #define CELLA_VUOTA 0
 #define FALSO 0
 #define VERO 1
-#define DIFFICOLTA_FACILE 1
+#define DIFFICOLTA_FACILE 2
 #define DIFFICOLTA_MEDIA 2
 #define DIFFICOLTA_DIFFICILE 3
 #define RIGA_ERRORE 22
@@ -108,7 +104,7 @@ Nel giorno 23/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato la
 * RITORNO: permette all'utente di giocare al Sudoku    *
 *                                                      *
 * MODIFICHE:                                           *
-* 13/05/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensione) {
     Partita partita;
@@ -141,23 +137,16 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
         Griglia griglia = leggereGrigliaPartita(partita);
         inputSpeciale = FALSO;
 
-        collezionareRiga(&griglia, &riga);
-        inputSpeciale = controllareSalvataggio(partita, &riga);
-        if (inputSpeciale == VERO) {
-          collezionareRiga(&griglia, &riga);
+        collezionareInput(&griglia, &riga, RIGA_INPUT_RIGA);
+        if (riga == SALVA_PARTITA || colonna == SALVA_PARTITA || valDaInserire == SALVA_PARTITA) {
+            salvarePartitaCorrente(&partita);
+            inputSpeciale = VERO;
         }
-        collezionareColonna(&griglia, &colonna);
-        inputSpeciale = controllareSalvataggio(partita, &colonna);
-        if (inputSpeciale == VERO) {
-          collezionareColonna(&griglia, &colonna);
-        }
-        collezionareValore(&griglia, &valDaInserire);
-        inputSpeciale = controllareSalvataggio(partita, &valDaInserire);
-        if (inputSpeciale == VERO) {
-            collezionareValore(&griglia, &valDaInserire);
-        }
+        
+        if (inputSpeciale == FALSO) {
+            collezionareInput(&griglia, &colonna, RIGA_INPUT_COLONNA);
+            collezionareInput(&griglia, &valDaInserire, RIGA_INPUT_VALORE);
 
-        if (inputSpeciale ==FALSO) {
             valido = verificareValidita(&griglia, inputDimensione, riga - 1, colonna - 1, valDaInserire);
             if (valido == VERO) {
                 scrivereValGrigliaPartita(&partita, valDaInserire, riga - 1, colonna - 1);
@@ -169,15 +158,6 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
     }
 
     stampareVittoria();
-}
-
-int controllareSalvataggio(Partita partita, int *input) {
-    int esito = FALSO;
-    if (*input == SALVA_PARTITA) {
-        salvarePartitaCorrente(&partita);
-        esito = VERO;
-    }
-    return esito;
 }
 
 
@@ -194,7 +174,7 @@ int controllareSalvataggio(Partita partita, int *input) {
 * RITORNO: Terminale aggiornato                        *
 *                                                      *
 * MODIFICHE:                                           *
-* 17/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void mostraSchermo(int dimensione) {
     if (dimensione != 16) {
@@ -218,7 +198,7 @@ void mostraSchermo(int dimensione) {
 * RITORNO: Titolo stampato al centro del terminale     *
 *                                                      *
 * MODIFICHE:                                           *
-* 17/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void stampareTitoloPartita() {
     printf(BLU);
@@ -245,7 +225,7 @@ void stampareTitoloPartita() {
 * RITORNO: Terminale aggiornato con la stampa del titolo *
 *                                                        *
 * MODIFICHE:                                             *
-* 17/06/25 - Prima versione                              *
+* 2025/06/23 - Prima versione                            *
 *********************************************************/
 void stampareVittoria() {
     int input;
@@ -264,6 +244,9 @@ void stampareVittoria() {
     stampareCentrato(" \\ \\ / / | ||  \\| | | || | | |");
     stampareCentrato("  \\ V /  | || |\\  | | || |_| |");
     stampareCentrato("   \\_/  |___|_| \\_| |_| \\___/ ");
+    printf("\n\n\n\n\n");
+    stampareCentrato("gruppo 29 al rogo");
+
     tornareHomepage(&input, RIGA_INPUT - 10, 30);
 }
 
@@ -282,7 +265,7 @@ void stampareVittoria() {
 * RITORNO: Terminale aggiornato                        *
 *                                                      *
 * MODIFICHE:                                           *
-* 23/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void stampareTabellaInput() {
     disegnareCornice();
@@ -310,7 +293,7 @@ void stampareTabellaInput() {
 * RITORNO: Terminale aggiornato                        *
 *                                                      *
 * MODIFICHE:                                           *
-* 23/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void disegnareCornice() {
     int i = 0;
@@ -347,7 +330,7 @@ void disegnareCornice() {
 * RITORNO: valore di dimensione aggiornato             *
 *                                                      *
 * MODIFICHE:                                           *
-* 19/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void convertireDimensione(int *dimensione) {
     if (*dimensione == 1) {
@@ -380,11 +363,11 @@ void convertireDimensione(int *dimensione) {
 * RITORNO: griglia di gioco aggiornata                  *
 *                                                       *
 * MODIFICHE:                                            *
-* 19/06/25 - Prima versione                             *
+* 2025/06/23 - Prima versione                           *
 ********************************************************/
 void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
     int cellaGriglia = dimensione * dimensione;
-    int celleDaRimuovere = (cellaGriglia * calcolareCelleDaRimuovere(difficolta)) / 100;
+    int celleDaRimuovere = cellaGriglia * calcolareCelleDaRimuovere(difficolta) / 100;
     int rimosse = 0;
     int riga, colonna;
     
@@ -416,7 +399,7 @@ void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
 *          celle da rimuovere                          *
 *                                                      *
 * MODIFICHE:                                           *
-* 19/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 int calcolareCelleDaRimuovere(int difficolta) {
     int risultato;
@@ -452,9 +435,10 @@ int calcolareCelleDaRimuovere(int difficolta) {
 * le regole del Sudoku, FALSO altrimenti                  *
 *                                                         *
 * MODIFICHE:                                              *
-* 19/06/25 - Prima versione                               *
-**********************************************************/
-int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
+*/
+
+int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero)  {
+
     int risultato = VERO;
     
     if (verificareRiga(griglia, dimensione, riga, numero) == FALSO) {
@@ -491,7 +475,7 @@ int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, 
 * FALSO se invece è già presente                       *
 *                                                      *
 * MODIFICHE:                                           *
-* 20/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 int verificareRiga(Griglia *griglia, int dimensione, int riga, int numero) {
     int i = 0;
@@ -527,7 +511,7 @@ int verificareRiga(Griglia *griglia, int dimensione, int riga, int numero) {
 * FALSO se invece è già presente                       *
 *                                                      *
 * MODIFICHE:                                           *
-* 20/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 int verificareColonna(Griglia *griglia, int dimensione, int colonna, int numero) {
     int i = 0;
@@ -565,7 +549,7 @@ int verificareColonna(Griglia *griglia, int dimensione, int colonna, int numero)
 * FALSO se invece è già presente                           *
 *                                                          *
 * MODIFICHE:                                               *
-* 20/06/25 - Prima versione                                *
+* 2025/06/23 - Prima versione                              *
 ***********************************************************/
 int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
     int dimensioneQuadrato = (int)sqrt(dimensione);
@@ -610,7 +594,7 @@ int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colo
 * FALSO se non è possibile completare la griglia       *
 *                                                      *
 * MODIFICHE:                                           *
-* 21/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 int riempireGriglia(Griglia *griglia, int dimensione) {
     int riga = 0;
@@ -669,7 +653,7 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
 * FALSO se non ci sono celle vuote                     *
 *                                                      *
 * MODIFICHE:                                           *
-* 21/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna) {
     int i = 0;
@@ -713,7 +697,7 @@ int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna)
 *          creata                                        *
 *                                                        *
 * MODIFICHE:                                             *
-* 21/06/25 - Prima versione                              *
+* 2025/06/23 - Prima versione                            *
 *********************************************************/
 void generareSudoku(Partita *partita, int dimensione, int difficolta) {
     riempireGriglia(&partita->grigliaPartita, dimensione);
@@ -797,7 +781,7 @@ int calcolareSottoquadrato(int dimensione) {
 * RITORNO: Terminale aggiornato                         *
 *                                                       *
 * MODIFICHE:                                            *
-* 21/06/25 - Prima versione                             *
+* 2025/06/23 - Prima versione                           *
 ********************************************************/
 void stampareIntestazioneColonne(int dimensione, int numeroSottoquadrato) {
     int j = 0;
@@ -831,7 +815,7 @@ void stampareIntestazioneColonne(int dimensione, int numeroSottoquadrato) {
 * RITORNO: Terminale aggiornato                        *
 *                                                      *
 * MODIFICHE:                                           *
-* 22/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void stampareLineaOrizzontale(int dimensione, int numeroSottoquadrato) {
     int j = 0;
@@ -863,7 +847,7 @@ void stampareLineaOrizzontale(int dimensione, int numeroSottoquadrato) {
 * RITORNO: Terminale aggiornato                        *
 *                                                      *
 * MODIFICHE:                                           *
-* 22/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void stampareRigheGriglia(Griglia griglia, int dimensione, int numeroSottoquadrato) {
     int i = 0;
@@ -894,7 +878,7 @@ void stampareRigheGriglia(Griglia griglia, int dimensione, int numeroSottoquadra
 *                                                      *
 * RITORNO: Terminale aggiornato                        *
 * MODIFICHE:                                           *
-* 24/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrato, int riga) {
     int j = 0;
@@ -946,9 +930,9 @@ void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrat
 * speciale (32).                                        *
 *                                                       *
 * MODIFICHE:                                            *
-* 23/06/25 - Prima versione                             *
+* 2025/06/23 - Prima versione                           *
 ********************************************************/
-int collezionareInput(Griglia *griglia, int *input, int posRiga) {
+int collezionareInput(Griglia *griglia, int *inputRiga, int posRiga) {
     int valida = FALSO;
     int inputOk;
 
@@ -957,9 +941,10 @@ int collezionareInput(Griglia *griglia, int *input, int posRiga) {
         inputOk = FALSO;
 
         while (inputOk == FALSO) {
-            if (scanf("%d", input) == 1) {
+            if (scanf("%d", inputRiga) == 1) {
                 inputOk = VERO;
             } else {
+                pulireBuffer();
                 reimpostareZonaInput(posRiga, COLONNA_INPUT);
                 mostrareMessaggioErrore("Digita un Numero", RIGA_ERRORE + 2, COLONNA_ERRORE);
                 reimpostareZonaInput(posRiga, COLONNA_INPUT);
@@ -968,11 +953,11 @@ int collezionareInput(Griglia *griglia, int *input, int posRiga) {
 
         pulireBuffer();
 
-        if ((*input < 1 || *input > leggereDimGriglia(*griglia)) && (*input != 32 && *input != 31)) {
+        if ((*inputRiga < 1 || *inputRiga > leggereDimGriglia(*griglia)) && (*inputRiga != 32 && *inputRiga != 31)) {
             mostrareMessaggioErrore("Numero fuori intervallo", RIGA_ERRORE + 2, COLONNA_ERRORE);
             reimpostareZonaInput(posRiga, COLONNA_INPUT);
         } else {
-            if (*input == 32) {
+            if (*inputRiga == 32) {
                 avviareMenuPrincipale();
             } else {
                 valida = VERO;
@@ -980,22 +965,8 @@ int collezionareInput(Griglia *griglia, int *input, int posRiga) {
         }
     }
     
-    return *input;
+    return *inputRiga;
 }
-
-int collezionareRiga(Griglia *griglia, int *inputRiga) {
-    return collezionareInput(griglia, inputRiga, RIGA_INPUT_RIGA);
-}
-
-int collezionareColonna(Griglia *griglia, int *inputColonna) {
-    return collezionareInput(griglia, inputColonna, RIGA_INPUT_COLONNA);
-}
-
-int collezionareValore(Griglia *griglia, int *inputValore) {
-    return collezionareInput(griglia, inputValore, RIGA_INPUT_VALORE);
-}
-
-
 /*******************************************************
 * FUNZIONE: controllareGrigliaPiena                    *
 *                                                      *
@@ -1011,7 +982,7 @@ int collezionareValore(Griglia *griglia, int *inputValore) {
 * FALSO se esiste almeno una cella vuota               *
 *                                                      *
 * MODIFICHE:                                           *
-* 23/06/25 - Prima versione                            *
+* 2025/06/23 - Prima versione                          *
 *******************************************************/
 int controllareGrigliaPiena(Griglia griglia) {
     int dimensione = leggereDimGriglia(griglia);
@@ -1035,7 +1006,87 @@ int controllareGrigliaPiena(Griglia griglia) {
     return esito;
 }
 
+/*******************************************************
+* FUNZIONE: caricaPartita                              *
+*                                                      *
+* DESCRIZIONE: Carica da file le informazioni di una   *
+*              partita Sudoku, leggendo dimensione,    *
+*              difficoltà e valori della griglia,      *
+*              e inizializza la struttura partita      *
+*              corrispondente.                         *
+*                                                      *
+* ARGOMENTI:                                           *
+* partita: puntatore alla struttura della partita      *
+* percorso: stringa contenente il percorso del file    *
+*                                                      *
+* RITORNO:                                             *
+* 1 se il caricamento ha successo,                     *
+* 0 in caso di errore o file non trovato               *
+*                                                      *
+* MODIFICHE:                                           *
+* 20/06/25 - Prima versione                            *
+*******************************************************/
+int caricaPartita(Partita *partita, const char *percorso) {
+    FILE *file = fopen(percorso, "r");
+    int risultato = 0;
+    int dimensione, difficolta;
+    
+    if (file != NULL) {
+        if (fscanf(file, "%d %d", &dimensione, &difficolta) == 2) {
+            inizializzareGrigliaPartita(partita, dimensione);
+            
+            if (caricareValoriGriglia(file, partita, dimensione) == VERO) {
+                risultato = 1;
+            }
+        }
+        fclose(file);
+    }
+    return risultato;
+}
 
+
+/*********************************************************
+* FUNZIONE: caricaValoriGriglia                          *
+*                                                        *
+* DESCRIZIONE: Legge da file i valori della griglia      *
+*              della partita Sudoku e li scrive nella    *
+*              struttura della partita riga per riga.    *
+*                                                        *
+* ARGOMENTI:                                             *
+* file: puntatore al file aperto in lettura              *
+* partita: puntatore alla struttura della partita        *
+* dimensione: dimensione della griglia                   *
+*                                                        *
+* RITORNO:                                               *
+* VERO se tutti i valori sono stati letti correttamente  *
+* FALSO in caso di errore di lettura                     *
+*                                                        *
+* MODIFICHE:                                             *
+* 2025/06/23 - Prima versione                            *
+*********************************************************/
+int caricaValoriGriglia(FILE *file, Partita *partita, int dimensione) {
+    int i = 0;
+    int j = 0;
+    int val;
+    int risultato = VERO;
+    
+    while (i < dimensione && risultato == VERO) {
+        j = 0;
+        while (j < dimensione && risultato == VERO) {
+            if (fscanf(file, "%d", &val) == 1) {
+                scrivereValGrigliaPartita(partita, val, i, j);
+                j = j + 1;
+            } else {
+                risultato = FALSO;
+            }
+        }
+        if (risultato == VERO) {
+            i = i + 1;
+        }
+    }
+    
+    return risultato;
+}
 
 
 /*************************************************************
@@ -1053,10 +1104,10 @@ int controllareGrigliaPiena(Griglia griglia) {
 * RITORNO: permette all'utente di giocare                     *
 *                                                             *
 * MODIFICHE:                                                  *
-* 24/06/25 - Prima versione                                   *
+* 2025/06/23 - Prima versione                                 *
 *************************************************************/
 void avviarePartitaContinuata(Partita *partita) {
-    int dimensione = leggereDimGriglia(partita->grigliaPartita);
+    int dimensione = leggereDimGriglia(leggereGrigliaPartita(*partita));
     int valore, riga, colonna;
     int grigliaPiena = FALSO;
     int valido = FALSO;
@@ -1076,10 +1127,15 @@ void avviarePartitaContinuata(Partita *partita) {
         Griglia griglia = leggereGrigliaPartita(*partita);
         inputSpeciale = FALSO;
 
-        collezionareRiga(&griglia, &riga);
+        collezionareInput(&griglia, &riga, RIGA_INPUT_RIGA);
+        if (riga == 31) {
+            salvarePartitaCorrente(partita);
+            inputSpeciale = VERO;
+        }
+        
         if (inputSpeciale == FALSO) {
-            collezionareColonna(&griglia, &colonna);
-            collezionareValore(&griglia, &valore);
+            collezionareInput(&griglia, &colonna, RIGA_INPUT_COLONNA);
+            collezionareInput(&griglia, &valore, RIGA_INPUT_VALORE);
 
             valido = verificareValidita(&griglia, dimensione, riga - 1, colonna - 1, valore);
             if (valido == VERO) {

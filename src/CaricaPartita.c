@@ -7,7 +7,7 @@ DATA INIZIO: 04/05/2025
 NOME FILE: Home Page sudoku
 
 Scopo di ogni funzione presente:
-- raccoglierePartiteSalvate: legge dalla cartella database i file che rappresentano le partite salvate dall’utente. Restituisce il numero totale di partite trovate.
+- raccoglierePartiteSalvate: legge dalla cartella database i file che rappresentano le partite salvate dall'utente. Restituisce il numero totale di partite trovate.
 - liberarePartite: liberare la memoria utilizzata per contenere i nomi delle partite.
 - trovareFile: ricerca all'interno della cartella database(dove vengono salvate le partite) la partita che l'utente desidera giocare.
 - stampareTitoloCaricaPartita: stampa la scritta 'CARICA PARTITA'.
@@ -20,7 +20,7 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha modificato la funzione trovareFil
 
 MODIFICHE: 22/06/25 - Fornelli Davide ha rivisto la formattazione del titolo in stampareTitoloCaricaPartita per una migliore estetica nei terminali scuri.
 
-MODIFICHE: 22/06/25 - Fornelli Davide ha aggiornato stampareZonaInput per migliorare l’allineamento del prompt.
+MODIFICHE: 22/06/25 - Fornelli Davide ha aggiornato stampareZonaInput per migliorare l'allineamento del prompt.
 
 MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuCaricaPartita che causava un crash quando il nome della partita era troppo lungo.
 
@@ -62,10 +62,10 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 * - nomiPartite: array di stringhe dove salvare i nomi   *
 *   dei file.                                            *
 * - massimePartite: numero massimo di elementi           *
-*   che l’array può contenere.                           *
+*   che l'array può contenere.                           *
 *                                                        *
 * RITORNO:                                               *
-* - int: numero di file rilevati e copiati nell’array;   *
+* - int: numero di file rilevati e copiati nell'array;   *
 *        0 se la cartella non esiste o in caso di errore *
 *                                                        *
 * MODIFICHE:                                             *
@@ -102,13 +102,13 @@ void liberarePartite(char *nomiPartite[], int numero) {
 /********************************************************
 * FUNZIONE: trovareFile                                    *
 *                                                        *
-* DESCRIZIONE: Cerca un nome di file partite nell’array  *
-*              secondo l’indice numerico o una sottostr. *
+* DESCRIZIONE: Cerca un nome di file partite nell'array  *
+*              secondo l'indice numerico o una sottostr. *
 *                                                        *
 * ARGOMENTI:                                             *
 * - char *nomiPartite[]: array di nomi di file.          *
-* - int numero: numero di elementi validi nell’array.    *
-* - const char *input: stringa inserita dall’utente,     *
+* - int numero: numero di elementi validi nell'array.    *
+* - const char *input: stringa inserita dall'utente,     *
 *   che può essere un numero (come stringa) o parte del  *
 *   nome del file.                                       *
 *                                                        *
@@ -173,7 +173,7 @@ printf(RESET);
 * FUNZIONE: stampareZonaInput                           *
 *                                                       *
 * DESCRIZIONE: Disegna un riquadro sullo schermo per    *
-*              l’inserimento del nome o indice della    *
+*              l'inserimento del nome o indice della    *
 *              partita salvata, con prompt esplicito.   *
 *                                                       *
 * ARGOMENTI: Nessuno                                    *
@@ -207,14 +207,14 @@ void stampareZonaInput() {
 *                                                       *
 * DESCRIZIONE: Mostra l'elenco delle partite salvate    *
 *              presenti nella cartella "database",      *
-*              consente all’utente di scegliere una     *
+*              consente all'utente di scegliere una     *
 *              partita da caricare digitando il nome    *
 *              o il numero corrispondente.              *
 *                                                       *
 * COMPORTAMENTO:                                        *
 * - Se non ci sono partite salvate, l'utente viene      *
 *   reindirizzato alla homepage.                        *
-* - L’utente può digitare “0” per tornare al menu       *
+* - L'utente può digitare "0" per tornare al menu       *
 *   principale.                                         *
 * - Se la partita esiste ed è caricabile, viene avviata.*
 *                                                       *
@@ -315,11 +315,11 @@ void stampareMenuCaricaPartita(){
 void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     int i = 0;
     int j;
-    
+    Griglia griglia = leggereGrigliaPartita(*partita);
     while (i < dimensione) {
         j = 0;
         while (j < dimensione) {
-            fprintf(file, "%d ", leggereValGriglia(partita->grigliaPartita, i, j));
+            fprintf(file, "%d ", leggereValGriglia(griglia, i, j));
             j = j + 1;
         }
         fprintf(file, "\n");
@@ -383,7 +383,7 @@ int caricarePartita(Partita *partita, const char *percorso) {
 *******************************************************/
 void salvarePartitaCorrente(Partita *partita) {
     char percorso[100];
-    snprintf(percorso, sizeof(percorso), "database/partita_%s.txt", partita->nomePartita);
+    snprintf(percorso, sizeof(percorso), "database/partita_%s.txt", leggereNomePartita(partita));
     salvarePartita(partita, percorso);
 }
 
@@ -412,8 +412,8 @@ int salvarePartita(Partita *partita, const char *percorso) {
     int risultato = FALSO;
     
     if (file != NULL) {
-        int dimensione = leggereDimGriglia(partita->grigliaPartita);
-        int difficolta = leggereDifficoltaImp(partita->impPartita);
+        int dimensione = leggereDimGriglia(leggereGrigliaPartita(*partita));
+        int difficolta = leggereDifficoltaImp(leggereImpPartita(*partita));
 
         fprintf(file, "%d %d\n", dimensione, difficolta);
         salvareValoriGriglia(file, partita, dimensione);

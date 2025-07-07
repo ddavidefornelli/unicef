@@ -52,15 +52,10 @@ int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colo
 
 // Funzioni di input
 int collezionareInput(Griglia *griglia, int *input, int rigaInput);
-int collezionareRiga(Griglia *griglia, int *inputRiga);
-int collezionareColonna(Griglia *griglia, int *inputColonna);
-int collezionareValore(Griglia *griglia, int *inputValore);
 
 // Funzioni di controllo stato partita
 int controllareGrigliaPiena(Griglia griglia);
 int controllareSalvataggio(Partita partita, int *input);
-
-// Funzioni di salvataggio e caricamento
 
 #endif // PARTITA_H
 
