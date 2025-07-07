@@ -315,7 +315,7 @@ void stampareMenuCaricaPartita(){
 void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     int i = 0;
     int j;
-    Griglia griglia = leggereGrigliaPartita(*partita);
+    Griglia griglia = leggereGrigliaPartita(partita);
     while (i < dimensione) {
         j = 0;
         while (j < dimensione) {
@@ -412,7 +412,7 @@ int salvarePartita(Partita *partita, const char *percorso) {
     int risultato = FALSO;
     
     if (file != NULL) {
-        int dimensione = leggereDimGriglia(leggereGrigliaPartita(*partita));
+        int dimensione = leggereDimGriglia(leggereGrigliaPartita(partita));
         int difficolta = leggereDifficoltaImp(leggereImpPartita(*partita));
 
         fprintf(file, "%d %d\n", dimensione, difficolta);

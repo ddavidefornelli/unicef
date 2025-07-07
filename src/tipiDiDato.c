@@ -70,8 +70,8 @@ Impostazioni leggereImpPartita(Partita partita) {
     return partita.impPartita;
 }
 
-Griglia leggereGrigliaPartita(Partita partita) {
-    return partita.grigliaPartita;
+Griglia leggereGrigliaPartita(Partita *partita) {
+    return partita->grigliaPartita;
 }
 
 char* leggereNomePartita(Partita *partita) {
@@ -116,4 +116,8 @@ void inizializzareGrigliaPartita(Partita *partita, int inputDimensione) {
         }
         i = i + 1;
     }
+}
+
+Griglia* leggereGrigliaPartitaPtr(Partita *partita) {
+    return &(partita->grigliaPartita);
 }

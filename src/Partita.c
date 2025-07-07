@@ -134,23 +134,23 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
             errore = FALSO;
         }
 
-        Griglia griglia = leggereGrigliaPartita(partita);
+        Griglia griglia = leggereGrigliaPartita(&partita);
         inputSpeciale = FALSO;
 
-        collezionareInput(&griglia, &riga, RIGA_INPUT_RIGA);
+        collezionareInput(&partita, &griglia, &riga, RIGA_INPUT_RIGA);
         if (riga == SALVA_PARTITA || colonna == SALVA_PARTITA || valDaInserire == SALVA_PARTITA) {
             salvarePartitaCorrente(&partita);
             inputSpeciale = VERO;
         }
         
         if (inputSpeciale == FALSO) {
-            collezionareInput(&griglia, &colonna, RIGA_INPUT_COLONNA);
-            collezionareInput(&griglia, &valDaInserire, RIGA_INPUT_VALORE);
+            collezionareInput(&partita, &griglia, &colonna, RIGA_INPUT_COLONNA);
+            collezionareInput(&partita, &griglia, &valDaInserire, RIGA_INPUT_VALORE);
 
             valido = verificareValidita(&griglia, inputDimensione, riga - 1, colonna - 1, valDaInserire);
             if (valido == VERO) {
                 scrivereValGrigliaPartita(&partita, valDaInserire, riga - 1, colonna - 1);
-                grigliaPiena = controllareGrigliaPiena(leggereGrigliaPartita(partita));
+                grigliaPiena = controllareGrigliaPiena(leggereGrigliaPartita(&partita));
             } else {
                 errore = VERO;
             }
@@ -700,8 +700,8 @@ int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna)
 * 2025/06/23 - Prima versione                            *
 *********************************************************/
 void generareSudoku(Partita *partita, int dimensione, int difficolta) {
-    riempireGriglia(&partita->grigliaPartita, dimensione);
-    rimuovereNumeri(&partita->grigliaPartita, dimensione, difficolta);
+    riempireGriglia(leggereGrigliaPartitaPtr(partita), dimensione);
+    rimuovereNumeri(leggereGrigliaPartitaPtr(partita), dimensione, difficolta);
 }
 
 
@@ -722,7 +722,7 @@ void generareSudoku(Partita *partita, int dimensione, int difficolta) {
 * 20/06/25 - Prima versione                             *
 ********************************************************/
 void stampareGrigliaPartita(Partita *partita) {
-    Griglia griglia = leggereGrigliaPartita(*partita);
+    Griglia griglia = leggereGrigliaPartita(partita);
     int dimensione = leggereDimGriglia(griglia);
     int numeroSottoquadrato = calcolareSottoquadrato(dimensione);
     
@@ -918,6 +918,7 @@ void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrat
 *              principale.                              *
 *                                                       *
 * ARGOMENTI:                                            *
+* partita: puntatore alla struttura della partita       *
 * griglia: puntatore alla struttura della griglia       *
 * inputRiga: puntatore a intero dove memorizzare        *
 *           l'input acquisito                           *
@@ -932,7 +933,7 @@ void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrat
 * MODIFICHE:                                            *
 * 2025/06/23 - Prima versione                           *
 ********************************************************/
-int collezionareInput(Griglia *griglia, int *inputRiga, int posRiga) {
+int collezionareInput(Partita *partita, Griglia *griglia, int *inputRiga, int posRiga) {
     int valida = FALSO;
     int inputOk;
 
@@ -959,6 +960,8 @@ int collezionareInput(Griglia *griglia, int *inputRiga, int posRiga) {
         } else {
             if (*inputRiga == 32) {
                 avviareMenuPrincipale();
+            } else if (*inputRiga == 31) {
+              salvarePartitaCorrente(partita);
             } else {
                 valida = VERO;
             }
@@ -967,6 +970,7 @@ int collezionareInput(Griglia *griglia, int *inputRiga, int posRiga) {
     
     return *inputRiga;
 }
+
 /*******************************************************
 * FUNZIONE: controllareGrigliaPiena                    *
 *                                                      *
@@ -1107,7 +1111,7 @@ int caricaValoriGriglia(FILE *file, Partita *partita, int dimensione) {
 * 2025/06/23 - Prima versione                                 *
 *************************************************************/
 void avviarePartitaContinuata(Partita *partita) {
-    int dimensione = leggereDimGriglia(leggereGrigliaPartita(*partita));
+    int dimensione = leggereDimGriglia(leggereGrigliaPartita(partita));
     int valore, riga, colonna;
     int grigliaPiena = FALSO;
     int valido = FALSO;
@@ -1124,23 +1128,23 @@ void avviarePartitaContinuata(Partita *partita) {
             errore = FALSO;
         }
 
-        Griglia griglia = leggereGrigliaPartita(*partita);
+        Griglia griglia = leggereGrigliaPartita(partita);
         inputSpeciale = FALSO;
 
-        collezionareInput(&griglia, &riga, RIGA_INPUT_RIGA);
+        collezionareInput(partita, &griglia, &riga, RIGA_INPUT_RIGA);
         if (riga == 31) {
             salvarePartitaCorrente(partita);
             inputSpeciale = VERO;
         }
         
         if (inputSpeciale == FALSO) {
-            collezionareInput(&griglia, &colonna, RIGA_INPUT_COLONNA);
-            collezionareInput(&griglia, &valore, RIGA_INPUT_VALORE);
+            collezionareInput(partita, &griglia, &colonna, RIGA_INPUT_COLONNA);
+            collezionareInput(partita, &griglia, &valore, RIGA_INPUT_VALORE);
 
             valido = verificareValidita(&griglia, dimensione, riga - 1, colonna - 1, valore);
             if (valido == VERO) {
                 scrivereValGrigliaPartita(partita, valore, riga - 1, colonna - 1);
-                grigliaPiena = controllareGrigliaPiena(leggereGrigliaPartita(*partita));
+                grigliaPiena = controllareGrigliaPiena(leggereGrigliaPartita(partita));
             } else {
                 errore = VERO;
             }
