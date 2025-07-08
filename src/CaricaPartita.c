@@ -127,6 +127,7 @@ const char *trovareFile(char *nomiPartite[], int numero, const char *input) {
   if (indice >= 1 && indice <= numero) {
     risultato = nomiPartite[indice - 1];
   }
+
   return risultato;
 }
 
@@ -188,8 +189,8 @@ void stampareZonaInput() {
     printf("|                                      |");
     contatore = contatore + 1;
   }
-  spostareCursore(RIGA + 2, COLONNA + 2);
-  printf("Digita numero o nome (0 per uscire): ");
+  spostareCursore(RIGA + 2, COLONNA + 1);
+  printf(" numero corrispondente (0 per uscire)");
   spostareCursore(RIGA + 5, COLONNA);
   printf("+--------------------------------------+");
 }
