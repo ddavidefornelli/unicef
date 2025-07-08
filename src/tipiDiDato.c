@@ -33,14 +33,19 @@ Scopo delle funzioni presenti:
 
 // Funzioni per Griglia
 int leggereDimGriglia(Griglia griglia) {
-    return griglia.dimensioneGriglia;
+    int valoreLetto;
+    valoreLetto = griglia.dimensioneGriglia;
+    return valoreLetto;
 }
 
 int leggereValGriglia(Griglia griglia, int riga, int colonna) {
-    return griglia.valoriGriglia[riga][colonna];
+    int valoreLetto;
+    valoreLetto = griglia.valoriGriglia[riga][colonna];
+    return valoreLetto;
 }
 
 void scrivereDimGriglia(Griglia *griglia, int valore) {
+    
     griglia->dimensioneGriglia = valore;
 }
 
@@ -97,16 +102,15 @@ void scrivereValGrigliaPartita(Partita *partita, int valore, int riga, int colon
 
 
 void inizializzareGrigliaPartita(Partita *partita, int inputDimensione) {
-    int i = 0;  // Inizializza i
-    int j;
-    
-    // Converti i valori prima di usarli
+    int i; // righe della griglia
+    int j; // colonne della griglia 
+
     convertireDimensione(&inputDimensione);
-    
     scrivereDimGrigliaPartita(partita, inputDimensione);
          
     partita->grigliaPartita.valoriGriglia = malloc(inputDimensione * sizeof(int *));
     
+    i = 0;
     while (i < inputDimensione) {
         partita->grigliaPartita.valoriGriglia[i] = malloc(inputDimensione * sizeof(int));
         j = 0;  // Inizializza j per ogni riga

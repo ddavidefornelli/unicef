@@ -75,8 +75,9 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 int raccoglierePartiteSalvate(char *nomiPartite[]) {
   DIR *cartella = opendir("database");
   struct dirent *voce;
-  int conteggio = 0;
+  int conteggio;
 
+  conteggio = 0;
   while ((voce = readdir(cartella)) != NULL && conteggio < MAX_PARTITE) {
     if (strncmp(voce->d_name, "partita_", 8) == 0) {
       nomiPartite[conteggio] = malloc(strlen(voce->d_name) + 1);
@@ -90,7 +91,9 @@ int raccoglierePartiteSalvate(char *nomiPartite[]) {
 
 
 void liberarePartite(char *nomiPartite[], int numero) {
-  int i = 0;
+  int i; 
+
+  i = 0;
   while (i < numero) {
     if (nomiPartite[i] != NULL) {
       free(nomiPartite[i]);
@@ -121,9 +124,11 @@ void liberarePartite(char *nomiPartite[], int numero) {
 * 18/06/25 - Prima versione                            *
 *********************************************************/
 const char *trovareFile(char *nomiPartite[], int numero, const char *input) {
-  long indice = strtol(input, NULL, 10);
-  char *risultato = NULL;
+  long indice; 
+  char *risultato;
 
+  risultato = NULL;
+  indice = strtol(input, NULL, 10);
   if (indice >= 1 && indice <= numero) {
     risultato = nomiPartite[indice - 1];
   }
@@ -221,12 +226,20 @@ void stampareZonaInput() {
 * 19/06/25 - Prima versione                             *
 ********************************************************/
 void stampareMenuCaricaPartita(){
+  char percorso[256];
+  Partita partita;
   char *nomiPartite[100];
   int numeroPartite;
   char nomeScelto[128];
   int i;
   int input;
+  int continua;
+  const char *file;
+  const char *underscore;
+  char nome[128];
+  char *punto;
 
+  // --- INIZIO LOGICA DELLA FUNZIONE ---
   pulireSchermo();
   stampareTitoloCaricaPartita();
 
@@ -245,7 +258,7 @@ void stampareMenuCaricaPartita(){
 
   stampareZonaInput();
 
-  int continua = 1;
+  continua = 1;
   while (continua) {
     spostareCursore(RIGA + 3, COLONNA + 14);
     printf(">> ");
@@ -256,18 +269,15 @@ void stampareMenuCaricaPartita(){
         avviareMenuPrincipale();
         continua = 0;
       } else {
-        const char *file = trovareFile(nomiPartite, numeroPartite, nomeScelto);
+        file = trovareFile(nomiPartite, numeroPartite, nomeScelto);
         if (file != NULL) {
-          char percorso[256];
-          Partita partita;
           sprintf(percorso, "database/%s", file);
           
           if (caricarePartita(&partita, percorso)) {
-            const char *underscore = strrchr(file, '_');
+            underscore = strrchr(file, '_');
             if (underscore) {
-              char nome[128];
               strcpy(nome, underscore + 1);
-              char *punto = strstr(nome, ".txt");
+              punto = strstr(nome, ".txt");
               if (punto) {
                 *punto = '\0';
               }
@@ -284,6 +294,7 @@ void stampareMenuCaricaPartita(){
       }
     }
   }
+
   liberarePartite(nomiPartite, numeroPartite);
 }
 
@@ -304,9 +315,12 @@ void stampareMenuCaricaPartita(){
 * 20/06/25 - Prima versione                             *
 ********************************************************/
 void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
-    int i = 0;
+    int i; 
     int j;
-    Griglia griglia = leggereGrigliaPartita(partita);
+    Griglia griglia; 
+
+    griglia = leggereGrigliaPartita(partita);
+    i = 0;
     while (i < dimensione) {
         j = 0;
         while (j < dimensione) {
@@ -340,9 +354,12 @@ void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
 * 20/06/25 - Prima versione                            *
 *******************************************************/
 int caricarePartita(Partita *partita, const char *percorso) {
-    FILE *file = fopen(percorso, "r");
-    int risultato = FALSO;
+    FILE *file; 
+    int risultato; 
     int dimensione, difficolta;
+
+    file = fopen(percorso, "r");
+    risultato = FALSO;
     
     if (file != NULL) {
         if (fscanf(file, "%d %d", &dimensione, &difficolta) == 2) {
@@ -399,9 +416,11 @@ void salvarePartitaCorrente(Partita *partita) {
 * 20/06/25 - Prima versione                            *
 *******************************************************/
 int salvarePartita(Partita *partita, const char *percorso) {
-    FILE *file = fopen(percorso, "w");
-    int risultato = FALSO;
-    
+    FILE *file; 
+    int risultato;
+
+    risultato = FALSO;
+    file = fopen(percorso, "w");
     if (file != NULL) {
         int dimensione = leggereDimGriglia(leggereGrigliaPartita(partita));
         int difficolta = leggereDifficoltaImp(leggereImpPartita(*partita));
@@ -437,11 +456,14 @@ int salvarePartita(Partita *partita, const char *percorso) {
 * 21/06/25 - Prima versione                              *
 *********************************************************/
 int caricareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
-    int i = 0;
-    int j = 0;
+    int i;
+    int j;
     int val;
-    int risultato = VERO;
+    int risultato;
+
     
+    risultato = VERO;
+    i = 0;
     while (i < dimensione && risultato == VERO) {
         j = 0;
         while (j < dimensione && risultato == VERO) {

@@ -159,7 +159,7 @@ void avviareMenuPrincipale(){
 void collezionareInputHomepage(int *input) {
   int inMenuPrinipale; 
 
-  inMenuPrinipale = 1;
+  inMenuPrinipale = VERO;
   while(inMenuPrinipale) {
     reimpostareZonaInput(INPUT_RIGA, INPUT_COLONNA);
     

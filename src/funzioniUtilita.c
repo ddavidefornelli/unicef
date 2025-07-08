@@ -43,19 +43,18 @@ void spostareCursore(int x, int y)
 void stampareCentrato(const char *testo) 
 {
   /* Definisco ed inizializzo le variabili */
-  int spaziDaInserire = 0; /* contatore per il ciclo */
+  int spaziDaInserire; /* contatore per il ciclo */
   int dimStringa; /* calcolo la lunghezza di dimStringa */
   int spazi; /* rappresenta le coordinate dove deve essere stampata "testo" */
+
+  spaziDaInserire = 0;
   dimStringa = strlen(testo);
   spazi = (LARGHEZZA_TERMINALE - dimStringa) / 2;
-
-  /* Se "testo" è più lunga della larghezza del terminale, evito spazi negativi */
   if (spazi < 0)
   {
     spazi = 0;
   }
 
-  /* Stampo tanti spazi vuoti quanto basta per centrare "testo" */
   spaziDaInserire = 0;
   while(spaziDaInserire < spazi)
   {
@@ -146,8 +145,9 @@ void mostrareMessaggioErrore(const char *testo, int posRiga, int posColonna) {
 * 2025/06/23 - Prima versione                          *
 *******************************************************/
 void tornareHomepage(int *input, int posRiga, int posColonna){
-  int inMenuCorrente = 1;
+  int inMenuCorrente;
 
+  inMenuCorrente = VERO;
   spostareCursore(posRiga - 1, posColonna);
   printf("[0] torna alla homepage");
   while(inMenuCorrente) {

@@ -193,8 +193,11 @@ void stampareMenuImpostazioni(){
 * 24/06/25 - Prima versione                              *
 ********************************************************/
 int collezionareDifficolta(int *inputDifficolta) {
-  int inMenuDifficolta = 1;
-  int risultato = 0;
+  int inMenuDifficolta;
+  int risultato; 
+
+  inMenuDifficolta = VERO;
+  risultato = FALSO;
 
   while(inMenuDifficolta) {
     reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
@@ -239,9 +242,11 @@ int collezionareDifficolta(int *inputDifficolta) {
 ********************************************************/
 
 int collezionareDimensione(int *inputDimensione) {
-  int inMenuDimensione = 1;
-  int risultato = 0;
+  int inMenuDimensione;
+  int risultato; 
 
+  inMenuDimensione = 1;
+  risultato = 0;
   while(inMenuDimensione) {
     reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
     
@@ -285,9 +290,11 @@ int collezionareDimensione(int *inputDimensione) {
 * 25/06/25 - Prima versione                                   *
 **************************************************************/
 void collezionareNomePartita(char *nomeParitita) {
+  int lunghezza;
+
   reimpostareZonaInput(INPUT_RIGA_NOME, INPUT_COLONNA + 35);
   fgets(nomeParitita, NOME_MAX, stdin);
-  int lunghezza = strlen(nomeParitita);
+  lunghezza = strlen(nomeParitita);
   if (lunghezza > 0 && nomeParitita[lunghezza - 1] == '\n') { 
     nomeParitita[lunghezza - 1] = '\0'; 
   }
