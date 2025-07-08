@@ -49,6 +49,7 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 #define ERR_MSG_COLONNA 31
 #define ARANCIONE "\033[38;5;208m"
 #define RESET "\033[0m"
+#define MAX_PARTITE 10
 
 
 /********************************************************
@@ -71,12 +72,12 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 * MODIFICHE:                                             *
 * 18/06/25 - Prima versione                              *
 *********************************************************/
-int raccoglierePartiteSalvate(char *nomiPartite[], int massimePartite) {
+int raccoglierePartiteSalvate(char *nomiPartite[]) {
   DIR *cartella = opendir("database");
   struct dirent *voce;
   int conteggio = 0;
 
-  while ((voce = readdir(cartella)) != NULL && conteggio < massimePartite) {
+  while ((voce = readdir(cartella)) != NULL && conteggio < MAX_PARTITE) {
     if (strncmp(voce->d_name, "partita_", 8) == 0) {
       nomiPartite[conteggio] = malloc(strlen(voce->d_name) + 1);
       strcpy(nomiPartite[conteggio], voce->d_name);
@@ -122,17 +123,9 @@ void liberarePartite(char *nomiPartite[], int numero) {
 const char *trovareFile(char *nomiPartite[], int numero, const char *input) {
   long indice = strtol(input, NULL, 10);
   char *risultato = NULL;
-  int i = 0;
 
   if (indice >= 1 && indice <= numero) {
     risultato = nomiPartite[indice - 1];
-  }
-
-  while (i < numero) {
-    if (strstr(nomiPartite[i], input) != NULL) {
-      risultato = nomiPartite[i];
-    }
-    i = i + 1;
   }
   return risultato;
 }
@@ -236,7 +229,7 @@ void stampareMenuCaricaPartita(){
   pulireSchermo();
   stampareTitoloCaricaPartita();
 
-  numeroPartite = raccoglierePartiteSalvate(nomiPartite, 100);
+  numeroPartite = raccoglierePartiteSalvate(nomiPartite);
 
   if (numeroPartite == 0) {
     printf("Nessuna partita salvata.\n");
@@ -282,13 +275,10 @@ void stampareMenuCaricaPartita(){
             avviarePartitaContinuata(&partita);
             continua = 0;
           } else {
-            printf("Errore caricamento\n");
+            mostrareMessaggioErrore("errore nel caricamento",ERR_MSG_RIGA, ERR_MSG_COLONNA);
           }
         } else {
-          printf("Partita non trovata\n");
-        }
-        if (continua) {
-          printf("Riprova: ");
+          mostrareMessaggioErrore("partita non trovata",ERR_MSG_RIGA, ERR_MSG_COLONNA);
         }
       }
     }
@@ -464,7 +454,7 @@ int caricareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
         if (risultato == VERO) {
             i = i + 1;
         }
-    }
+   }
     
     return risultato;
 }

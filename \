@@ -129,9 +129,8 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
             errore = FALSO;
         }
 
-        spostareCursore(RIGA_INPUT - 18, COLONNA_INPUT );
-        printf(">> ");
-        scanf("%d", &sceltaAzione);
+        spostareCursore(RIGA_INPUT - 9, COLONNA_INPUT)
+        scanf(">> %d", &sceltaAzione);
         pulireBuffer();
 
         if (sceltaAzione == 1) {
@@ -140,24 +139,24 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
             collezionareInput(&partita, &griglia, &colonna, RIGA_INPUT_COLONNA);
             collezionareInput(&partita, &griglia, &valDaInserire, RIGA_INPUT_VALORE);
 
-            if (leggereValGriglia(griglia, riga - 1, colonna - 1) != 0) {
-                errore = VERO;
+            valido = verificareValidita(&griglia, inputDimensione, riga - 1, colonna - 1, valDaInserire);
+            if (valido == VERO) {
+                scrivereValGrigliaPartita(&partita, valDaInserire, riga - 1, colonna - 1);
+                grigliaPiena = controllareGrigliaPiena(leggereGrigliaPartita(&partita));
             } else {
-                valido = verificareValidita(&griglia, inputDimensione, riga - 1, colonna - 1, valDaInserire);
-                if (valido == VERO) {
-                    scrivereValGrigliaPartita(&partita, valDaInserire, riga - 1, colonna - 1);
-                    grigliaPiena = controllareGrigliaPiena(leggereGrigliaPartita(&partita));
-                } else {
-                    errore = VERO;
-                }
+                errore = VERO;
             }
         } else if (sceltaAzione == 2) {
             salvarePartitaCorrente(&partita);
+            mostrareMessaggioErrore("Partita salvata!", RIGA_ERRORE + 2, COLONNA_ERRORE);
         } else if (sceltaAzione == 3) {
             avviareMenuPrincipale();
             return;
-        } 
+        } else {
+            mostrareMessaggioErrore("Scelta non valida", RIGA_ERRORE + 2, COLONNA_ERRORE);
+        }
     }
+
     stampareVittoria();
 }
 
@@ -280,7 +279,6 @@ void stampareTabellaInput() {
     spostareCursore(RIGA_INPUT_VALORE - 1, COLONNA_INPUT);
     printf("-Valore-");
     spostareCursore(25, 17);
-    printf("\033[34m azione: (1 giocare / 2 salvare / 3 uscire)\033[0m");
 }
 
 
@@ -1124,8 +1122,7 @@ void avviarePartitaContinuata(Partita *partita) {
             errore = FALSO;
         }
 
-        spostareCursore(RIGA_INPUT - 18, COLONNA_INPUT );
-        printf(">> ");
+        printf("\n\nScegli azione: 1) Gioca  2) Salva  3) Esci\n> ");
         scanf("%d", &sceltaAzione);
         pulireBuffer();
 
@@ -1144,10 +1141,13 @@ void avviarePartitaContinuata(Partita *partita) {
             }
         } else if (sceltaAzione == 2) {
             salvarePartitaCorrente(partita);
+            mostrareMessaggioErrore("Partita salvata!", RIGA_ERRORE + 2, COLONNA_ERRORE);
         } else if (sceltaAzione == 3) {
             avviareMenuPrincipale();
             return;
-        } 
+        } else {
+            mostrareMessaggioErrore("Scelta non valida", RIGA_ERRORE + 2, COLONNA_ERRORE);
+        }
     }
     stampareVittoria();
 }
