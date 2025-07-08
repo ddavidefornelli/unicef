@@ -50,6 +50,7 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 #define ARANCIONE "\033[38;5;208m"
 #define RESET "\033[0m"
 #define MAX_PARTITE 10
+#define VERO 1
 
 
 /********************************************************
