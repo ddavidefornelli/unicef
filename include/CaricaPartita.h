@@ -9,7 +9,7 @@ void stampareTitoloCaricaPartita();
 
 void stampareZonaInput();
 void salvarePartitaCorrente(Partita *partita);
-int salvarePartita(Partita *partita, const char *percorso);
+void salvarePartita(Partita *partita, const char *percorso);
 void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione);
 int caricarePartita(Partita *partita, const char *percorso);
 int caricareValoriGriglia(FILE *file, Partita *partita, int dimensione);

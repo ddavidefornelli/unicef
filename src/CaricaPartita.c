@@ -412,6 +412,9 @@ void salvarePartitaCorrente(Partita *partita) {
     char percorso[100];
     snprintf(percorso, sizeof(percorso), "database/partita_%s.txt", leggereNomePartita(partita));
     salvarePartita(partita, percorso);
+
+    //utilizzare la funzione concatenareDueStringhe rallentava il programma 
+    //e ci dava problemi con il salvataggio.
 }
 
 
@@ -434,22 +437,19 @@ void salvarePartitaCorrente(Partita *partita) {
 * MODIFICHE:                                           *
 * 20/06/25 - Prima versione                            *
 *******************************************************/
-int salvarePartita(Partita *partita, const char *percorso) {
+void salvarePartita(Partita *partita, const char *percorso) {
     FILE *file; 
-    int risultato;
+    int dimensione;
+    int difficolta;
 
-    risultato = FALSO;
     file = fopen(percorso, "w");
-    if (file != NULL) {
-        int dimensione = leggereDimGriglia(leggereGrigliaPartita(partita));
-        int difficolta = leggereDifficoltaImp(leggereImpPartita(*partita));
 
-        fprintf(file, "%d %d\n", dimensione, difficolta);
-        salvareValoriGriglia(file, partita, dimensione);
-        fclose(file);
-        risultato = VERO;
-    }
-    return risultato;
+    dimensione = leggereDimGriglia(leggereGrigliaPartita(partita));
+    difficolta = leggereDifficoltaImp(leggereImpPartita(*partita));
+
+    fprintf(file, "%d %d\n", dimensione, difficolta);
+    salvareValoriGriglia(file, partita, dimensione);
+    fclose(file);
 }
 
 

@@ -175,3 +175,28 @@ void tornareHomepage(int *input, int posRiga, int posColonna){
 void pulireSchermo(){
   system("clear || cls");
 }
+
+int lunghezza(const char stringa[]) {
+    int lunghezza = 0;
+    while (stringa[lunghezza] != '\0') {
+        lunghezza = lunghezza + 1;
+    }
+    return lunghezza;
+}
+
+// Funzione per concatenare due stringhe
+void concatenareDueStringhe(const char stringa1[], const char stringa2[], char stringaFinale[]) {
+    int i = 0;
+    while (i < lunghezza(stringa1)) {
+        stringaFinale[i] = stringa1[i];
+        i = i + 1;
+    }
+
+    int j = 0;
+    while (j < lunghezza(stringa2)) {
+        stringaFinale[i + j] = stringa2[j];
+        j = j + 1;
+    }
+
+    stringaFinale[i + j] = '\0'; // Carattere di fine stringa
+}
