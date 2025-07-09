@@ -45,21 +45,26 @@ int leggereValGriglia(Griglia griglia, int riga, int colonna) {
 }
 
 void scrivereDimGriglia(Griglia *griglia, int valore) {
-    
     griglia->dimensioneGriglia = valore;
 }
 
-void scrivereValGriglia(Griglia *griglia, int i, int j, int valore) {
-    griglia->valoriGriglia[i][j] = valore;
+void scrivereValGriglia(Griglia *griglia, int riga, int colonna, int valore) {
+    griglia->valoriGriglia[riga][colonna] = valore;
 }
 
 // Funzioni per Impostazioni
-int leggereDifficoltaImp(Impostazioni imp) {
-    return imp.difficolta;
+int leggereDimGrigliaImp(Impostazioni imp) {
+    int valoreLetto;
+
+    valoreLetto = imp.dimensioneGriglia;
+    return valoreLetto; 
 }
 
-int leggereDimGrigliaImp(Impostazioni imp) {
-    return imp.dimensioneGriglia;
+int leggereDifficoltaImp(Impostazioni imp) {
+    int valoreLetto;
+
+    valoreLetto = imp.difficolta;
+    return valoreLetto; 
 }
 
 void scrivereDifficoltaImp(Impostazioni *imp, int valore) {
@@ -72,15 +77,23 @@ void scrivereDimensioneImp(Impostazioni *imp, int valore) {
 
 // Funzioni per Partita
 Impostazioni leggereImpPartita(Partita partita) {
-    return partita.impPartita;
+    Impostazioni valoreLetto;
+
+    valoreLetto = partita.impPartita;
+    return valoreLetto;
 }
 
 Griglia leggereGrigliaPartita(Partita *partita) {
-    return partita->grigliaPartita;
+    Griglia grigliaLetta;
+
+    grigliaLetta = partita->grigliaPartita;
+    return grigliaLetta;
 }
 
 char* leggereNomePartita(Partita *partita) {
-    return partita->nomePartita;
+    char* nomeLetto;
+    nomeLetto = partita->nomePartita;
+    return nomeLetto;
 }
 
 void scrivereImpPartita(Partita *partita, int difficolta, int dimensione) {

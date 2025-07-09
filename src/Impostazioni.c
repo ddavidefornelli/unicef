@@ -213,7 +213,7 @@ int collezionareDifficolta(int *inputDifficolta) {
     
     if(*inputDifficolta >= OPZIONE_MIN && *inputDifficolta <= OPZIONE_MAX) {
       risultato = *inputDifficolta;
-      inMenuDifficolta = 0;  // esce dal ciclo
+      inMenuDifficolta = 0;  
     } else {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA - 6, ERR_MSG_COLONNA - 5);
       reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);

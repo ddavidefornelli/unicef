@@ -91,6 +91,7 @@ int raccoglierePartiteSalvate(char *nomiPartite[]) {
 }
 
 
+//da mettere commento
 void liberarePartite(char *nomiPartite[], int numero) {
   int i; 
 
@@ -291,6 +292,7 @@ void stampareMenuCaricaPartita(){
           }
         } else {
           mostrareMessaggioErrore("partita non trovata",ERR_MSG_RIGA, ERR_MSG_COLONNA);
+          reimpostareZonaInput(RIGA +3, COLONNA +14);
         }
       }
     }

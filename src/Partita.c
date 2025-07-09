@@ -1,7 +1,7 @@
 /*
-AUTORI: Giuliano Antoniciello Davide Fornelli
+AUTORI: Giuliano Antoniciello 
+        Davide Fornelli
         Onofrio de Robertis
-        Michele Amato
 
 DATA INIZIO: 28/05/2025
 
@@ -109,11 +109,14 @@ Nel giorno 21/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato le
 void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensione) {
     Partita partita;
     int valDaInserire, riga, colonna;
-    int grigliaPiena = FALSO;
-    int valido = FALSO;
-    int errore = FALSO;
     int sceltaAzione;
+    int grigliaPiena;
+    int valido;
+    int errore;
 
+    grigliaPiena = FALSO;
+    valido = FALSO;
+    errore = FALSO;
     inizializzareGrigliaPartita(&partita, inputDimensione);
     scrivereNomePartita(&partita, (char *)inputNome);
     convertireDimensione(&inputDimensione);
