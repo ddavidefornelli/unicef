@@ -73,23 +73,42 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 * MODIFICHE:                                             *
 * 18/06/25 - Prima versione                              *
 *********************************************************/
-int raccoglierePartiteSalvate(char *nomiPartite[]) {
-  DIR *cartella = opendir("database");
-  struct dirent *voce;
-  int conteggio;
-
-  conteggio = 0;
-  while ((voce = readdir(cartella)) != NULL && conteggio < MAX_PARTITE) {
-    if (strncmp(voce->d_name, "partita_", 8) == 0) {
-      nomiPartite[conteggio] = malloc(strlen(voce->d_name) + 1);
-      strcpy(nomiPartite[conteggio], voce->d_name);
-      conteggio = conteggio + 1;
-    }
-  }
-  closedir(cartella);
-  return conteggio;
+DIR* aprireCartella(const char* percorso) {
+    return opendir(percorso);
 }
 
+void chiudereCartella(DIR* cartella) {
+    closedir(cartella);
+}
+
+struct dirent* leggereProssimaVoce(DIR* cartella) {
+    return readdir(cartella);
+}
+
+const char* ottenereNomeFile(struct dirent* voce) {
+    return voce->d_name;
+}
+
+// Funzione principale refactorizzata
+int raccoglierePartiteSalvate(char *nomiPartite[]) {
+    DIR *cartella = aprireCartella("database");
+    struct dirent *voce;
+    int conteggio = 0;
+    const char *nomeFile;
+    
+    while ((voce = leggereProssimaVoce(cartella)) != NULL && conteggio < MAX_PARTITE) {
+        nomeFile = ottenereNomeFile(voce);
+        
+        if (strncmp(nomeFile, "partita_", 8) == 0) {
+            nomiPartite[conteggio] = malloc(strlen(nomeFile) + 1);
+            strcpy(nomiPartite[conteggio], nomeFile);
+            conteggio = conteggio + 1;
+        }
+    }
+    
+    chiudereCartella(cartella);
+    return conteggio;
+}
 
 //da mettere commento
 void liberarePartite(char *nomiPartite[], int numero) {
