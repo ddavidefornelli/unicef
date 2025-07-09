@@ -1,6 +1,8 @@
 /*
 AUTORI: Onofrio de Robertis
         Michele Amato
+        DavideFornelli
+        Giuliano Antoniciello
 
 DATA INIZIO: 27/05/2025
 
@@ -34,6 +36,7 @@ Scopo delle funzioni presenti:
 // Funzioni per Griglia
 int leggereDimGriglia(Griglia griglia) {
     int valoreLetto;
+
     valoreLetto = griglia.dimensioneGriglia;
     return valoreLetto;
 }
@@ -79,7 +82,7 @@ void scrivereDimensioneImp(Impostazioni *imp, int valore) {
 Impostazioni leggereImpPartita(Partita partita) {
     Impostazioni valoreLetto;
 
-    valoreLetto = partita.impPartita;
+    valoreLetto = partita.impostazioniPartita;
     return valoreLetto;
 }
 
@@ -97,8 +100,8 @@ char* leggereNomePartita(Partita *partita) {
 }
 
 void scrivereImpPartita(Partita *partita, int difficolta, int dimensione) {
-    scrivereDifficoltaImp(&partita->impPartita, difficolta);
-    scrivereDimensioneImp(&partita->impPartita, dimensione);
+    scrivereDifficoltaImp(&partita->impostazioniPartita, difficolta);
+    scrivereDimensioneImp(&partita->impostazioniPartita, dimensione);
 }
 
 void scrivereNomePartita(Partita *partita, char nome[50]) {
@@ -114,24 +117,24 @@ void scrivereValGrigliaPartita(Partita *partita, int valore, int riga, int colon
 }
 
 
-void inizializzareGrigliaPartita(Partita *partita, int inputDimensione) {
-    int i; // righe della griglia
-    int j; // colonne della griglia 
+void inizializzareGrigliaPartita(Partita *partita, int dimensione) {
+    int riga; // righe della griglia
+    int colonna; // colonne della griglia 
 
-    convertireDimensione(&inputDimensione);
-    scrivereDimGrigliaPartita(partita, inputDimensione);
+    convertireDimensione(&dimensione);
+    scrivereDimGrigliaPartita(partita, dimensione);
          
-    partita->grigliaPartita.valoriGriglia = malloc(inputDimensione * sizeof(int *));
+    partita->grigliaPartita.valoriGriglia = malloc(dimensione * sizeof(int *));
     
-    i = 0;
-    while (i < inputDimensione) {
-        partita->grigliaPartita.valoriGriglia[i] = malloc(inputDimensione * sizeof(int));
-        j = 0;  // Inizializza j per ogni riga
-        while (j < inputDimensione) {
-            partita->grigliaPartita.valoriGriglia[i][j] = 0; // Inizializza a zero
-            j = j + 1;
+    riga = 0;
+    while (riga < dimensione) {
+        partita->grigliaPartita.valoriGriglia[riga] = malloc(dimensione * sizeof(int));
+        colonna = 0;  
+        while (colonna < dimensione) {
+            partita->grigliaPartita.valoriGriglia[riga][colonna] = 0; // Inizializza a zero
+            colonna = colonna + 1;
         }
-        i = i + 1;
+        riga = riga + 1;
     }
 }
 

@@ -16,7 +16,7 @@ typedef struct {
 // Definizione della struttura Partita
 typedef struct {
     Griglia grigliaPartita;
-    Impostazioni impPartita;
+    Impostazioni impostazioniPartita;
     char nomePartita[50];
 } Partita;
 

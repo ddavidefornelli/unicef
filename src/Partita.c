@@ -76,7 +76,7 @@ Nel giorno 21/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato le
 #define CELLA_VUOTA 0
 #define FALSO 0
 #define VERO 1
-#define DIFFICOLTA_FACILE 2
+#define DIFFICOLTA_FACILE 1
 #define DIFFICOLTA_MEDIA 2
 #define DIFFICOLTA_DIFFICILE 3
 #define RIGA_ERRORE 22
