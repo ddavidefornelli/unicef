@@ -73,30 +73,28 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 * MODIFICHE:                                             *
 * 18/06/25 - Prima versione                              *
 *********************************************************/
-DIR* aprireCartella(const char* percorso) {
-    return opendir(percorso);
-}
-
-void chiudereCartella(DIR* cartella) {
-    closedir(cartella);
-}
 
 struct dirent* leggereProssimaVoce(DIR* cartella) {
-    return readdir(cartella);
+    struct dirent* voce;
+
+    voce = readdir(cartella);
+    return voce;
 }
 
 const char* ottenereNomeFile(struct dirent* voce) {
     return voce->d_name;
 }
 
-// Funzione principale refactorizzata
 int raccoglierePartiteSalvate(char *nomiPartite[]) {
-    DIR *cartella = aprireCartella("database");
+    DIR *cartella; 
     struct dirent *voce;
-    int conteggio = 0;
+    int conteggio;
     const char *nomeFile;
-    
-    while ((voce = leggereProssimaVoce(cartella)) != NULL && conteggio < MAX_PARTITE) {
+
+    conteggio = 0;
+    cartella = opendir("database");
+    voce = leggereProssimaVoce(cartella);
+    while (voce != NULL && conteggio < MAX_PARTITE) {
         nomeFile = ottenereNomeFile(voce);
         
         if (strncmp(nomeFile, "partita_", 8) == 0) {
@@ -104,22 +102,22 @@ int raccoglierePartiteSalvate(char *nomiPartite[]) {
             strcpy(nomiPartite[conteggio], nomeFile);
             conteggio = conteggio + 1;
         }
+    voce = leggereProssimaVoce(cartella);
     }
-    
-    chiudereCartella(cartella);
+    closedir(cartella);
     return conteggio;
 }
 
 //da mettere commento
-void liberarePartite(char *nomiPartite[], int numero) {
-  int i; 
+void liberarePartite(char *nomiPartite[], int partiteDaLiberare) {
+  int cursPartite; 
 
-  i = 0;
-  while (i < numero) {
-    if (nomiPartite[i] != NULL) {
-      free(nomiPartite[i]);
+  cursPartite = 0;
+  while (cursPartite < partiteDaLiberare) {
+    if (nomiPartite[cursPartite] != NULL) {
+      free(nomiPartite[cursPartite]);
     }
-    i = i + 1;
+    cursPartite = cursPartite + 1;
   }
 }
 
@@ -144,13 +142,13 @@ void liberarePartite(char *nomiPartite[], int numero) {
 * MODIFICHE:                                             *
 * 18/06/25 - Prima versione                            *
 *********************************************************/
-const char *trovareFile(char *nomiPartite[], int numero, const char *input) {
+const char *trovareFile(char *nomiPartite[], int numeroPartite, const char *input) {
   long indice; 
   char *risultato;
 
   risultato = NULL;
   indice = strtol(input, NULL, 10);
-  if (indice >= 1 && indice <= numero) {
+  if (indice >= 1 && indice <= numeroPartite) {
     risultato = nomiPartite[indice - 1];
   }
 
@@ -173,19 +171,18 @@ const char *trovareFile(char *nomiPartite[], int numero, const char *input) {
 * 19/06/25 - Prima versione                             *
 ********************************************************/
 void stampareTitoloCaricaPartita() {
+  printf(ARANCIONE);
+  stampareCentrato("     _____ _____ _____ _____ _____ _____     ");
+  stampareCentrato("    |     |  _  | __  |     |     |  _  |    ");
+  stampareCentrato("    |   --|     |    -|-   -|   --|     |    ");
+  stampareCentrato("    |_____|__|__|__|__|_____|_____|__|__|    ");
+  stampareCentrato("   _____ _____ _____ _____ _____ _____ _____ ");
+  stampareCentrato("  |  _  |  _  | __  |_   _|     |_   _|  _  |");
+  stampareCentrato("  |   __|     |    -| | | |-   -| | | |     |");
+  stampareCentrato("  |__|  |__|__|__|__| |_| |_____| |_| |__|__|");
+  stampareCentrato("                                             ");
+  printf(RESET);
 
-printf(ARANCIONE);
-stampareCentrato("     _____ _____ _____ _____ _____ _____     ");
-stampareCentrato("    |     |  _  | __  |     |     |  _  |    ");
-stampareCentrato("    |   --|     |    -|-   -|   --|     |    ");
-stampareCentrato("    |_____|__|__|__|__|_____|_____|__|__|    ");
-stampareCentrato("   _____ _____ _____ _____ _____ _____ _____ ");
-stampareCentrato("  |  _  |  _  | __  |_   _|     |_   _|  _  |");
-stampareCentrato("  |   __|     |    -| | | |-   -| | | |     |");
-stampareCentrato("  |__|  |__|__|__|__| |_| |_____| |_| |__|__|");
-stampareCentrato("                                             ");
-printf("\n");
-printf(RESET);
 }
 
 
@@ -337,20 +334,22 @@ void stampareMenuCaricaPartita(){
 * 20/06/25 - Prima versione                             *
 ********************************************************/
 void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
-    int i; 
-    int j;
+    int riga; 
+    int colonna;
     Griglia griglia; 
+    int valGriglia;
 
     griglia = leggereGrigliaPartita(partita);
-    i = 0;
-    while (i < dimensione) {
-        j = 0;
-        while (j < dimensione) {
-            fprintf(file, "%d ", leggereValGriglia(griglia, i, j));
-            j = j + 1;
+    riga = 0;
+    while (riga < dimensione) {
+        colonna = 0;
+        while (colonna < dimensione) {
+            valGriglia = leggereValGriglia(griglia, riga, colonna);
+            fprintf(file, "%d ", valGriglia);
+            colonna = colonna + 1;
         }
         fprintf(file, "\n");
-        i = i + 1;
+        riga = riga+ 1;
     }
 }
 
@@ -383,16 +382,14 @@ int caricarePartita(Partita *partita, const char *percorso) {
     file = fopen(percorso, "r");
     risultato = FALSO;
     
-    if (file != NULL) {
-        if (fscanf(file, "%d %d", &dimensione, &difficolta) == 2) {
-            inizializzareGrigliaPartita(partita, dimensione);
-            
-            if (caricareValoriGriglia(file, partita, dimensione) == VERO) {
-                risultato = VERO;
-            }
-        }
-        fclose(file);
+    fscanf(file, "%d %d", &dimensione, &difficolta);
+    inizializzareGrigliaPartita(partita, dimensione);
+
+    if (caricareValoriGriglia(file, partita, dimensione) == VERO) {
+      risultato = VERO;
     }
+
+    fclose(file);
     return risultato;
 }
 
