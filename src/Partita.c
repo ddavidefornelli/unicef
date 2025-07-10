@@ -1030,45 +1030,6 @@ int controllareGrigliaPiena(Griglia griglia) {
     return esito;
 }
 
-/*******************************************************
-* FUNZIONE: caricaPartita                              *
-*                                                      *
-* DESCRIZIONE: Carica da file le informazioni di una   *
-*              partita Sudoku, leggendo dimensione,    *
-*              difficoltà e valori della griglia,      *
-*              e inizializza la struttura partita      *
-*              corrispondente.                         *
-*                                                      *
-* ARGOMENTI:                                           *
-* partita: puntatore alla struttura della partita      *
-* percorso: stringa contenente il percorso del file    *
-*                                                      *
-* RITORNO:                                             *
-* 1 se il caricamento ha successo,                     *
-* 0 in caso di errore o file non trovato               *
-*                                                      *
-* MODIFICHE:                                           *
-* 20/06/25 - Prima versione                            *
-*******************************************************/
-int caricaPartita(Partita *partita, const char *percorso) {
-    FILE *file = fopen(percorso, "r");
-    int risultato;
-    int dimensione, difficolta;
-    
-    risultato = 0;
-    if (file != NULL) {
-        if (fscanf(file, "%d %d", &dimensione, &difficolta) == 2) {
-            inizializzareGrigliaPartita(partita, dimensione);
-            
-            if (caricareValoriGriglia(file, partita, dimensione) == VERO) {
-                risultato = 1;
-            }
-        }
-        fclose(file);
-    }
-    return risultato;
-}
-
 
 /*********************************************************
 * FUNZIONE: caricaValoriGriglia                          *

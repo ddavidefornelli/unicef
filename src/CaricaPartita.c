@@ -217,37 +217,6 @@ void stampareTitoloCaricaPartita() {
   printf(RESET);
 }
 
-
-/********************************************************
-* FUNZIONE: stampareZonaInput                           *
-*                                                       *
-* DESCRIZIONE: Disegna un riquadro sullo schermo per    *
-*              l'inserimento del nome o indice della    *
-*              partita salvata, con prompt esplicito.   *
-*                                                       *
-* ARGOMENTI: Nessuno                                    *
-*                                                       *
-* RITORNO: Terminale aggiornato                         *
-********************************************************/
-void stampareZonaInput() {
-  int contatore;
-
-  printf("\n\n\n\n");
-  spostareCursore(RIGA, COLONNA);
-  printf("+--------------------------------------+");
-  contatore = 0;
-  while(contatore < 4) {
-    spostareCursore(RIGA + 1 + contatore, COLONNA);
-    printf("|                                      |");
-    contatore = contatore + 1;
-  }
-  spostareCursore(RIGA + 2, COLONNA + 1);
-  printf(" numero corrispondente (0 per uscire)");
-  spostareCursore(RIGA + 5, COLONNA);
-  printf("+--------------------------------------+");
-}
-
-
 /********************************************************
 * FUNZIONE: stampareMenuCaricaPartita                   *
 *                                                       *
@@ -259,7 +228,6 @@ void stampareZonaInput() {
 *                                                       *
 * COMPORTAMENTO:                                        *
 * - Se non ci sono partite salvate, l'utente viene      *
-*   reindirizzato alla homepage.                        *
 * - L'utente può digitare "0" per tornare al menu       *
 *   principale.                                         *
 * - Se la partita esiste ed è caricabile, viene avviata.*
@@ -270,59 +238,72 @@ void stampareZonaInput() {
 *          partita oppure torna alla homepage)          *
 *                                                       *
 ********************************************************/
-void avviareMenuCaricaPartita(){
-  char percorso[256];
-  Partita partita;
-  char *nomiPartite[100];
-  int numeroPartite;
-  char input[128];
-  int scelta;
-  int tornaHP;
-  int cursPartite; 
-  
-  pulireSchermo();
-  stampareTitoloCaricaPartita();
-  
-  // Prendi lista partite salvate
-  numeroPartite = raccoglierePartiteSalvate(nomiPartite);
-  if (numeroPartite == 0) {
-    printf("Nessuna partita salvata.\n");
-    tornareHomepage(&tornaHP, RIGA_ERRORE, COLONNA);
-    return;
-  }
-  
-  // Mostra partite disponibili
-  cursPartite = 0;
-  printf("  [0] Torna al menu principale\n");
-  while (cursPartite < numeroPartite) {
-    printf("  [%d] %s\n", cursPartite + 1, nomiPartite[cursPartite]);
-    cursPartite = cursPartite + 1;
-  }
-
-  // Chiedi quale partita caricare
-  printf("\n Scegli una partita: ");
-  fgets(input, 128, stdin);
-  scelta = atoi(input);
-  
-  // Gestisci scelta
-  if (scelta == 0) {
-    avviareMenuPrincipale();
-  } else if (scelta > 0 && scelta <= numeroPartite) {
+void avviareMenuCaricaPartita() {
+    char *nomiPartite[100];
+    int numeroPartite;
+    char input[128];
+    int scelta;
+    int tornaHP;
+    int cursPartite;
     
-    sprintf(percorso, "database/%s", nomiPartite[scelta-1]);
+    pulireSchermo();
+    stampareTitoloCaricaPartita();
     
-    if (caricarePartita(&partita, percorso)) {
-      avviarePartitaContinuata(&partita);
-
-    } else {
-      avviareMenuCaricaPartita(); 
+    // Prendi lista partite salvate
+    numeroPartite = raccoglierePartiteSalvate(nomiPartite);
+    if (numeroPartite == 0) {
+        stampareCentrato("Nessuna partita salvata.");
+        tornareHomepage(&tornaHP, RIGA_ERRORE, COLONNA - 10);
+        return;
     }
-  } else {
-    avviareMenuCaricaPartita();
-  }
-  
-  liberarePartite(nomiPartite, numeroPartite);
+    
+    // Mostra partite disponibili
+    printf("  [0] Torna al menu principale\n");
+    cursPartite = 0;
+    while (cursPartite < numeroPartite) {
+        // Mostra solo il nome pulito (senza "partita_" e ".txt")
+        char nomeVisualizzato[128];
+        estraiNomeDaFile(nomiPartite[cursPartite], nomeVisualizzato);
+        printf("  [%d] %s\n", cursPartite + 1, nomeVisualizzato);
+        cursPartite = cursPartite + 1;
+    }
+    
+    // Chiedi quale partita caricare
+    printf("\n Scegli una partita: ");
+    fgets(input, 128, stdin);
+    scelta = atoi(input);
+    
+    // Gestisci scelta
+    if (scelta == 0) {
+        liberarePartite(nomiPartite, numeroPartite);
+        avviareMenuPrincipale();
+    } else if (scelta > 0 && scelta <= numeroPartite) {
+        char percorso[256];
+        Partita partita;
+        char nome[128];
+        
+        // Costruisci il percorso completo del file
+        snprintf(percorso, sizeof(percorso), "database/%s", nomiPartite[scelta-1]);
+        
+        // Carica la partita
+        if (caricarePartita(&partita, percorso)) {
+            estraiNomeDaFile(nomiPartite[scelta-1], nome);
+            scrivereNomePartita(&partita, nome);
+            liberarePartite(nomiPartite, numeroPartite);
+            
+            avviarePartitaContinuata(&partita);
+        } else {
+            printf("Errore nel caricamento della partita!\n");
+            liberarePartite(nomiPartite, numeroPartite);
+            avviareMenuCaricaPartita(); 
+        }
+    } else {
+        printf("Scelta non valida!\n");
+        liberarePartite(nomiPartite, numeroPartite);
+        avviareMenuCaricaPartita(); 
+    }
 }
+
 /*******************************************************
 * FUNZIONE: salvareValoriGriglia                        *
 *                                                       *
@@ -415,17 +396,32 @@ int caricarePartita(Partita *partita, const char *percorso) {
 * 23/06/25 - Prima versione                            *
 *******************************************************/
 void salvarePartitaCorrente(Partita *partita) {
-  char percorso[100] = "database/";
-  const char *nome = leggereNomePartita(partita);
-
-  strncat(percorso, "partita_", sizeof(percorso) - lunghezza(percorso) - 1);
-  strncat(percorso, nome, sizeof(percorso) - lunghezza(percorso) - 1);
-  strncat(percorso, ".txt", sizeof(percorso) - lunghezza(percorso) - 1);
+  char percorso[100]; 
+  snprintf(percorso, sizeof(percorso), "database/partita_%s.txt", leggereNomePartita(partita));
   salvarePartita(partita, percorso);
 
     //utilizzare la funzione concatenareDueStringhe 
     //rallentava il programma 
     //e dava problemi con il salvataggio.
+}
+
+
+void estraiNomeDaFile(const char *nomeFile, char *nome) {
+    const char *underscore;
+    char *punto;
+    
+    // Trova l'underscore dopo "partita_"
+    underscore = strrchr(nomeFile, '_');
+    if (underscore) {
+        // Copia tutto dopo l'underscore
+        strcpy(nome, underscore + 1);
+        
+        // Rimuovi l'estensione .txt
+        punto = strstr(nome, ".txt");
+        if (punto) {
+            *punto = '\0';
+        }
+    } 
 }
 
 
@@ -505,5 +501,5 @@ int caricareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
             riga = riga + 1;
         }
    }
-   return risultato;
+    return risultato;
 }
