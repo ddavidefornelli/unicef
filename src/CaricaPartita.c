@@ -53,6 +53,47 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 #define VERO 1
 
 
+
+/********************************************************
+* FUNZIONE: leggereProssimaVoce                    
+*
+* DESCRIZIONE: legge la voce succesiva all' interno della cartella 
+*               database (in cui ci sono le partite salvate)
+*                                                        
+* ARGOMENTI:                                             
+* -cartella: cartella in cui andare a leggere la voce successiva, tipo cartella
+*                                                        
+* RITORNO:                                               
+* -voce: voce successiva letta, tipo file
+*                                                        
+* MODIFICHE:                                             
+* 18/06/25 - Prima versione                              
+*********************************************************/
+struct dirent* leggereProssimaVoce(DIR* cartella) {
+    struct dirent* voce;
+
+    voce = readdir(cartella);
+    return voce;
+}
+
+/*********************************************************************
+* FUNZIONE: ottenereNomeFile                                         *
+*                                                                    *
+* DESCRIZIONE: ottiene il nome della voce letta all' interno di una  *
+*                                              directory             *
+*                                                                    *
+*                                                                    *
+* ARGOMENTI:                                                         * 
+* voce: voce di cui si vuole sapere il nome, tipo file               *
+*                                                                    *
+* RITORNO:                                                           *
+* nomeVoce: nome della voce, stringa                                 *
+**********************************************************************/
+const char* ottenereNomeFile(struct dirent* voce) {
+    const char* nomeVoce = voce->d_name;
+    return nomeVoce;
+}
+
 /********************************************************
 * FUNZIONE: raccoglierePartiteSalvate                    *
 *                                                        *
@@ -69,22 +110,7 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 * RITORNO:                                               *
 * - int: numero di file rilevati e copiati nell'array;   *
 *        0 se la cartella non esiste o in caso di errore *
-*                                                        *
-* MODIFICHE:                                             *
-* 18/06/25 - Prima versione                              *
 *********************************************************/
-
-struct dirent* leggereProssimaVoce(DIR* cartella) {
-    struct dirent* voce;
-
-    voce = readdir(cartella);
-    return voce;
-}
-
-const char* ottenereNomeFile(struct dirent* voce) {
-    return voce->d_name;
-}
-
 int raccoglierePartiteSalvate(char *nomiPartite[]) {
     DIR *cartella; 
     struct dirent *voce;
@@ -108,7 +134,19 @@ int raccoglierePartiteSalvate(char *nomiPartite[]) {
     return conteggio;
 }
 
-//da mettere commento
+/*********************************************************************
+* FUNZIONE: liberaPartite                                            *
+*                                                                    *
+* DESCRIZIONE: libera la memoria utilizzata per l'                   *
+*              array contenente il nome delle partite salvate        *
+*                                                                    *
+* ARGOMENTI:                                                         * 
+* -nomiParite: array contenete i nomi delle partite salvate          *
+* -partiteDaLiberare: numero di elementi dell' array nomiPartite     *
+*                                                                    *
+* RITORNO:                                                           *
+* -memoria liberata                                                  *
+**********************************************************************/
 void liberarePartite(char *nomiPartite[], int partiteDaLiberare) {
   int cursPartite; 
 
@@ -138,10 +176,8 @@ void liberarePartite(char *nomiPartite[], int partiteDaLiberare) {
 * RITORNO:                                               *
 * - puntatore al nome di file trovato;                   *
 *   NULL se non viene trovata nessuna corrispondenza.    *
-*                                                        *
-* MODIFICHE:                                             *
-* 18/06/25 - Prima versione                            *
 *********************************************************/
+
 const char *trovareFile(char *nomiPartite[], int numeroPartite, const char *input) {
   long indice; 
   char *risultato;
@@ -166,9 +202,6 @@ const char *trovareFile(char *nomiPartite[], int numeroPartite, const char *inpu
 * ARGOMENTI: Nessuno                                    *
 *                                                       *
 * RITORNO: Terminale aggiornato                         *
-*                                                       *
-* MODIFICHE:                                            *
-* 19/06/25 - Prima versione                             *
 ********************************************************/
 void stampareTitoloCaricaPartita() {
   printf(ARANCIONE);
@@ -182,7 +215,6 @@ void stampareTitoloCaricaPartita() {
   stampareCentrato("  |__|  |__|__|__|__| |_| |_____| |_| |__|__|");
   stampareCentrato("                                             ");
   printf(RESET);
-
 }
 
 
@@ -196,9 +228,6 @@ void stampareTitoloCaricaPartita() {
 * ARGOMENTI: Nessuno                                    *
 *                                                       *
 * RITORNO: Terminale aggiornato                         *
-*                                                       *
-* MODIFICHE:                                            *
-* 19/06/25 - Prima versione                             *
 ********************************************************/
 void stampareZonaInput() {
   int contatore;
@@ -240,83 +269,58 @@ void stampareZonaInput() {
 * RITORNO: Nessuno (effetto collaterale: avvia una      *
 *          partita oppure torna alla homepage)          *
 *                                                       *
-* MODIFICHE:                                            *
-* 19/06/25 - Prima versione                             *
 ********************************************************/
-void stampareMenuCaricaPartita(){
-  char percorso[256];
-  Partita partita;
+void avviareMenuCaricaPartita(){
   char *nomiPartite[100];
   int numeroPartite;
-  char nomeScelto[128];
-  int i;
-  int input;
-  int continua;
-  const char *file;
-  const char *underscore;
-  char nome[128];
-  char *punto;
-
-  // --- INIZIO LOGICA DELLA FUNZIONE ---
+  char input[128];
+  int scelta;
+  int th;
+  
   pulireSchermo();
   stampareTitoloCaricaPartita();
-
+  
+  // Prendi lista partite salvate
   numeroPartite = raccoglierePartiteSalvate(nomiPartite);
-
   if (numeroPartite == 0) {
     printf("Nessuna partita salvata.\n");
-    tornareHomepage(&input, TITOLO_RIGA + 2, TITOLO_COLONNA -10);
+    tornareHomepage(&th, RIGA_ERRORE, COLONNA);
+    return;
   }
-
-  i = 0;
-  while (i < numeroPartite) {
+  
+  // Mostra partite disponibili
+  for (int i = 0; i < numeroPartite; i++) {
     printf("  [%d] %s\n", i + 1, nomiPartite[i]);
-    i = i + 1;
   }
-
-  stampareZonaInput();
-
-  continua = 1;
-  while (continua) {
-    spostareCursore(RIGA + 3, COLONNA + 14);
-    printf(">> ");
-    spostareCursore(RIGA + 3, COLONNA + 17);
-    if (fgets(nomeScelto, 128, stdin) != NULL) {
-      nomeScelto[strlen(nomeScelto) - 1] = '\0';
-      if (strcmp(nomeScelto, "0") == 0) {
-        avviareMenuPrincipale();
-        continua = 0;
-      } else {
-        file = trovareFile(nomiPartite, numeroPartite, nomeScelto);
-        if (file != NULL) {
-          sprintf(percorso, "database/%s", file);
-          
-          if (caricarePartita(&partita, percorso)) {
-            underscore = strrchr(file, '_');
-            if (underscore) {
-              strcpy(nome, underscore + 1);
-              punto = strstr(nome, ".txt");
-              if (punto) {
-                *punto = '\0';
-              }
-              scrivereNomePartita(&partita, nome);
-            }
-            avviarePartitaContinuata(&partita);
-            continua = 0;
-          } else {
-            mostrareMessaggioErrore("errore nel caricamento",ERR_MSG_RIGA, ERR_MSG_COLONNA);
-          }
-        } else {
-          mostrareMessaggioErrore("partita non trovata",ERR_MSG_RIGA, ERR_MSG_COLONNA);
-          reimpostareZonaInput(RIGA +3, COLONNA +14);
-        }
-      }
+  printf("  [0] Torna al menu principale\n");
+  
+  // Chiedi quale partita caricare
+  printf("Scegli una partita: ");
+  fgets(input, 128, stdin);
+  scelta = atoi(input);
+  
+  // Gestisci scelta
+  if (scelta == 0) {
+    avviareMenuPrincipale();
+  } else if (scelta > 0 && scelta <= numeroPartite) {
+    char percorso[256];
+    Partita partita;
+    
+    sprintf(percorso, "database/%s", nomiPartite[scelta-1]);
+    
+    if (caricarePartita(&partita, percorso)) {
+      avviarePartitaContinuata(&partita);
+    } else {
+      printf("Errore nel caricamento della partita!\n");
+      avviareMenuCaricaPartita(); // Riprova
     }
+  } else {
+    printf("Scelta non valida!\n");
+    avviareMenuCaricaPartita(); // Riprova
   }
-
+  
   liberarePartite(nomiPartite, numeroPartite);
 }
-
 /*******************************************************
 * FUNZIONE: salvareValoriGriglia                        *
 *                                                       *
@@ -409,12 +413,17 @@ int caricarePartita(Partita *partita, const char *percorso) {
 * 23/06/25 - Prima versione                            *
 *******************************************************/
 void salvarePartitaCorrente(Partita *partita) {
-    char percorso[100];
-    snprintf(percorso, sizeof(percorso), "database/partita_%s.txt", leggereNomePartita(partita));
-    salvarePartita(partita, percorso);
+  char percorso[100] = "database/";
+  const char *nome = leggereNomePartita(partita);
 
-    //utilizzare la funzione concatenareDueStringhe rallentava il programma 
-    //e ci dava problemi con il salvataggio.
+  strncat(percorso, "partita_", sizeof(percorso) - lunghezza(percorso) - 1);
+  strncat(percorso, nome, sizeof(percorso) - lunghezza(percorso) - 1);
+  strncat(percorso, ".txt", sizeof(percorso) - lunghezza(percorso) - 1);
+  salvarePartita(partita, percorso);
+
+    //utilizzare la funzione concatenareDueStringhe 
+    //rallentava il programma 
+    //e dava problemi con il salvataggio.
 }
 
 
@@ -433,9 +442,6 @@ void salvarePartitaCorrente(Partita *partita) {
 * RITORNO:                                             *
 * VERO se il salvataggio è avvenuto con successo,      *
 * FALSO in caso di errore nell'apertura del file       *
-*                                                      *
-* MODIFICHE:                                           *
-* 20/06/25 - Prima versione                            *
 *******************************************************/
 void salvarePartita(Partita *partita, const char *percorso) {
     FILE *file; 

@@ -182,7 +182,7 @@ void collezionareInputHomepage(int *input) {
       inMenuPrinipale = 0;
     }
     else if (*input == PARTITE_SALVATE) {
-      stampareMenuCaricaPartita();
+      avviareMenuCaricaPartita();
       inMenuPrinipale = 0;
     }
     else if (*input == ESCI) {

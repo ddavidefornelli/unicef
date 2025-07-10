@@ -4,7 +4,7 @@
 #include "../include/funzioniUtilita.h"
 #include "../include/tipiDiDato.h"
 
-void stampareMenuCaricaPartita();
+void avviareMenuCaricaPartita();
 void stampareTitoloCaricaPartita();
 
 void stampareZonaInput();
