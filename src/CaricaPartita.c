@@ -263,7 +263,7 @@ void avviareMenuCaricaPartita() {
     while (cursPartite < numeroPartite) {
         // Mostra solo il nome pulito (senza "partita_" e ".txt")
         char nomeVisualizzato[128];
-        estraiNomeDaFile(nomiPartite[cursPartite], nomeVisualizzato);
+        estrapolareNomeDaFile(nomiPartite[cursPartite], nomeVisualizzato);
         printf("  [%d] %s\n", cursPartite + 1, nomeVisualizzato);
         cursPartite = cursPartite + 1;
     }
@@ -287,7 +287,7 @@ void avviareMenuCaricaPartita() {
         
         // Carica la partita
         if (caricarePartita(&partita, percorso)) {
-            estraiNomeDaFile(nomiPartite[scelta-1], nome);
+            estrapolareNomeDaFile(nomiPartite[scelta-1], nome);
             scrivereNomePartita(&partita, nome);
             liberarePartite(nomiPartite, numeroPartite);
             
@@ -406,25 +406,30 @@ void salvarePartitaCorrente(Partita *partita) {
 }
 
 
-void estraiNomeDaFile(const char *nomeFile, char *nome) {
-    const char *underscore;
-    char *punto;
-    
-    // Trova l'underscore dopo "partita_"
-    underscore = strrchr(nomeFile, '_');
-    if (underscore) {
-        // Copia tutto dopo l'underscore
-        strcpy(nome, underscore + 1);
-        
-        // Rimuovi l'estensione .txt
-        punto = strstr(nome, ".txt");
-        if (punto) {
-            *punto = '\0';
-        }
-    } 
+/***************************************************************
+* FUNZIONE: estrapolareNomeFile                     
+*
+* DESCRIZIONE: elimina il prefisso e il suffisso da nomeFile     
+*                                                     
+* ARGOMENTI:                                           
+* nomeFile: nome da modificare, stringa
+* nome: nome modificato, stringa
+*                                                      
+* RITORNO:                    
+* nome: nome modificato, stringa                              
+***************************************************************/
+
+void estrapolareNomeDaFile(const char *nomeFile, char *nome) {
+    int cursNomeFile = 8;
+    int cursNome = 0;
+
+    while(nomeFile[cursNomeFile] != '.') {
+      nome[cursNome] = nomeFile[cursNomeFile];
+      cursNomeFile = cursNomeFile + 1;
+      cursNome = cursNome + 1;
+    }
+    nome[cursNome] = '\0';
 }
-
-
 /*******************************************************
 * FUNZIONE: salvarePartita                             *
 *                                                      *
