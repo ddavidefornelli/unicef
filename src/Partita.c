@@ -102,9 +102,6 @@ Nel giorno 21/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato le
 * inputDimensione: dimensione della griglia            *
 *                                                      *
 * RITORNO: permette all'utente di giocare al Sudoku    *
-*                                                      *
-* MODIFICHE:                                           *
-* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensione) {
     Partita partita;
@@ -112,6 +109,7 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
     int sceltaAzione;
     int grigliaPiena;
     int valido;
+    Griglia griglia; 
     int errore;
 
     grigliaPiena = FALSO;
@@ -138,7 +136,7 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
         pulireBuffer();
 
         if (sceltaAzione == 1) {
-            Griglia griglia = leggereGrigliaPartita(&partita);
+            griglia = leggereGrigliaPartita(&partita);
             collezionareInput(&griglia, &riga, RIGA_INPUT_RIGA);
             collezionareInput(&griglia, &colonna, RIGA_INPUT_COLONNA);
             collezionareInput(&griglia, &valDaInserire, RIGA_INPUT_VALORE);
@@ -248,9 +246,6 @@ void stampareVittoria() {
     stampareCentrato(" \\ \\ / / | ||  \\| | | || | | |");
     stampareCentrato("  \\ V /  | || |\\  | | || |_| |");
     stampareCentrato("   \\_/  |___|_| \\_| |_| \\___/ ");
-    printf("\n\n\n\n\n");
-    stampareCentrato("gruppo 29 al rogo");
-
     tornareHomepage(&input, RIGA_INPUT - 10, 30);
 }
 
@@ -413,6 +408,7 @@ void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
 *******************************************************/
 int calcolareCelleDaRimuovere(int difficolta) {
     int risultato;
+
     if(difficolta == DIFFICOLTA_FACILE)  {
         risultato = 20;
     } else if (difficolta == DIFFICOLTA_MEDIA) {
@@ -445,9 +441,9 @@ int calcolareCelleDaRimuovere(int difficolta) {
 * le regole del Sudoku, FALSO altrimenti                  *
 *                                                         *
 * MODIFICHE:                                              *
-*/
+***********************************************************/
 
-int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero)  {
+int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
     int risultato;
 
     risultato = VERO;
@@ -482,25 +478,21 @@ int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, 
 * RITORNO:                                             *
 * VERO se il numero non è presente nella riga,         *
 * FALSO se invece è già presente                       *
-*                                                      *
-* MODIFICHE:                                           *
-* 2025/06/23 - Prima versione                          *
 *******************************************************/
 int verificareRiga(Griglia *griglia, int dimensione, int riga, int numero) {
-    int i; 
+    int colonna; 
     int risultato; 
     
-    i = 0;
+    colonna = 0;
     risultato = VERO;
     
-    while (i < dimensione && risultato == VERO) {
-        if (leggereValGriglia(*griglia, riga, i) == numero) {
+    while (colonna < dimensione && risultato == VERO) {
+        if (leggereValGriglia(*griglia, riga, colonna) == numero) {
             risultato = FALSO;
         } else {
-            i = i + 1;
+            colonna = colonna + 1;
         }
     }
-    
     return risultato;
 }
 
@@ -521,21 +513,18 @@ int verificareRiga(Griglia *griglia, int dimensione, int riga, int numero) {
 * RITORNO:                                             *
 * VERO se il numero non è presente nella colonna,      *
 * FALSO se invece è già presente                       *
-*                                                      *
-* MODIFICHE:                                           *
-* 2025/06/23 - Prima versione                          *
 *******************************************************/
 int verificareColonna(Griglia *griglia, int dimensione, int colonna, int numero) {
-    int i;
+    int riga;
     int risultato;
 
     risultato = VERO;
-    i = 0;
-    while (i < dimensione && risultato == VERO) {
-        if (leggereValGriglia(*griglia, i, colonna) == numero) {
+    riga = 0;
+    while (riga < dimensione && risultato == VERO) {
+        if (leggereValGriglia(*griglia, riga, colonna) == numero) {
             risultato = FALSO;
         } else {
-            i = i + 1;
+            riga = riga + 1;
         }
     }
     return risultato;

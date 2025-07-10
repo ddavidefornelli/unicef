@@ -271,11 +271,14 @@ void stampareZonaInput() {
 *                                                       *
 ********************************************************/
 void avviareMenuCaricaPartita(){
+  char percorso[256];
+  Partita partita;
   char *nomiPartite[100];
   int numeroPartite;
   char input[128];
   int scelta;
-  int th;
+  int tornaHP;
+  int cursPartite; 
   
   pulireSchermo();
   stampareTitoloCaricaPartita();
@@ -284,18 +287,20 @@ void avviareMenuCaricaPartita(){
   numeroPartite = raccoglierePartiteSalvate(nomiPartite);
   if (numeroPartite == 0) {
     printf("Nessuna partita salvata.\n");
-    tornareHomepage(&th, RIGA_ERRORE, COLONNA);
+    tornareHomepage(&tornaHP, RIGA_ERRORE, COLONNA);
     return;
   }
   
   // Mostra partite disponibili
-  for (int i = 0; i < numeroPartite; i++) {
-    printf("  [%d] %s\n", i + 1, nomiPartite[i]);
-  }
+  cursPartite = 0;
   printf("  [0] Torna al menu principale\n");
-  
+  while (cursPartite < numeroPartite) {
+    printf("  [%d] %s\n", cursPartite + 1, nomiPartite[cursPartite]);
+    cursPartite = cursPartite + 1;
+  }
+
   // Chiedi quale partita caricare
-  printf("Scegli una partita: ");
+  printf("\n Scegli una partita: ");
   fgets(input, 128, stdin);
   scelta = atoi(input);
   
@@ -303,20 +308,17 @@ void avviareMenuCaricaPartita(){
   if (scelta == 0) {
     avviareMenuPrincipale();
   } else if (scelta > 0 && scelta <= numeroPartite) {
-    char percorso[256];
-    Partita partita;
     
     sprintf(percorso, "database/%s", nomiPartite[scelta-1]);
     
     if (caricarePartita(&partita, percorso)) {
       avviarePartitaContinuata(&partita);
+
     } else {
-      printf("Errore nel caricamento della partita!\n");
-      avviareMenuCaricaPartita(); // Riprova
+      avviareMenuCaricaPartita(); 
     }
   } else {
-    printf("Scelta non valida!\n");
-    avviareMenuCaricaPartita(); // Riprova
+    avviareMenuCaricaPartita();
   }
   
   liberarePartite(nomiPartite, numeroPartite);
@@ -481,28 +483,27 @@ void salvarePartita(Partita *partita, const char *percorso) {
 * 21/06/25 - Prima versione                              *
 *********************************************************/
 int caricareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
-    int i;
-    int j;
+    int riga;
+    int colonna;
     int val;
     int risultato;
 
     
     risultato = VERO;
-    i = 0;
-    while (i < dimensione && risultato == VERO) {
-        j = 0;
-        while (j < dimensione && risultato == VERO) {
+    riga = 0;
+    while (riga < dimensione && risultato == VERO) {
+        colonna = 0;
+        while (colonna < dimensione && risultato == VERO) {
             if (fscanf(file, "%d", &val) == 1) {
-                scrivereValGrigliaPartita(partita, val, i, j);
-                j = j + 1;
+                scrivereValGrigliaPartita(partita, val, riga, colonna);
+                colonna = colonna + 1;
             } else {
                 risultato = FALSO;
             }
         }
         if (risultato == VERO) {
-            i = i + 1;
+            riga = riga + 1;
         }
    }
-    
-    return risultato;
+   return risultato;
 }
