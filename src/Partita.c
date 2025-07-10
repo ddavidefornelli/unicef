@@ -612,10 +612,13 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
 
     grigliaPiena = FALSO;
     valDaInserire = 1;
-    riga = 0;
-    colonna = 0;    
-    cellaVuota = trovareCellaVuota(griglia, dimensione, &riga, &colonna);
-    if (cellaVuota == FALSO) {
+    cellaVuota = trovareCellaVuota(griglia, dimensione);
+    if(cellaVuota > 0) {
+      riga = cellaVuota / dimensione;
+      colonna = modulo(cellaVuota, dimensione); 
+    }
+
+    if (cellaVuota == 0) {
         grigliaPiena = VERO;
     } else {
         while (valDaInserire <= dimensione && grigliaPiena == FALSO) {
@@ -660,29 +663,29 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
 * MODIFICHE:                                           *
 * 2025/06/23 - Prima versione                          *
 *******************************************************/
-int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna) {
+int trovareCellaVuota(Griglia *griglia, int dimensione) {
     int cursRiga;
     int cursColonna;
-    int trovato;
+    int risultato;
+    int trovata;
 
-    trovato = FALSO;
     cursRiga = 0;
-    while (cursRiga < dimensione && trovato == FALSO) {
+    risultato = 0;
+    while (cursRiga < dimensione && trovata == FALSO) {
         cursColonna = 0;
-        while (cursColonna < dimensione && trovato == FALSO) {
+        while (cursColonna < dimensione && risultato == 0) {
             if (leggereValGriglia(*griglia, cursRiga, cursColonna) == 0) {
-                *riga = cursRiga;
-                *colonna = cursColonna;
-                trovato = VERO;
+                risultato = cursRiga * dimensione + cursColonna;
+                trovata = VERO;
             } else {
                 cursColonna = cursColonna + 1;
             }
         }
-        if (trovato == FALSO) {
+        if (trovata == FALSO) {
             cursRiga = cursRiga + 1;
         }
     }
-    return trovato;
+    return risultato;
 }
 
 
