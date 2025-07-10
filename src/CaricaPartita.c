@@ -70,10 +70,10 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 * 18/06/25 - Prima versione                              
 *********************************************************/
 struct dirent* leggereProssimaVoce(DIR* cartella) {
-    struct dirent* voce;
+    struct dirent* voceLetta;
 
-    voce = readdir(cartella);
-    return voce;
+    voceLetta = readdir(cartella);
+    return voceLetta;
 }
 
 /*********************************************************************
@@ -123,8 +123,8 @@ int raccoglierePartiteSalvate(char *nomiPartite[]) {
     while (voce != NULL && conteggio < MAX_PARTITE) {
         nomeFile = ottenereNomeFile(voce);
         
-        if (strncmp(nomeFile, "partita_", 8) == 0) {
-            nomiPartite[conteggio] = malloc(strlen(nomeFile) + 1);
+        if (confrontarePrefisso(nomeFile, "partita_") == VERO) {
+            nomiPartite[conteggio] = malloc(lunghezza(nomeFile) + 1);
             strcpy(nomiPartite[conteggio], nomeFile);
             conteggio = conteggio + 1;
         }
@@ -245,24 +245,24 @@ void avviareMenuCaricaPartita() {
     int scelta;
     int tornaHP;
     int cursPartite;
+    char nomeVisualizzato[128];
+    char percorso[256];
+    Partita partita;
+    char nome[128];
     
     pulireSchermo();
     stampareTitoloCaricaPartita();
     
-    // Prendi lista partite salvate
     numeroPartite = raccoglierePartiteSalvate(nomiPartite);
     if (numeroPartite == 0) {
         stampareCentrato("Nessuna partita salvata.");
         tornareHomepage(&tornaHP, RIGA_ERRORE, COLONNA - 10);
         return;
     }
-    
-    // Mostra partite disponibili
     printf("  [0] Torna al menu principale\n");
+    
     cursPartite = 0;
     while (cursPartite < numeroPartite) {
-        // Mostra solo il nome pulito (senza "partita_" e ".txt")
-        char nomeVisualizzato[128];
         estrapolareNomeDaFile(nomiPartite[cursPartite], nomeVisualizzato);
         printf("  [%d] %s\n", cursPartite + 1, nomeVisualizzato);
         cursPartite = cursPartite + 1;
@@ -278,9 +278,6 @@ void avviareMenuCaricaPartita() {
         liberarePartite(nomiPartite, numeroPartite);
         avviareMenuPrincipale();
     } else if (scelta > 0 && scelta <= numeroPartite) {
-        char percorso[256];
-        Partita partita;
-        char nome[128];
         
         // Costruisci il percorso completo del file
         snprintf(percorso, sizeof(percorso), "database/%s", nomiPartite[scelta-1]);

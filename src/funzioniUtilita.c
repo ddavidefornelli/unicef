@@ -19,6 +19,7 @@ spostareCursore() -> funzione utilizzata per spostare la posizione del cursore n
 #include "../include/homepage.h"
 
 #define VERO 1
+#define FALSO 0
 
 typedef enum {
   LARGHEZZA_TERMINALE = 80,
@@ -44,13 +45,12 @@ void spostareCursore(int x, int y)
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 void stampareCentrato(const char *testo) 
 {
-  /* Definisco ed inizializzo le variabili */
-  int spaziDaInserire; /* contatore per il ciclo */
-  int dimStringa; /* calcolo la lunghezza di dimStringa */
-  int spazi; /* rappresenta le coordinate dove deve essere stampata "testo" */
+  int spaziDaInserire; 
+  int dimStringa; 
+  int spazi; 
 
   spaziDaInserire = 0;
-  dimStringa = strlen(testo);
+  dimStringa = lunghezza(testo);
   spazi = (LARGHEZZA_TERMINALE - dimStringa) / 2;
   if (spazi < 0)
   {
@@ -200,3 +200,39 @@ void concatenareDueStringhe(const char stringa1[], const char stringa2[], char s
 
     stringaFinale[i + j] = '\0'; // Carattere di fine stringa
 }
+
+int confrontarePrefisso(const char *stringa1, const char *prefisso) {
+    int lunghezzaPrefisso;
+    int cursStringa;
+    int esito; 
+
+    lunghezzaPrefisso = lunghezza(prefisso);
+    esito = VERO;
+
+    cursStringa = 0;
+    while (cursStringa < lunghezzaPrefisso) {
+        if (stringa1[cursStringa] != prefisso[cursStringa]) {
+            esito = FALSO;
+        }
+        cursStringa = cursStringa + 1;
+    }
+
+    return esito;
+}
+
+int modulo(int dividendo, int divisore) {
+    int resto = 0;
+
+    while (dividendo >= divisore) {
+        dividendo = dividendo - divisore;
+    }
+
+    if (dividendo < 0) {
+        resto = -dividendo;
+    } else {
+        resto = dividendo;
+    }
+
+    return resto;
+}
+

@@ -554,33 +554,32 @@ int verificareColonna(Griglia *griglia, int dimensione, int colonna, int numero)
 * 2025/06/23 - Prima versione                              *
 ***********************************************************/
 int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
-    int dimensioneQuadrato; 
+    int dimensioneSottoquadrato;
     int inizioRiga;
     int inizioColonna;
-    int i;
-    int j; 
+    int cursRiga;
+    int cursColonna; 
     int risultato; 
     
-    dimensioneQuadrato = (int)sqrt(dimensione);
-    inizioRiga  = riga - riga % dimensioneQuadrato;
+    dimensioneSottoquadrato= calcolareSottoquadrato(dimensione);
+    inizioRiga  = riga - modulo(riga, dimensioneSottoquadrato);
     risultato = VERO;
-    inizioColonna = colonna - colonna % dimensioneQuadrato;
+    inizioColonna = colonna - modulo(colonna, dimensioneSottoquadrato);
 
-    i = 0;
-    while (i < dimensioneQuadrato && risultato == VERO) {
-        j = 0;
-        while (j < dimensioneQuadrato && risultato == VERO) {
-            if (leggereValGriglia(*griglia, i + inizioRiga, j + inizioColonna) == numero) {
+    cursRiga = 0;
+    while (cursRiga < dimensioneSottoquadrato && risultato == VERO) {
+        cursColonna = 0;
+        while (cursColonna < dimensioneSottoquadrato&& risultato == VERO) {
+            if (leggereValGriglia(*griglia, cursRiga + inizioRiga, cursColonna + inizioColonna) == numero) {
                 risultato = FALSO;
             } else {
-                j = j + 1;
+                cursColonna = cursColonna + 1;
             }
         }
         if (risultato == VERO) {
-            i = i + 1;
+            cursRiga = cursRiga + 1;
         }
     }
-    
     return risultato;
 }
 
@@ -626,7 +625,6 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
                 if (riempireGriglia(griglia, dimensione) == VERO) {
                     grigliaPiena = VERO;
                 } else {
-                    /*pone la cella con valore non valido a 0 in modo tale che il nuovo valore verrà inserito in quella cella*/
                     scrivereValGriglia(griglia, riga, colonna, CELLA_VUOTA);
                 }
             }
@@ -663,25 +661,25 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
 * 2025/06/23 - Prima versione                          *
 *******************************************************/
 int trovareCellaVuota(Griglia *griglia, int dimensione, int *riga, int *colonna) {
-    int i;
-    int j;
+    int cursRiga;
+    int cursColonna;
     int trovato;
 
     trovato = FALSO;
-    i = 0;
-    while (i < dimensione && trovato == FALSO) {
-        j = 0;
-        while (j < dimensione && trovato == FALSO) {
-            if (leggereValGriglia(*griglia, i, j) == 0) {
-                *riga = i;
-                *colonna = j;
+    cursRiga = 0;
+    while (cursRiga < dimensione && trovato == FALSO) {
+        cursColonna = 0;
+        while (cursColonna < dimensione && trovato == FALSO) {
+            if (leggereValGriglia(*griglia, cursRiga, cursColonna) == 0) {
+                *riga = cursRiga;
+                *colonna = cursColonna;
                 trovato = VERO;
             } else {
-                j = j + 1;
+                cursColonna = cursColonna + 1;
             }
         }
         if (trovato == FALSO) {
-            i = i + 1;
+            cursRiga = cursRiga + 1;
         }
     }
     return trovato;
