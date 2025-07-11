@@ -535,7 +535,7 @@ int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colo
     cursRiga = 0;
     while (cursRiga < dimensioneSottoquadrato && risultato == VERO) {
         cursColonna = 0;
-        while (cursColonna < dimensioneSottoquadrato&& risultato == VERO) {
+        while (cursColonna < dimensioneSottoquadrato && risultato == VERO) {
             if (leggereValGriglia(*griglia, cursRiga + inizioRiga, cursColonna + inizioColonna) == numero) {
                 risultato = FALSO;
             } else {
@@ -709,10 +709,9 @@ int trovareCellaVuota(Griglia *griglia, int dimensione) {
 *********************************************************/
 void generareSudoku(Partita *partita, int dimensione, int difficolta) {
     Griglia griglia = leggereGrigliaPartita(partita);
-    Griglia *pGriglia = &(griglia);
     
-    riempireGriglia(pGriglia, dimensione);
-    rimuovereNumeri(pGriglia, dimensione, difficolta);
+    riempireGriglia(&griglia, dimensione);
+    rimuovereNumeri(&griglia, dimensione, difficolta);
 }
 
 
