@@ -137,7 +137,3 @@ void inizializzareGrigliaPartita(Partita *partita, int dimensione) {
         riga = riga + 1;
     }
 }
-
-Griglia* leggereGrigliaPartitaPtr(Partita *partita) {
-    return &(partita->grigliaPartita);
-}

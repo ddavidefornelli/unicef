@@ -708,9 +708,11 @@ int trovareCellaVuota(Griglia *griglia, int dimensione) {
 *          creata                                        *
 *********************************************************/
 void generareSudoku(Partita *partita, int dimensione, int difficolta) {
+    Griglia griglia = leggereGrigliaPartita(partita);
+    Griglia *pGriglia = &(griglia);
     
-    riempireGriglia(leggereGrigliaPartitaPtr(partita), dimensione);
-    rimuovereNumeri(leggereGrigliaPartitaPtr(partita), dimensione, difficolta);
+    riempireGriglia(pGriglia, dimensione);
+    rimuovereNumeri(pGriglia, dimensione, difficolta);
 }
 
 

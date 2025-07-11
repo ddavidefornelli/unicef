@@ -257,58 +257,68 @@ void stampareTitoloCaricaPartita() {
 *                                                       *
 ********************************************************/
 void avviareMenuCaricaPartita() {
-    char *nomiPartite[100];
-    int numeroPartite;
-    char input[128];
-    int scelta;
-    int tornaHP;
-    int cursPartite;
-    char nomeVisualizzato[128];
-    char percorso[256];
-    Partita partita;
-    char nome[128];
-    
-    pulireSchermo();
-    stampareTitoloCaricaPartita();
-    
-    raccogliereNomiPartiteSalvate(nomiPartite);
-    numeroPartite = contareNumeroPartiteSalvate();
-    if (numeroPartite == 0) {
-        stampareCentrato("Nessuna partita salvata.");
-        tornareHomepage(&tornaHP, RIGA_ERRORE, COLONNA - 10);
-        return;
-    }
-    printf("  [0] Torna al menu principale\n");
-    
-    cursPartite = 0;
-    while (cursPartite < numeroPartite) {
-        estrapolareNomeDaFile(nomiPartite[cursPartite], nomeVisualizzato);
-        printf("  [%d] %s\n", cursPartite + 1, nomeVisualizzato);
-        cursPartite = cursPartite + 1;
-    }
-    
-    // Chiedi quale partita caricare
-    printf("\n Scegli una partita: ");
-    fgets(input, 128, stdin);
-    scelta = atoi(input);
-    
-    // Gestisci scelta
-    if (scelta == 0) {
-        liberarePartite(nomiPartite, numeroPartite);
-        avviareMenuPrincipale();
-    } else if (scelta > 0 && scelta <= numeroPartite) {
-        
-        // Costruisci il percorso completo del file
-        snprintf(percorso, sizeof(percorso), "database/%s", nomiPartite[scelta-1]);
-        
-        // Carica la partita
-        caricarePartita(&partita, percorso);
-            estrapolareNomeDaFile(nomiPartite[scelta-1], nome);
-            scrivereNomePartita(&partita, nome);
-            liberarePartite(nomiPartite, numeroPartite);
-            
-            avviarePartitaContinuata(&partita);
-    } 
+  char *nomiPartite[100];
+  int numeroPartite;
+  char input[128];
+  int scelta;
+  int tornaHP;
+  int cursPartite;
+  char nomeVisualizzato[128];
+  char percorso[256];
+  Partita partita;
+  char nome[128];
+
+  pulireSchermo();
+  stampareTitoloCaricaPartita();
+
+  raccogliereNomiPartiteSalvate(nomiPartite);
+  numeroPartite = contareNumeroPartiteSalvate();
+  if (numeroPartite == 0) {
+    stampareCentrato("Nessuna partita salvata.");
+    tornareHomepage(&tornaHP, RIGA_ERRORE, COLONNA - 10);
+    return;
+  }
+  printf("  [0] Torna al menu principale\n");
+
+  cursPartite = 0;
+  while (cursPartite < numeroPartite) {
+    estrapolareNomeDaFile(nomiPartite[cursPartite], nomeVisualizzato);
+    printf("  [%d] %s\n", cursPartite + 1, nomeVisualizzato);
+    cursPartite = cursPartite + 1;
+  }
+
+  // Chiedi quale partita caricare
+  printf("\n Scegli una partita: ");
+  fgets(input, 128, stdin);
+
+  if (*input == '0') {
+    liberarePartite(nomiPartite, numeroPartite);
+    avviareMenuPrincipale(); 
+  }
+  
+  //abbiamo dovuto mettere prima il controllo
+  //perche' se l' utente digitava caratteri
+  //atoi dava come risultato = 0 e quindi faceva
+  //tornare al menu principale con input errato
+
+  scelta = atoi(input);
+
+  // Gestisci scelta
+    if (scelta > 0 && scelta <= numeroPartite) {
+
+    snprintf(percorso, sizeof(percorso), "database/%s", nomiPartite[scelta-1]);
+
+    // Carica la partita
+    caricarePartita(&partita, percorso);
+    estrapolareNomeDaFile(nomiPartite[scelta-1], nome);
+    scrivereNomePartita(&partita, nome);
+    liberarePartite(nomiPartite, numeroPartite);
+
+    avviarePartitaContinuata(&partita);
+  } else {
+    liberarePartite(nomiPartite, numeroPartite);
+    avviareMenuCaricaPartita(); 
+  }
 }
 
 /*******************************************************

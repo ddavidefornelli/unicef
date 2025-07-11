@@ -41,6 +41,5 @@ void scrivereNomePartita(Partita *partita, char nome[50]);
 void scrivereDimGrigliaPartita(Partita *partita, int valore);
 void scrivereValGrigliaPartita(Partita *partita, int valore, int riga, int colonna);
 void inizializzareGrigliaPartita(Partita *partita, int inputDimensione);
-Griglia* leggereGrigliaPartitaPtr(Partita *partita);
 
 #endif
