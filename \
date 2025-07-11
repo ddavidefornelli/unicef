@@ -11,6 +11,7 @@ Scopo di ogni funzione presente:
 - liberarePartite: liberare la memoria utilizzata per contenere i nomi delle partite.
 - trovareFile: ricerca all'interno della cartella database(dove vengono salvate le partite) la partita che l'utente desidera giocare.
 - stampareTitoloCaricaPartita: stampa la scritta 'CARICA PARTITA'.
+- stampareZonaInput: stampa la cornice che identifica la zona dove digitare i valori da inserire all'interno della griglia del sudoku
 */
 
 #include "../include/funzioniUtilita.h"
@@ -80,18 +81,21 @@ const char* ottenereNomeFile(struct dirent* voce) {
 }
 
 /********************************************************
-* FUNZIONE: raccogliereNomiPartiteSalvate                *
+* FUNZIONE: raccoglierePartiteSalvate                    *
 *                                                        *
 * DESCRIZIONE: Scansiona la cartella "database" per      *
 *              trovare file che iniziano con "partita_"  *
-*              e le salva in un array                    *
+*              e ne raccoglie i nomi in un array.        *
+*                                                        *
 * ARGOMENTI:                                             *
 * - nomiPartite: array di stringhe dove salvare i nomi   *
 *   dei file.                                            *
+* - massimePartite: numero massimo di elementi           *
+*   che l'array può contenere.                           *
 *                                                        *
 * RITORNO:                                               *
-* - nomiPartite: array di stringhe con i nomi            *
-*   dei file.                                            *
+* - conteggio: numero di file rilevati e copiati nell'array; *
+*        0 se la cartella non esiste o in caso di errore *
 *********************************************************/
 void raccogliereNomiPartiteSalvate(char *nomiPartite[]) {
     DIR *cartella; 
@@ -115,23 +119,6 @@ void raccogliereNomiPartiteSalvate(char *nomiPartite[]) {
     closedir(cartella);
 }
 
-/********************************************************
-* FUNZIONE: contareNumeroPartiteSalvate                  *
-*                                                        *
-* DESCRIZIONE: Scansiona la cartella "database" per      *
-*              trovare file che iniziano con "partita_"  *
-*              e conta quante ce ne sono.                *
-*                                                        *
-* ARGOMENTI:                                             *
-* - nomiPartite: array di stringhe dove salvare i nomi   *
-*   dei file.                                            *
-* - massimePartite: numero massimo di elementi           *
-*   che l'array può contenere.                           *
-*                                                        *
-* RITORNO:                                               *
-* - conteggio: numero di file rilevati e copiati nell'array; *
-*        0 se la cartella non esiste o in caso di errore *
-*********************************************************/
 int contareNumeroPartiteSalvate() {
     DIR *cartella; 
     struct dirent *voce;
@@ -201,6 +188,7 @@ const char *trovareFile(char *nomiPartite[], int numeroPartite, const char *inpu
   long indice; 
   char *risultato;
 
+  risultato = NULL;
   indice = strtol(input, NULL, 10);
   if (indice >= 1 && indice <= numeroPartite) {
     risultato = nomiPartite[indice - 1];
@@ -236,7 +224,7 @@ void stampareTitoloCaricaPartita() {
 }
 
 /********************************************************
-* FUNZIONE: avviareMenuCaricaPartita                    *
+* FUNZIONE: stampareMenuCaricaPartita                   *
 *                                                       *
 * DESCRIZIONE: Mostra l'elenco delle partite salvate    *
 *              presenti nella cartella "database",      *
@@ -271,7 +259,7 @@ void avviareMenuCaricaPartita() {
     pulireSchermo();
     stampareTitoloCaricaPartita();
     
-    raccogliereNomiPartiteSalvate(nomiPartite);
+     raccogliereNomiPartiteSalvate(nomiPartite);
     numeroPartite = contareNumeroPartiteSalvate();
     if (numeroPartite == 0) {
         stampareCentrato("Nessuna partita salvata.");
@@ -302,13 +290,22 @@ void avviareMenuCaricaPartita() {
         snprintf(percorso, sizeof(percorso), "database/%s", nomiPartite[scelta-1]);
         
         // Carica la partita
-        caricarePartita(&partita, percorso);
+        if (caricarePartita(&partita, percorso)) {
             estrapolareNomeDaFile(nomiPartite[scelta-1], nome);
             scrivereNomePartita(&partita, nome);
             liberarePartite(nomiPartite, numeroPartite);
             
             avviarePartitaContinuata(&partita);
-    } 
+        } else {
+            printf("Errore nel caricamento della partita!\n");
+            liberarePartite(nomiPartite, numeroPartite);
+            avviareMenuCaricaPartita(); 
+        }
+    } else {
+        printf("Scelta non valida!\n");
+        liberarePartite(nomiPartite, numeroPartite);
+        avviareMenuCaricaPartita(); 
+    }
 }
 
 /*******************************************************
@@ -362,18 +359,23 @@ void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
 * 1 se il caricamento ha successo,                     *
 * 0 in caso di errore o file non trovato               *
 *******************************************************/
-void caricarePartita(Partita *partita, const char *percorso) {
+int caricarePartita(Partita *partita, const char *percorso) {
     FILE *file; 
+    int risultato; 
     int dimensione, difficolta;
 
     file = fopen(percorso, "r");
+    risultato = FALSO;
     
     fscanf(file, "%d %d", &dimensione, &difficolta);
     inizializzareGrigliaPartita(partita, dimensione);
 
-    caricareValoriGriglia(file, partita, dimensione);
+    if (caricareValoriGriglia(file, partita, dimensione) == VERO) {
+      risultato = VERO;
+    }
 
     fclose(file);
+    return risultato;
 }
 
 /*******************************************************
@@ -413,11 +415,8 @@ void salvarePartitaCorrente(Partita *partita) {
 ***************************************************************/
 
 void estrapolareNomeDaFile(const char *nomeFile, char *nome) {
-    int cursNomeFile;
-    int cursNome;
-
-    cursNome = 0;
-    cursNomeFile = 8;
+    int cursNomeFile = 8;
+    int cursNome = 0;
 
     while(nomeFile[cursNomeFile] != '.') {
       nome[cursNome] = nomeFile[cursNomeFile];
@@ -439,9 +438,9 @@ void estrapolareNomeDaFile(const char *nomeFile, char *nome) {
 * percorso: stringa contenente il percorso del file    *
 *                                                      *
 * RITORNO:                                             *
-* file: file aggiornato con i dati utili di partita    *
+* VERO se il salvataggio è avvenuto con successo,      *
+* FALSO in caso di errore nell'apertura del file       *
 *******************************************************/
-
 void salvarePartita(Partita *partita, const char *percorso) {
     FILE *file; 
     int dimensione;
@@ -473,9 +472,10 @@ void salvarePartita(Partita *partita, const char *percorso) {
 * dimensione: dimensione della griglia                   *
 *                                                        *
 * RITORNO:                                               *
-* partita: partita aggiornata
+* VERO se tutti i valori sono stati letti correttamente  *
+* FALSO in caso di errore di lettura                     *
 *********************************************************/
-void caricareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
+int caricareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     int riga;
     int colonna;
     int val;
@@ -498,4 +498,5 @@ void caricareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
             riga = riga + 1;
         }
    }
+    return risultato;
 }
