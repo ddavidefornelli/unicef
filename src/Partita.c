@@ -391,7 +391,6 @@ int calcolareCelleDaRimuovere(int difficolta) {
     return risultato;
 }
 
-
 /**********************************************************
 * FUNZIONE: verificareValidita                            *
 *                                                         *
@@ -411,7 +410,7 @@ int calcolareCelleDaRimuovere(int difficolta) {
 * RITORNO:                                                *
 * VERO se il numero può essere inserito senza violare     *
 * le regole del Sudoku, FALSO altrimenti                  *
-*/
+***********************************************************/
 
 int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
     int risultato;

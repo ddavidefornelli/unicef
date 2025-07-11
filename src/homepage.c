@@ -49,58 +49,6 @@ Scopo di ogni funzione presente:
 #define VERDE "\033[32m"
 #define RESET "\033[0m"
 
-
-/********************************************************
-* FUNZIONE: stampareTitoloHomepage                      *
-*                                                       *
-* DESCRIZIONE: Stampa a schermo il titolo grafico       *
-*              colorato della homepage, centrato        *
-*              orizzontalmente nel terminale.           *
-*                                                       *
-* ARGOMENTI: Nessuno                                    *
-*                                                       *
-* RITORNO: Terminale aggiornato                         *
-*                                                       *
-* MODIFICHE:                                            *
-* 23/06/25 - Prima versione                             *
-********************************************************/
-void stampareTitoloHomepage(){
-  printf(VERDE);
-  printf("\n");
-  stampareCentrato("        _____ _____ ____  _____ _____ _____         ___ ___        ");
-  stampareCentrato(" ___   |   __|  |  |    \\|     |  |  |  |  |       |_  |_  |   ___ ");
-  stampareCentrato("|___|  |__   |  |  |  |  |  |  |    -|  |  |   _   |_  |  _|  |___|");
-  stampareCentrato("       |_____|_____|____/|_____|__|__|_____|  |_|  |___|___|       ");
-  stampareCentrato("                                                                   ");
-  printf(RESET);
-}
-
-
-/************************************************************ 
- *  FUNZIONE: stampareMenuPrincipale()                      *
- *  DESCRIZIONE: Mostra il menù iniziale del gioco          *
- *                                                          *
- *  ARGOMENTI: //                                           *
- *                                                          *
- *  RITORNO: //                                             *
- *                                                          *
- *  MODIFICHE:                                              *
- *  23/06/25 - Prima versione                               *
- ************************************************************/
-void stampareMenuHomepage(){
-  spostareCursore(TITOLO_RIGA, TITOLO_COLONNA);
-  printf("- MENU -");
-  spostareCursore(OPZIONE_START_RIGA, OPZIONE_COLONNA);
-  printf("[1] Nuova Partita");
-  spostareCursore(OPZIONE_START_RIGA + 1, OPZIONE_COLONNA);
-  printf("[2] Partite Salvate");
-  spostareCursore(OPZIONE_START_RIGA + 2, OPZIONE_COLONNA);
-  printf("[3] Esci");
-  spostareCursore(PROMPT_RIGA, PROMPT_COLONNA);
-  printf("Inserisci una scelta (1 - 4)");
-}
-
-
 /********************************************************
 * FUNZIONE: stampareMenuPrincipale                      *
 *                                                       *
@@ -118,10 +66,27 @@ void stampareMenuHomepage(){
 void stampareMenuPrincipale() 
 {
   pulireSchermo();
-  stampareTitoloHomepage();
-  stampareMenuHomepage();
-}
 
+  printf(VERDE);
+  printf("\n");
+  stampareCentrato("        _____ _____ ____  _____ _____ _____         ___ ___        ");
+  stampareCentrato(" ___   |   __|  |  |    \\|     |  |  |  |  |       |_  |_  |   ___ ");
+  stampareCentrato("|___|  |__   |  |  |  |  |  |  |    -|  |  |   _   |_  |  _|  |___|");
+  stampareCentrato("       |_____|_____|____/|_____|__|__|_____|  |_|  |___|___|       ");
+  stampareCentrato("                                                                   ");
+  printf(RESET);
+
+  spostareCursore(TITOLO_RIGA, TITOLO_COLONNA);
+  printf("- MENU -");
+  spostareCursore(OPZIONE_START_RIGA, OPZIONE_COLONNA);
+  printf("[1] Nuova Partita");
+  spostareCursore(OPZIONE_START_RIGA + 1, OPZIONE_COLONNA);
+  printf("[2] Partite Salvate");
+  spostareCursore(OPZIONE_START_RIGA + 2, OPZIONE_COLONNA);
+  printf("[3] Esci");
+  spostareCursore(PROMPT_RIGA, PROMPT_COLONNA);
+  printf("Inserisci una scelta (1 - 4)");
+}
 
 /********************************************************
 * FUNZIONE: avviareMenuPrincipale                       *
@@ -136,14 +101,14 @@ void stampareMenuPrincipale()
 * MODIFICHE:                                            *
 * 24/06/25 - Prima versione                             *
 ********************************************************/
+
 void avviareMenuPrincipale(){
   int input;
   stampareMenuPrincipale();
   collezionareInputHomepage(&input); 
 }
 
-
-/************************************************************ 
+/************************************************************** 
  *  FUNZIONE: collezionareInput()                             *
  *  DESCRIZIONE: richiede un qualsiasi input con la stampare  *
  *               di un  testo, come la richiesta.             *
@@ -157,7 +122,8 @@ void avviareMenuPrincipale(){
  *  23/06/25 - Prima versione                                 *
  *  25/06/25 - Seconda versione                               *  
  *  26/06/25 - Terza versione                                 *
- *************************************************************/
+ **************************************************************/
+
 void collezionareInputHomepage(int *input) {
   int inMenuPrinipale; 
 
@@ -178,7 +144,7 @@ void collezionareInputHomepage(int *input) {
       reimpostareZonaInput(INPUT_RIGA, INPUT_COLONNA);
     }
     else if (*input == NUOVA_PARTITA) {
-      avviareMenuDifficolta();
+      avviareImpostazioni();
       inMenuPrinipale = 0;
     }
     else if (*input == PARTITE_SALVATE) {

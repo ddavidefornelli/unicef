@@ -3,7 +3,7 @@
 
 #include "../include/funzioniUtilita.h"
 
-void avviareMenuDifficolta();
+void avviareImpostazioni();
 int collezionareDifficolta(int *inputDifficolta);
 int collezionareDimensione(int *inputDimensione);
 void stampareMenuDifficolta();

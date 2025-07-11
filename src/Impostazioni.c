@@ -8,7 +8,6 @@ NOME FILE: tipiDiDato.c
 
 Scopo delle funzioni presenti:
 - stampareMenuDifficolta: Pulisce lo schermo e mostra a video il titolo e il menu delle impostazioni.
-- avviareMenuDifficolta: Gestisce l’avvio di una nuova partita. Mostra il menu delle impostazioni e raccoglie: difficoltà, la dimensione della griglia
   e il nome della partita e infine avvia la partita con i parametri raccolti.
 - stampareTitoloImpostazioni: Stampa il titolo per la sezione "Impostazioni".
 - stampareMenuImpostazioni: Stampa le opzioni del menu delle impostazioni, incluse:
@@ -67,55 +66,6 @@ Scopo delle funzioni presenti:
 ********************************************************/
 void stampareMenuDifficolta() {
   pulireSchermo();
-  stampareTitoloImpostazioni();
-  stampareMenuImpostazioni();
-}
-
-
-/********************************************************
-* FUNZIONE: avviareMenuDifficolta                       *
-*                                                       *
-* DESCRIZIONE: Avvia il processo per iniziare una       *
-*              nuova partita. Mostra il menu di scelta  *
-*              della difficoltà, raccoglie i parametri  *
-*              necessari (difficoltà, dimensione, nome  *
-*              della partita) e avvia il gioco.         *
-*                                                       *
-* ARGOMENTI: Nessuno                                    *
-*                                                       *
-* RITORNO: Terminale aggiornato                         *
-*                                                       *
-* MODIFICHE:                                            *
-* 23/06/25 - Prima versione                             *
-********************************************************/
-void avviareMenuDifficolta() {
-  int inputDifficolta;
-  int inputDimensione;
-  char nomePartita[NOME_MAX + 1];
-  stampareMenuDifficolta();
-  collezionareDifficolta(&inputDifficolta);
-  collezionareDimensione(&inputDimensione);
-  collezionareNomePartita(nomePartita);
-  avviarePartita(nomePartita, inputDifficolta, inputDimensione);
-}
-
-
-/********************************************************
-* FUNZIONE: stampareTitoloImpostazioni                  *
-*                                                       *
-* DESCRIZIONE: Mostra un titolo artistico centrato      *
-*              sullo schermo per introdurre il menu di  *
-*              impostazioni, utilizzando caratteri ANSI *
-*              colorati per evidenziare il testo.       *
-*                                                       *
-* ARGOMENTI: Nessuno                                    *
-*                                                       *
-* RITORNO: Nessuno                                      *
-*                                                       *
-* MODIFICHE:                                            *
-* 23/06/25 - Prima versione                             *
-********************************************************/
-void stampareTitoloImpostazioni(){
   printf(CIANO);
   printf("\n");
   stampareCentrato("        _                   _           _         _        ");
@@ -124,27 +74,6 @@ void stampareTitoloImpostazioni(){
   stampareCentrato("       |_|_|_|_|  _|___|___|_| |__,|___|_|___|_|_|_|       ");
   stampareCentrato("               |_|                                         ");
   printf(RESET);
-}
-
-
-/***********************************************************
-* FUNZIONE: stampareMenuImpostazioni                       *
-*                                                          *
-* DESCRIZIONE: Stampa sullo schermo il menu per la         *
-*              selezione della difficoltà, della           *
-*              dimensione della griglia e dell'inserimento *
-*              del nome partita. Posiziona il cursore      *
-*              nelle aree designate.                       *
-*                                                          *
-* ARGOMENTI: Nessuno                                       *
-*                                                          *
-* RITORNO: Terminale aggiornato                            *
-*                                                          *
-* MODIFICHE:                                               *
-* 24/06/25 - Prima versione                                *
-***********************************************************/
-void stampareMenuImpostazioni(){
-
   spostareCursore(OPZIONE_START_RIGA - 2, OPZIONE_COLONNA - 7);
   printf("-Scegliere la Difficolta-");
 
@@ -171,8 +100,39 @@ void stampareMenuImpostazioni(){
 
   spostareCursore(OPZIONE_START_RIGA - 2 , OPZIONE_COLONNA + 35);
   printf("-Scegliere il Nome-");
-
 }
+
+
+/********************************************************
+* FUNZIONE: avviareMenuImpostazioni                     *
+*                                                       *
+* DESCRIZIONE: Avvia il processo per iniziare una       *
+*              nuova partita. Mostra il menu di scelta  *
+*              della difficoltà, raccoglie i parametri  *
+*              necessari (difficoltà, dimensione, nome  *
+*              della partita) e avvia il gioco.         *
+*                                                       *
+* ARGOMENTI: Nessuno                                    *
+*                                                       *
+* RITORNO: Terminale aggiornato                         *
+*                                                       *
+* MODIFICHE:                                            *
+* 23/06/25 - Prima versione                             *
+********************************************************/
+void avviareImpostazioni() {
+  int inputDifficolta;
+  int inputDimensione;
+  char nomePartita[NOME_MAX + 1];
+
+  stampareMenuDifficolta();
+
+  collezionareDifficolta(&inputDifficolta);
+  collezionareDimensione(&inputDimensione);
+  collezionareNomePartita(nomePartita);
+  avviarePartita(nomePartita, inputDifficolta, inputDimensione);
+}
+
+
 
 
 /*********************************************************
