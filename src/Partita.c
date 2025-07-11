@@ -34,7 +34,6 @@ Scopo delle funzioni presenti:
 - controllareGrigliaPiena: verifica se tutte le celle della griglia sono state riempite.
 - salvarePartitaCorrente: salva lo stato attuale della partita su file.
 - salvarePartita: scrive su file tutti i dati della partita.
-- salvareValoriGriglia: scrive i valori della griglia sul file.
 - caricaPartita: carica una partita precedentemente salvata da file.
 - caricaValoriGriglia: legge e carica i valori della griglia da file.
 - avviarePartitaContinuata: permette di continuare una partita precedentemente salvata.
