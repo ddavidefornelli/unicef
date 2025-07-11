@@ -51,7 +51,7 @@ int verificareColonna(Griglia *griglia, int dimensione, int colonna, int numero)
 int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colonna, int numero);
 
 // Funzioni di input
-int collezionareInput(Griglia *griglia, int *input, int rigaInput);
+int collezionareInput(Griglia *griglia, int *input, int rigaTerminale);
 
 // Funzioni di controllo stato partita
 int controllareGrigliaPiena(Griglia griglia);

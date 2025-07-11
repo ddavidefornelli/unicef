@@ -233,3 +233,16 @@ int modulo(int dividendo, int divisore) {
     return resto;
 }
 
+int eUnNumero(int valore) {
+    int i = 0;
+    int esito = FALSO;
+
+    while (i < 60) {
+        if (valore == (char)i && i >= 48 && i <= 57) {
+            esito = VERO;
+        }
+        i = i + 1;
+    }
+
+    return esito;
+}
