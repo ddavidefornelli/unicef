@@ -4,12 +4,12 @@
 #include "../include/funzioniUtilita.h"
 
 void avviareImpostazioni();
-int collezionareDifficolta(int *inputDifficolta);
-int collezionareDimensione(int *inputDimensione);
+int collezionareDifficolta();
+int collezionareDimensione();
 void stampareMenuDifficolta();
 void stampareTitoloImpostazioni();
 void stampareMenuImpostazioni();
 
-void collezionareNomePartita(char *dest);
+void collezionareNomePartita(char* nomePartita);
 
 #endif

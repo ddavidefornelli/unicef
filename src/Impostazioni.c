@@ -126,8 +126,8 @@ void avviareImpostazioni() {
 
   stampareMenuDifficolta();
 
-  collezionareDifficolta(&inputDifficolta);
-  collezionareDimensione(&inputDimensione);
+  inputDifficolta = collezionareDifficolta();
+  inputDimensione = collezionareDimensione();
   collezionareNomePartita(nomePartita);
   avviarePartita(nomePartita, inputDifficolta, inputDimensione);
 }
@@ -152,17 +152,16 @@ void avviareImpostazioni() {
 * MODIFICHE:                                             *
 * 24/06/25 - Prima versione                              *
 ********************************************************/
-int collezionareDifficolta(int *inputDifficolta) {
+int collezionareDifficolta() {
+  int inputDifficolta;
   int inMenuDifficolta;
-  int risultato; 
 
   inMenuDifficolta = VERO;
-  risultato = FALSO;
 
   while(inMenuDifficolta) {
     reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
     
-    while(scanf("%d", inputDifficolta) != 1) {
+    while(scanf("%d", &inputDifficolta) != 1) {
       pulireBuffer();
       reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
       mostrareMessaggioErrore("Digita un Numero", ERR_MSG_RIGA - 6, ERR_MSG_COLONNA);
@@ -171,8 +170,7 @@ int collezionareDifficolta(int *inputDifficolta) {
     
     pulireBuffer();
     
-    if(*inputDifficolta >= OPZIONE_MIN && *inputDifficolta <= OPZIONE_MAX) {
-      risultato = *inputDifficolta;
+    if(inputDifficolta >= OPZIONE_MIN && inputDifficolta <= OPZIONE_MAX) {
       inMenuDifficolta = 0;  
     } else {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA - 6, ERR_MSG_COLONNA - 5);
@@ -180,7 +178,7 @@ int collezionareDifficolta(int *inputDifficolta) {
     }
   }
 
-  return risultato;
+  return inputDifficolta;
 }
 
 /*********************************************************
@@ -201,16 +199,15 @@ int collezionareDifficolta(int *inputDifficolta) {
 * 24/06/25 - Prima versione                              *
 ********************************************************/
 
-int collezionareDimensione(int *inputDimensione) {
+int collezionareDimensione() {
   int inMenuDimensione;
-  int risultato; 
+  int inputDimensione;
 
   inMenuDimensione = 1;
-  risultato = 0;
   while(inMenuDimensione) {
     reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
     
-    while(scanf("%d", inputDimensione) != 1) {
+    while(scanf("%d", &inputDimensione) != 1) {
       pulireBuffer();
       reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
       mostrareMessaggioErrore("Digita un Numero", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA);
@@ -219,8 +216,7 @@ int collezionareDimensione(int *inputDimensione) {
 
     pulireBuffer();
 
-    if(*inputDimensione >= OPZIONE_MIN && *inputDimensione <= OPZIONE_MAX) {
-      risultato = *inputDimensione;
+    if(inputDimensione >= OPZIONE_MIN && inputDimensione <= OPZIONE_MAX) {
       inMenuDimensione = 0;  // uscita dal ciclo
     } else {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA - 5);
@@ -228,7 +224,7 @@ int collezionareDimensione(int *inputDimensione) {
     }
   }
 
-  return risultato;
+  return inputDimensione;
 }
 
 
