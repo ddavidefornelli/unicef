@@ -222,17 +222,14 @@ int confrontarePrefisso(const char *stringa1, const char *prefisso) {
 
 int modulo(int dividendo, int divisore) {
     int resto = 0;
-
     while (dividendo >= divisore) {
         dividendo = dividendo - divisore;
     }
-
     if (dividendo < 0) {
         resto = -dividendo;
     } else {
         resto = dividendo;
     }
-
     return resto;
 }
 

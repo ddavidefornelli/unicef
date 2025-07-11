@@ -104,13 +104,13 @@ Nel giorno 21/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato le
 * RITORNO: permette all'utente di giocare al Sudoku    *
 *******************************************************/
 void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensione) {
+    int grigliaPiena;
+    int valido;
+    int errore;
+    Griglia griglia; 
     Partita partita;
     int valDaInserire, riga, colonna;
     int sceltaAzione;
-    int grigliaPiena;
-    int valido;
-    Griglia griglia; 
-    int errore;
 
     grigliaPiena = FALSO;
     valido = FALSO;
@@ -379,9 +379,10 @@ void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
     celleDaRimuovere = cellaGriglia * calcolareCelleDaRimuovere(difficolta) / 100;
 
     while (rimosse < celleDaRimuovere) {
-        riga = rand() % dimensione;
+        riga = rand() % dimensione; 
         colonna = rand() % dimensione;
-
+        //l' utilizzo della funzione modulo rallenta troppo
+        //l esecuzione del programma
         if (leggereValGriglia(*griglia, riga, colonna) != CELLA_VUOTA) {
             scrivereValGriglia(griglia, riga, colonna, CELLA_VUOTA);
             rimosse = rimosse + 1;
@@ -585,6 +586,34 @@ int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colo
 
 
 /*******************************************************
+* FUNZIONE: mescolareArray                             *
+*                                                      *
+* DESCRIZIONE: mescola i valori presenti all' interno  *
+*              di un array causalmente                 *
+*                                                      *
+* ARGOMENTI:                                           *
+* array: array da mescolare, array a 1 dimensione      *
+* dimensione: numero di elementi dell' array, naturale *
+*                                                      *
+* RITORNO:                                             *
+* array: array mescolato                               *
+*******************************************************/
+void mescolareArray(int *array, int dimensione) {
+    int i;
+    int j;
+    int temp;
+
+    i = dimensione - 1;
+    while (i > 0) {
+        j = rand() % (i + 1);
+        temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+        i = i - 1;
+    }
+}
+
+/*******************************************************
 * FUNZIONE: riempireGriglia                            *
 *                                                      *
 * DESCRIZIONE: Riempie ricorsivamente la griglia       *
@@ -607,24 +636,35 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
     int riga;
     int colonna;
     int cellaVuota;
-    int valDaInserire;
     int grigliaPiena;
-
+    int i;
+    int valDaInserire;
+    
+    int numeriDaProvare[dimensione];
+    
     grigliaPiena = FALSO;
-    valDaInserire = 1;
     cellaVuota = trovareCellaVuota(griglia, dimensione);
-    if(cellaVuota > 0) {
-      riga = cellaVuota / dimensione;
-      colonna = modulo(cellaVuota, dimensione); 
-    }
-
+    
     if (cellaVuota == 0) {
         grigliaPiena = VERO;
     } else {
-        while (valDaInserire <= dimensione && grigliaPiena == FALSO) {
+        cellaVuota = cellaVuota - 1;
+        riga = cellaVuota / dimensione;
+        colonna = modulo(cellaVuota, dimensione);
+        
+        i = 0;
+        while (i < dimensione) {
+            numeriDaProvare[i] = i + 1;
+            i = i + 1;
+        }
+        
+        mescolareArray(numeriDaProvare, dimensione);
+
+        i = 0;
+        while (i < dimensione && grigliaPiena == FALSO) {
+            valDaInserire = numeriDaProvare[i];
             if (verificareValidita(griglia, dimensione, riga, colonna, valDaInserire) == VERO) {
                 scrivereValGriglia(griglia, riga, colonna, valDaInserire);
-
                 if (riempireGriglia(griglia, dimensione) == VERO) {
                     grigliaPiena = VERO;
                 } else {
@@ -632,13 +672,12 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
                 }
             }
             if (grigliaPiena == FALSO) {
-                valDaInserire = valDaInserire + 1;
+                i = i + 1;
             }
         }
     }
     return grigliaPiena;
 }
-
 
 /*******************************************************
 * FUNZIONE: trovareCellaVuota                          *
@@ -669,13 +708,14 @@ int trovareCellaVuota(Griglia *griglia, int dimensione) {
     int risultato;
     int trovata;
 
+    trovata = FALSO;
     cursRiga = 0;
     risultato = 0;
     while (cursRiga < dimensione && trovata == FALSO) {
         cursColonna = 0;
-        while (cursColonna < dimensione && risultato == 0) {
+        while (cursColonna < dimensione && trovata == FALSO) {
             if (leggereValGriglia(*griglia, cursRiga, cursColonna) == 0) {
-                risultato = cursRiga * dimensione + cursColonna;
+                risultato = cursRiga * dimensione + cursColonna + 1;
                 trovata = VERO;
             } else {
                 cursColonna = cursColonna + 1;
@@ -710,6 +750,7 @@ int trovareCellaVuota(Griglia *griglia, int dimensione) {
 * 2025/06/23 - Prima versione                            *
 *********************************************************/
 void generareSudoku(Partita *partita, int dimensione, int difficolta) {
+    
     riempireGriglia(leggereGrigliaPartitaPtr(partita), dimensione);
     rimuovereNumeri(leggereGrigliaPartitaPtr(partita), dimensione, difficolta);
 }
