@@ -60,9 +60,6 @@ Scopo delle funzioni presenti:
 * ARGOMENTI: Nessuno                                    *
 *                                                       *
 * RITORNO: Terminale aggiornato                         *
-*                                                       *
-* MODIFICHE:                                            *
-* 23/06/25 - Prima versione                             *
 ********************************************************/
 void stampareMenuDifficolta() {
   pulireSchermo();
@@ -115,9 +112,6 @@ void stampareMenuDifficolta() {
 * ARGOMENTI: Nessuno                                    *
 *                                                       *
 * RITORNO: Terminale aggiornato                         *
-*                                                       *
-* MODIFICHE:                                            *
-* 23/06/25 - Prima versione                             *
 ********************************************************/
 void avviareImpostazioni() {
   int inputDifficolta;
@@ -148,9 +142,6 @@ void avviareImpostazioni() {
 *   conterrà il valore scelto dall'utente.               *
 *                                                        *
 * RITORNO: valore della difficoltà selezionata           *
-*                                                        *
-* MODIFICHE:                                             *
-* 24/06/25 - Prima versione                              *
 ********************************************************/
 int collezionareDifficolta() {
   int inputDifficolta;
@@ -194,9 +185,6 @@ int collezionareDifficolta() {
 *   conterrà il valore scelto dall’utente.               *
 *                                                        *
 * RITORNO: valore della dimensione selezionata           *
-*                                                        *
-* MODIFICHE:                                             *
-* 24/06/25 - Prima versione                              *
 ********************************************************/
 
 int collezionareDimensione() {
@@ -217,7 +205,7 @@ int collezionareDimensione() {
     pulireBuffer();
 
     if(inputDimensione >= OPZIONE_MIN && inputDimensione <= OPZIONE_MAX) {
-      inMenuDimensione = 0;  // uscita dal ciclo
+      inMenuDimensione = 0;  
     } else {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA - 5);
       reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
@@ -241,9 +229,6 @@ int collezionareDimensione() {
 *   nome della partita.                                       *
 *                                                             *
 * RITORNO: partita aggiornata                                 *
-*                                                             *
-* MODIFICHE:                                                  *
-* 25/06/25 - Prima versione                                   *
 **************************************************************/
 void collezionareNomePartita(char *nomeParitita) {
   int lunghezza;

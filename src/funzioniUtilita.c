@@ -15,7 +15,6 @@ spostareCursore() -> funzione utilizzata per spostare la posizione del cursore n
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "../include/homepage.h"
 
 #define VERO 1
@@ -39,9 +38,6 @@ void spostareCursore(int x, int y)
  *  const char *testo: stringa da allineare                 *
  *                                                          *
  *  RITORNO: Terminale aggiornato                           *
- *                                                          *
- *  MODIFICHE:                                              *
- *  2025/03/26 - Prima versione                             *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 void stampareCentrato(const char *testo) 
 {
@@ -68,7 +64,7 @@ void stampareCentrato(const char *testo)
 
 
 /*******************************************************
-reimpostareZonaInput                             *
+reimpostareZonaInput                                   *
 *                                                      *
 * DESCRIZIONE: Ripulisce e reimposta la zona di input  *
 *              nella posizione specificata sullo       *
@@ -82,9 +78,6 @@ reimpostareZonaInput                             *
 *              il cursore per l'input                  *
 *                                                      *
 * RITORNO: Terminale aggiornato                        *
-*                                                      *
-* MODIFICHE:                                           *
-* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void reimpostareZonaInput(int posRiga, int posColonna){
     spostareCursore(posRiga, posColonna);
@@ -112,9 +105,6 @@ void pulireBuffer(){
 * posColonna: colonna in cui mostrare il messaggio     *
 *                                                      *
 * RITORNO: Terminale aggiornato                        *
-*                                                      *
-* MODIFICHE:                                           *
-* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void mostrareMessaggioErrore(const char *testo, int posRiga, int posColonna) {
       spostareCursore(posRiga, 0);
@@ -142,9 +132,6 @@ void mostrareMessaggioErrore(const char *testo, int posRiga, int posColonna) {
 * posColonna: colonna in cui visualizzare il prompt    *
 *                                                      *
 * RITORNO: Terminale aggiornato                        *
-*                                                      *
-* MODIFICHE:                                           *
-* 2025/06/23 - Prima versione                          *
 *******************************************************/
 void tornareHomepage(int *input, int posRiga, int posColonna){
   int inMenuCorrente;

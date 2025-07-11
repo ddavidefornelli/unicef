@@ -12,18 +12,6 @@ Scopo di ogni funzione presente:
 - trovareFile: ricerca all'interno della cartella database(dove vengono salvate le partite) la partita che l'utente desidera giocare.
 - stampareTitoloCaricaPartita: stampa la scritta 'CARICA PARTITA'.
 - stampareZonaInput: stampa la cornice che identifica la zona dove digitare i valori da inserire all'interno della griglia del sudoku
-- stampareMenuCaricaPartita: Gestisce il caricamento di una partita salvata.
-
-MODIFICHE: 22/06/25 - Fornelli Davide ha aggiornato la gestione della memoria in raccoglierePartiteSalvate per migliorare l'efficienza.
-
-MODIFICHE: 23/06/25 - Antoniciello Giuliano ha modificato la funzione trovareFile per includere il supporto alla ricerca case-insensitive.
-
-MODIFICHE: 22/06/25 - Fornelli Davide ha rivisto la formattazione del titolo in stampareTitoloCaricaPartita per una migliore estetica nei terminali scuri.
-
-MODIFICHE: 22/06/25 - Fornelli Davide ha aggiornato stampareZonaInput per migliorare l'allineamento del prompt.
-
-MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuCaricaPartita che causava un crash quando il nome della partita era troppo lungo.
-
 */
 
 #include "../include/funzioniUtilita.h"
@@ -49,7 +37,7 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 #define ERR_MSG_COLONNA 31
 #define ARANCIONE "\033[38;5;208m"
 #define RESET "\033[0m"
-#define MAX_PARTITE 10
+#define MAX_PARTITE 13
 #define VERO 1
 
 
@@ -65,9 +53,6 @@ MODIFICHE: 23/06/25 - Antoniciello Giuliano ha sistemato un bug in stampareMenuC
 *                                                        
 * RITORNO:                                               
 * -voce: voce successiva letta, tipo file
-*                                                        
-* MODIFICHE:                                             
-* 18/06/25 - Prima versione                              
 *********************************************************/
 struct dirent* leggereProssimaVoce(DIR* cartella) {
     struct dirent* voceLetta;
@@ -313,9 +298,6 @@ void avviareMenuCaricaPartita() {
 * partita: puntatore alla struttura della partita       *
 * dimensione: dimensione della griglia                  *
 *                                                       *
-* RITORNO: file aggiornato                              *
-* MODIFICHE:                                            *
-* 20/06/25 - Prima versione                             *
 ********************************************************/
 void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     int riga; 
@@ -354,9 +336,6 @@ void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
 * RITORNO:                                             *
 * 1 se il caricamento ha successo,                     *
 * 0 in caso di errore o file non trovato               *
-*                                                      *
-* MODIFICHE:                                           *
-* 20/06/25 - Prima versione                            *
 *******************************************************/
 int caricarePartita(Partita *partita, const char *percorso) {
     FILE *file; 
@@ -388,9 +367,6 @@ int caricarePartita(Partita *partita, const char *percorso) {
 * ARGOMENTI:                                           *
 * partita: puntatore alla struttura della partita      *
 *                                                      *
-* RITORNO: file con partita salvata                    *
-* MODIFICHE:                                           *
-* 23/06/25 - Prima versione                            *
 *******************************************************/
 void salvarePartitaCorrente(Partita *partita) {
   char percorso[100]; 
@@ -476,9 +452,6 @@ void salvarePartita(Partita *partita, const char *percorso) {
 * RITORNO:                                               *
 * VERO se tutti i valori sono stati letti correttamente  *
 * FALSO in caso di errore di lettura                     *
-*                                                        *
-* MODIFICHE:                                             *
-* 21/06/25 - Prima versione                              *
 *********************************************************/
 int caricareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
     int riga;
