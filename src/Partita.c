@@ -625,13 +625,12 @@ int riempireGriglia(Griglia *griglia) {
     int dimensione;
 
     dimensione = leggereDimGriglia(*griglia);
-    
+
     int numeriDaProvare[dimensione];
-    
     grigliaPiena = FALSO;
     cellaVuota = trovareCellaVuota(griglia);
     
-    if (cellaVuota == 0) {
+    if (cellaVuota == FALSO) {
         grigliaPiena = VERO;
     } else {
         cellaVuota = cellaVuota - 1;
@@ -733,14 +732,7 @@ int trovareCellaVuota(Griglia *griglia) {
 *********************************************************/
 void generareSudoku(Partita *partita,  Impostazioni impostazioni){
     Griglia griglia = leggereGrigliaPartita(partita);
-    int dimensione;
-    int difficolta;
-    difficolta = leggereDifficoltaImp(impostazioni);
-    dimensione = leggereDimGrigliaImp(impostazioni);
-    printf("%d %d", difficolta, dimensione);
 
-     
-    
     riempireGriglia(&griglia);
     rimuovereNumeri(&griglia, impostazioni);
 }
@@ -1051,6 +1043,8 @@ int controllareGrigliaPiena(Griglia griglia) {
     }
     return esito;
 }
+
+
 
 /*************************************************************
 * FUNZIONE: avviarePartitaContinuata                          *

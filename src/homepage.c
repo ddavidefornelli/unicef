@@ -85,7 +85,7 @@ void stampareMenuPrincipale()
   spostareCursore(OPZIONE_START_RIGA + 2, OPZIONE_COLONNA);
   printf("[3] Esci");
   spostareCursore(PROMPT_RIGA, PROMPT_COLONNA);
-  printf("Inserisci una scelta (1 - 4)");
+  printf("Inserisci una scelta (1 - 3)");
 }
 
 /********************************************************

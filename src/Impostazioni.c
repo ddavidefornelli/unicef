@@ -116,19 +116,19 @@ void stampareMenuDifficolta() {
 void avviareImpostazioni() {
   int inputDifficolta;
   int inputDimensione;
-  char nomePartita[NOME_MAX + 1];
+  char inputNomePartita[NOME_MAX + 1];
   Impostazioni impostazioni;
 
   stampareMenuDifficolta();
 
   inputDifficolta = collezionareDifficolta();
   inputDimensione = collezionareDimensione();
-  collezionareNomePartita(nomePartita);
+  collezionareNomePartita(inputNomePartita);
 
 
   scrivereDifficoltaImp(&impostazioni, inputDifficolta);
   scrivereDimensioneImp(&impostazioni, inputDimensione);
-  avviarePartita(nomePartita, impostazioni);
+  avviarePartita(inputNomePartita, impostazioni);
 }
 
 
