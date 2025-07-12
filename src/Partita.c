@@ -1052,51 +1052,6 @@ int controllareGrigliaPiena(Griglia griglia) {
     return esito;
 }
 
-
-/*********************************************************
-* FUNZIONE: caricaValoriGriglia                          *
-*                                                        *
-* DESCRIZIONE: Legge da file i valori della griglia      *
-*              della partita Sudoku e li scrive nella    *
-*              struttura della partita riga per riga.    *
-*                                                        *
-* ARGOMENTI:                                             *
-* file: puntatore al file aperto in lettura              *
-* partita: puntatore alla struttura della partita        *
-* dimensione: dimensione della griglia                   *
-*                                                        *
-* RITORNO:                                               *
-* VERO se tutti i valori sono stati letti correttamente  *
-* FALSO in caso di errore di lettura                     *
-*********************************************************/
-int caricaValoriGriglia(FILE *file, Partita *partita, int dimensione) {
-    int cursRiga;
-    int cursColonna; 
-    int valore;
-    int risultato; 
-
-    risultato = VERO;
-
-    cursRiga = 0;
-    while (cursRiga < dimensione && risultato == VERO) {
-        cursColonna = 0;
-        while (cursColonna < dimensione && risultato == VERO) {
-            if (fscanf(file, "%d", &valore) == 1) {
-                scrivereValGrigliaPartita(partita, valore, cursRiga, cursColonna);
-                cursColonna = cursColonna + 1;
-            } else {
-                risultato = FALSO;
-            }
-        }
-        if (risultato == VERO) {
-            cursRiga = cursRiga + 1;
-        }
-    }
-    
-    return risultato;
-}
-
-
 /*************************************************************
 * FUNZIONE: avviarePartitaContinuata                          *
 *                                                             *
