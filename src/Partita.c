@@ -569,35 +569,6 @@ int verificareSottoquadrato(Griglia *griglia, int riga, int colonna, int numero)
 }
 
 
-/*******************************************************
-* FUNZIONE: mescolareArray                             *
-*                                                      *
-* DESCRIZIONE: mescola i valori presenti all' interno  *
-*              di un array causalmente                 *
-*                                                      *
-* ARGOMENTI:                                           *
-* array: array da mescolare, array a 1 dimensione      *
-* dimensione: numero di elementi dell' array, naturale *
-*                                                      *
-* RITORNO:                                             *
-* array: array mescolato                               *
-*******************************************************/
-void mescolareArray(int *array, int dimensione) {
-    int i;
-    int j;
-    int temp;
-
-    i = dimensione - 1;
-    while (i > 0) {
-        j = rand() % (i + 1);
-        // qua non utilizziamo la nostra funzione modulo()
-        // perche' troppo lenta
-        temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-        i = i - 1;
-    }
-}
 
 /*******************************************************
 * FUNZIONE: riempireGriglia                            *
@@ -982,7 +953,7 @@ int collezionareInput(Griglia *griglia, int *input, int rigaTerminale) {
         while (inputOk == FALSO) {
             if (scanf("%d", input) == 1) {
                 // non utilizziamo la funzione eUnNumero
-                // 
+                // perche' ci da problemi con il formato dell' input
                 inputOk = VERO;
             } else {
                 pulireBuffer();
