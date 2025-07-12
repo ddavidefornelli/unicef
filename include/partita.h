@@ -16,7 +16,7 @@
 #define COLONNA_ERRORE 27
 
 // Funzioni principali del gioco
-void avviarePartita(const char *nomePartita, int difficolta, int dimensione);
+void avviarePartita(const char *nomePartita, Impostazioni impostazioni);
 void avviarePartitaContinuata(Partita *partita);
 
 // Funzioni di visualizzazione
@@ -30,25 +30,25 @@ void disegnareCornice(void);
 void stampareGrigliaPartita(Partita *partita);
 void stampareIntestazioneColonne(int dimensione, int numeroSottoquadrato);
 void stampareLineaOrizzontale(int dimensione, int numeroSottoquadrato);
-void stampareRigheGriglia(Griglia griglia, int dimensione, int numeroSottoquadrato);
-void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrato, int riga);
+void stampareRigheGriglia(Griglia griglia);
+void stampareRigaGriglia(Griglia griglia, int riga);
 
 // Funzioni di utilità per dimensioni e difficoltà
 void convertireDimensione(int *dimensione);
 int calcolareSottoquadrato(int dimensione);
-int calcolareCelleDaRimuovere(int difficolta);
+int calcolareCelleDaRimuovere(Impostazioni impostazioni);
 
 // Funzioni di generazione e riempimento Sudoku
-void generareSudoku(Partita *partita, int dimensione, int difficolta);
-int riempireGriglia(Griglia *griglia, int dimensione);
-void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta);
-int trovareCellaVuota(Griglia *griglia, int dimensione);
+void generareSudoku(Partita *partita, Impostazioni impostazioni);
+int riempireGriglia(Griglia *griglia);
+void rimuovereNumeri(Griglia *griglia, Impostazioni impostazioni);
+int trovareCellaVuota(Griglia *griglia);
 
 // Funzioni di validazione
-int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero);
-int verificareRiga(Griglia *griglia, int dimensione, int riga, int numero);
-int verificareColonna(Griglia *griglia, int dimensione, int colonna, int numero);
-int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colonna, int numero);
+int verificareValidita(Griglia *griglia, int riga, int colonna, int numero);
+int verificareRiga(Griglia *griglia, int riga, int numero);
+int verificareColonna(Griglia *griglia, int colonna, int numero);
+int verificareSottoquadrato(Griglia *griglia, int riga, int colonna, int numero);
 
 // Funzioni di input
 int collezionareInput(Griglia *griglia, int *input, int rigaTerminale);

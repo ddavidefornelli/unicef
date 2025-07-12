@@ -334,13 +334,16 @@ void avviareMenuCaricaPartita() {
 * dimensione: dimensione della griglia                  *
 *                                                       *
 ********************************************************/
-void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
+void salvareValoriGriglia(FILE *file, Partita *partita) {
     int riga; 
     int colonna;
     Griglia griglia; 
     int valGriglia;
+    int dimensione;
 
     griglia = leggereGrigliaPartita(partita);
+    dimensione = leggereDimGriglia(griglia);
+
     riga = 0;
     while (riga < dimensione) {
         colonna = 0;
@@ -375,13 +378,18 @@ void salvareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
 void caricarePartita(Partita *partita, const char *percorso) {
     FILE *file; 
     int dimensione, difficolta;
+    Impostazioni impostazioni;
 
     file = fopen(percorso, "r");
     
     fscanf(file, "%d %d", &dimensione, &difficolta);
+
+    scrivereDimensioneImp(&impostazioni, dimensione);
+    scrivereDifficoltaImp(&impostazioni, difficolta);
+
     inizializzareGrigliaPartita(partita, dimensione);
 
-    caricareValoriGriglia(file, partita, dimensione);
+    caricareValoriGriglia(file, partita);
 
     fclose(file);
 }
@@ -463,7 +471,7 @@ void salvarePartita(Partita *partita, const char *percorso) {
     difficolta = leggereDifficoltaImp(leggereImpPartita(*partita));
 
     fprintf(file, "%d %d\n", dimensione, difficolta);
-    salvareValoriGriglia(file, partita, dimensione);
+    salvareValoriGriglia(file, partita);
     fclose(file);
 }
 
@@ -485,11 +493,13 @@ void salvarePartita(Partita *partita, const char *percorso) {
 * RITORNO:                                               *
 * partita: partita aggiornata
 *********************************************************/
-void caricareValoriGriglia(FILE *file, Partita *partita, int dimensione) {
+void caricareValoriGriglia(FILE *file, Partita *partita) {
     int riga;
     int colonna;
     int val;
     int risultato;
+    int dimensione;
+    dimensione = leggereDimGriglia(leggereGrigliaPartita(partita));
 
     
     risultato = VERO;

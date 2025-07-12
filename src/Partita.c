@@ -98,7 +98,7 @@ Nel giorno 21/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato le
 *                                                      *
 * RITORNO: permette all'utente di giocare al Sudoku    *
 *******************************************************/
-void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensione) {
+void avviarePartita(const char *inputNome, Impostazioni impostazioni) {
     int grigliaPiena;
     int valido;
     int errore;
@@ -106,17 +106,24 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
     Partita partita;
     int valDaInserire, riga, colonna;
     int sceltaAzione;
+    int dimensione;
 
     grigliaPiena = FALSO;
     valido = FALSO;
     errore = FALSO;
-    inizializzareGrigliaPartita(&partita, inputDimensione);
+
+    dimensione = leggereDimGrigliaImp(impostazioni);
+
+    inizializzareGrigliaPartita(&partita, dimensione);
     scrivereNomePartita(&partita, (char *)inputNome);
-    convertireDimensione(&inputDimensione);
-    generareSudoku(&partita, inputDimensione, inputDifficolta);
+    convertireDimensione(&dimensione);
+
+    scrivereDimensioneImp(&impostazioni, dimensione);
+
+    generareSudoku(&partita, impostazioni);
 
     while (grigliaPiena == FALSO) {
-        mostraSchermo(inputDimensione);
+        mostraSchermo(dimensione);
         stampareGrigliaPartita(&partita);
         stampareTabellaInput();
 
@@ -139,7 +146,7 @@ void avviarePartita(const char *inputNome, int inputDifficolta, int inputDimensi
             if (leggereValGriglia(griglia, riga - 1, colonna - 1) != 0) {
                 errore = VERO;
             } else {
-                valido = verificareValidita(&griglia, inputDimensione, riga - 1, colonna - 1, valDaInserire);
+                valido = verificareValidita(&griglia, riga - 1, colonna - 1, valDaInserire);
                 if (valido == VERO) {
                     scrivereValGrigliaPartita(&partita, valDaInserire, riga - 1, colonna - 1);
                     grigliaPiena = controllareGrigliaPiena(leggereGrigliaPartita(&partita));
@@ -341,16 +348,19 @@ void convertireDimensione(int *dimensione) {
 *                                                       *
 * RITORNO: griglia di gioco aggiornata                  *
 ********************************************************/
-void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
+void rimuovereNumeri(Griglia *griglia, Impostazioni impostazioni) {
     srand(time(NULL));
     int cellaGriglia;
     int celleDaRimuovere; 
     int rimosse;
     int riga, colonna;
+    int dimensione;
+
+    dimensione = leggereDimGrigliaImp(impostazioni);
     
     rimosse = 0;
     cellaGriglia = dimensione * dimensione;
-    celleDaRimuovere = cellaGriglia * calcolareCelleDaRimuovere(difficolta) / 100;
+    celleDaRimuovere = cellaGriglia * calcolareCelleDaRimuovere(impostazioni) / 100;
 
     while (rimosse < celleDaRimuovere) {
         riga = rand() % dimensione; 
@@ -378,8 +388,11 @@ void rimuovereNumeri(Griglia *griglia, int dimensione, int difficolta) {
 * RITORNO: Intero che rappresenta la percentuale di    *
 *          celle da rimuovere                          *
 *******************************************************/
-int calcolareCelleDaRimuovere(int difficolta) {
+int calcolareCelleDaRimuovere(Impostazioni impostazioni) {
+    int difficolta;
     int risultato;
+
+    difficolta = leggereDifficoltaImp(impostazioni);
 
     if(difficolta == DIFFICOLTA_FACILE)  {
         risultato = 20;
@@ -412,17 +425,17 @@ int calcolareCelleDaRimuovere(int difficolta) {
 * le regole del Sudoku, FALSO altrimenti                  *
 ***********************************************************/
 
-int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
+int verificareValidita(Griglia *griglia, int riga, int colonna, int numero) {
     int risultato;
 
     risultato = VERO;
-    if (verificareRiga(griglia, dimensione, riga, numero) == FALSO) {
+    if (verificareRiga(griglia, riga, numero) == FALSO) {
         risultato = FALSO;
     } else {
-        if (verificareColonna(griglia, dimensione, colonna, numero) == FALSO) {
+        if (verificareColonna(griglia, colonna, numero) == FALSO) {
             risultato = FALSO;
         } else {
-            if (verificareSottoquadrato(griglia, dimensione, riga, colonna, numero) == FALSO) {
+            if (verificareSottoquadrato(griglia, riga, colonna, numero) == FALSO) {
                 risultato = FALSO;
             }
         }
@@ -448,10 +461,13 @@ int verificareValidita(Griglia *griglia, int dimensione, int riga, int colonna, 
 * VERO se il numero non è presente nella riga,         *
 * FALSO se invece è già presente                       *
 *******************************************************/
-int verificareRiga(Griglia *griglia, int dimensione, int riga, int numero) {
+int verificareRiga(Griglia *griglia, int riga, int numero) {
     int cursColonna; 
     int risultato; 
+    int dimensione;
     
+    dimensione = leggereDimGriglia(*griglia);
+
     cursColonna = 0;
     risultato = VERO;
     
@@ -483,12 +499,15 @@ int verificareRiga(Griglia *griglia, int dimensione, int riga, int numero) {
 * VERO se il numero non è presente nella colonna,      *
 * FALSO se invece è già presente                       *
 *******************************************************/
-int verificareColonna(Griglia *griglia, int dimensione, int colonna, int numero) {
+int verificareColonna(Griglia *griglia, int colonna, int numero) {
     int cursRiga;
     int risultato;
+    int dimensione;
 
     risultato = VERO;
     cursRiga = 0;
+    dimensione = leggereDimGriglia(*griglia);
+
     while (cursRiga < dimensione && risultato == VERO) {
         if (leggereValGriglia(*griglia, cursRiga, colonna) == numero) {
             risultato = FALSO;
@@ -519,15 +538,15 @@ int verificareColonna(Griglia *griglia, int dimensione, int colonna, int numero)
 * VERO se il numero non è presente nel sottoquadrato,      *
 * FALSO se invece è già presente                           *
 ***********************************************************/
-int verificareSottoquadrato(Griglia *griglia, int dimensione, int riga, int colonna, int numero) {
+int verificareSottoquadrato(Griglia *griglia, int riga, int colonna, int numero) {
     int dimensioneSottoquadrato;
     int inizioRiga;
     int inizioColonna;
     int cursRiga;
     int cursColonna; 
     int risultato; 
-    
-    dimensioneSottoquadrato= calcolareSottoquadrato(dimensione);
+
+    dimensioneSottoquadrato= calcolareSottoquadrato(leggereDimGriglia(*griglia));;
     inizioRiga  = riga - modulo(riga, dimensioneSottoquadrato);
     risultato = VERO;
     inizioColonna = colonna - modulo(colonna, dimensioneSottoquadrato);
@@ -596,18 +615,21 @@ void mescolareArray(int *array, int dimensione) {
 * VERO se la griglia è stata riempita correttamente,   *
 * FALSO se non è possibile completare la griglia       *
 *******************************************************/
-int riempireGriglia(Griglia *griglia, int dimensione) {
+int riempireGriglia(Griglia *griglia) {
     int cursRiga;
     int cursColonna;
     int cellaVuota;
     int grigliaPiena;
     int cursNumProva;
     int valDaInserire;
+    int dimensione;
+
+    dimensione = leggereDimGriglia(*griglia);
     
     int numeriDaProvare[dimensione];
     
     grigliaPiena = FALSO;
-    cellaVuota = trovareCellaVuota(griglia, dimensione);
+    cellaVuota = trovareCellaVuota(griglia);
     
     if (cellaVuota == 0) {
         grigliaPiena = VERO;
@@ -627,9 +649,9 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
         cursNumProva = 0;
         while (cursNumProva < dimensione && grigliaPiena == FALSO) {
             valDaInserire = numeriDaProvare[cursNumProva];
-            if (verificareValidita(griglia, dimensione, cursRiga, cursColonna, valDaInserire) == VERO) {
+            if (verificareValidita(griglia, cursRiga, cursColonna, valDaInserire) == VERO) {
                 scrivereValGriglia(griglia, cursRiga, cursColonna, valDaInserire);
-                if (riempireGriglia(griglia, dimensione) == VERO) {
+                if (riempireGriglia(griglia) == VERO) {
                     grigliaPiena = VERO;
                 } else {
                     scrivereValGriglia(griglia, cursRiga, cursColonna, CELLA_VUOTA);
@@ -663,12 +685,14 @@ int riempireGriglia(Griglia *griglia, int dimensione) {
 * VERO se è stata trovata una cella vuota,             *
 * FALSO se non ci sono celle vuote                     *
 *******************************************************/
-int trovareCellaVuota(Griglia *griglia, int dimensione) {
+int trovareCellaVuota(Griglia *griglia) {
     int cursRiga;
     int cursColonna;
     int risultato;
     int trovata;
+    int dimensione;
 
+    dimensione = leggereDimGriglia(*griglia);
     trovata = FALSO;
     cursRiga = 0;
     risultato = 0;
@@ -707,11 +731,18 @@ int trovareCellaVuota(Griglia *griglia, int dimensione) {
 * RITORNO: partita aggiornata con la griglia di gioco    *
 *          creata                                        *
 *********************************************************/
-void generareSudoku(Partita *partita, int dimensione, int difficolta) {
+void generareSudoku(Partita *partita,  Impostazioni impostazioni){
     Griglia griglia = leggereGrigliaPartita(partita);
+    int dimensione;
+    int difficolta;
+    difficolta = leggereDifficoltaImp(impostazioni);
+    dimensione = leggereDimGrigliaImp(impostazioni);
+    printf("%d %d", difficolta, dimensione);
+
+     
     
-    riempireGriglia(&griglia, dimensione);
-    rimuovereNumeri(&griglia, dimensione, difficolta);
+    riempireGriglia(&griglia);
+    rimuovereNumeri(&griglia, impostazioni);
 }
 
 
@@ -740,7 +771,7 @@ void stampareGrigliaPartita(Partita *partita) {
 
     stampareIntestazioneColonne(dimensione, numeroSottoquadrato);
     stampareLineaOrizzontale(dimensione, numeroSottoquadrato);
-    stampareRigheGriglia(griglia, dimensione, numeroSottoquadrato);
+    stampareRigheGriglia(griglia);
     stampareLineaOrizzontale(dimensione, numeroSottoquadrato);
 }
 
@@ -854,12 +885,17 @@ void stampareLineaOrizzontale(int dimensione, int numeroSottoquadrato) {
 *                                                      *
 * RITORNO: Terminale aggiornato                        *
 *******************************************************/
-void stampareRigheGriglia(Griglia griglia, int dimensione, int numeroSottoquadrato) {
+void stampareRigheGriglia(Griglia griglia) {
     int i;
+    int dimensione;
+    int numeroSottoquadrato;
+
+    dimensione = leggereDimGriglia(griglia);
+    numeroSottoquadrato = calcolareSottoquadrato(dimensione);
 
     i = 0;
     while (i < dimensione) {
-        stampareRigaGriglia(griglia, dimensione, numeroSottoquadrato, i);
+        stampareRigaGriglia(griglia, i);
         
         if ((i + 1) % numeroSottoquadrato == 0 && i != dimensione - 1) {
             stampareLineaOrizzontale(dimensione, numeroSottoquadrato);
@@ -884,9 +920,16 @@ void stampareRigheGriglia(Griglia griglia, int dimensione, int numeroSottoquadra
 * riga: indice della riga da stampare                  *
 *                                                      *
 *******************************************************/
-void stampareRigaGriglia(Griglia griglia, int dimensione, int numeroSottoquadrato, int riga) {
+void stampareRigaGriglia(Griglia griglia, int riga) {
     int j; 
     int valore;
+    int dimensione;
+    int numeroSottoquadrato;
+
+    dimensione = leggereDimGriglia(griglia);
+    numeroSottoquadrato = calcolareSottoquadrato(dimensione);
+
+
     
     j = 0;
     if (dimensione == 16) {
@@ -1103,7 +1146,7 @@ void avviarePartitaContinuata(Partita *partita) {
             collezionareInput(&griglia, &colonna, RIGA_INPUT_COLONNA);
             collezionareInput(&griglia, &valore, RIGA_INPUT_VALORE);
 
-            valido = verificareValidita(&griglia, dimensione, riga - 1, colonna - 1, valore);
+            valido = verificareValidita(&griglia, riga - 1, colonna - 1, valore);
             if (valido == VERO) {
                 scrivereValGrigliaPartita(partita, valore, riga - 1, colonna - 1);
                 grigliaPiena = controllareGrigliaPiena(leggereGrigliaPartita(partita));
