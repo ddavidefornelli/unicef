@@ -76,9 +76,14 @@ Nel giorno 21/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato le
 #define DIFFICOLTA_DIFFICILE 3
 #define RIGA_ERRORE 22
 #define COLONNA_ERRORE 27
-#define SALVA_PARTITA 31
-#define TORNA_MENU 29
+#define SALVA_PARTITA 2
+#define GIOCA 1
+#define TORNA_MENU 3
 #define RIGA_INIZIO_CORNICE -4
+#define PICCOLA 1
+#define MEDIA 2
+#define GRANDE 3
+
 
 #define BLU "\033[34m"
 #define RESET "\033[0m"
@@ -116,11 +121,11 @@ void avviarePartita(const char *inputNome, Impostazioni impostazioni) {
 
     inizializzareGrigliaPartita(&partita, dimensione);
     scrivereNomePartita(&partita, (char *)inputNome);
-    convertireDimensione(&dimensione);
 
+    convertireDimensione(&dimensione);
     scrivereDimensioneImp(&impostazioni, dimensione);
 
-    generareSudoku(&partita, impostazioni);
+    generareSudoku(&partita);
 
     while (grigliaPiena == FALSO) {
         mostraSchermo(dimensione);
@@ -137,7 +142,7 @@ void avviarePartita(const char *inputNome, Impostazioni impostazioni) {
         scanf("%d", &sceltaAzione);
         pulireBuffer();
 
-        if (sceltaAzione == 1) {
+        if (sceltaAzione == GIOCA) {
             griglia = leggereGrigliaPartita(&partita);
             collezionareInput(&griglia, &riga, RIGA_INPUT_RIGA);
             collezionareInput(&griglia, &colonna, RIGA_INPUT_COLONNA);
@@ -154,11 +159,12 @@ void avviarePartita(const char *inputNome, Impostazioni impostazioni) {
                     errore = VERO;
                 }
             }
-        } else if (sceltaAzione == 2) {
+        } else if (sceltaAzione == SALVA_PARTITA) {
             salvarePartitaCorrente(&partita);
-        } else if (sceltaAzione == 3) {
+        } else if (sceltaAzione == TORNA_MENU) {
             avviareMenuPrincipale();
-            return;
+        } else {
+          errore = VERO;
         } 
     }
     stampareVittoria();
@@ -319,13 +325,13 @@ void disegnareCornice() {
 * RITORNO: valore di dimensione aggiornato             *
 *******************************************************/
 void convertireDimensione(int *dimensione) {
-    if (*dimensione == 1) {
+    if (*dimensione == PICCOLA) {
         *dimensione = 4;
     } else {
-        if (*dimensione == 2) {
+        if (*dimensione == MEDIA) {
             *dimensione = 9;
         } else {
-            if (*dimensione == 3) {
+            if (*dimensione == GRANDE) {
                 *dimensione = 16;
             }
         }
@@ -356,7 +362,7 @@ void rimuovereNumeri(Griglia *griglia, Impostazioni impostazioni) {
     int riga, colonna;
     int dimensione;
 
-    dimensione = leggereDimGrigliaImp(impostazioni);
+    dimensione = leggereDimGriglia(*griglia);
     
     rimosse = 0;
     cellaGriglia = dimensione * dimensione;
@@ -669,7 +675,7 @@ int trovareCellaVuota(Griglia *griglia) {
     while (cursRiga < dimensione && trovata == FALSO) {
         cursColonna = 0;
         while (cursColonna < dimensione && trovata == FALSO) {
-            if (leggereValGriglia(*griglia, cursRiga, cursColonna) == 0) {
+            if (leggereValGriglia(*griglia, cursRiga, cursColonna) == CELLA_VUOTA) {
                 risultato = cursRiga * dimensione + cursColonna + 1;
                 trovata = VERO;
             } else {
@@ -701,8 +707,9 @@ int trovareCellaVuota(Griglia *griglia) {
 * RITORNO: partita aggiornata con la griglia di gioco    *
 *          creata                                        *
 *********************************************************/
-void generareSudoku(Partita *partita,  Impostazioni impostazioni){
+void generareSudoku(Partita *partita){
     Griglia griglia = leggereGrigliaPartita(partita);
+    Impostazioni impostazioni = leggereImpPartita(*partita);
 
     riempireGriglia(&griglia);
     rimuovereNumeri(&griglia, impostazioni);

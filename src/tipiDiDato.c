@@ -137,3 +137,71 @@ void inizializzareGrigliaPartita(Partita *partita, int dimensione) {
         riga = riga + 1;
     }
 }
+
+
+
+// nel codice non utilizziamo il tipo di dato file e il tipo di dato cartella
+// perche' ci danno problemi con l' esecuzione del programma...
+// qui commentato c'e comunuque il codice dei tipi di dato + funzioni di accesso
+//
+//typedef struct {
+//    char nomeFile[100];        
+//   unsigned int posizione;    
+//   char caratteri[MAX_CARATTERI];  
+//} File;
+
+//const char* leggereNomeFile(File file) {
+//   return file.nomeFile;
+//}
+
+//unsigned int posLeggereFile(File file) {
+//   return file.posizione;
+//}
+
+//void incPosizioneFile(File* file) {
+//   file->posizione += 1;
+//}
+
+//char leggereCarattereFile(File* file) {
+//    char valoreLetto = file->caratteri[file->posizione];
+//    incPosizioneFile(file);
+//    return valoreLetto;
+//}
+
+//void scrivereNomeFile(File* file, const char* nuovoNome) {
+//    strncpy(file->nomeFile, nuovoNome, sizeof(file->nomeFile) - 1);
+//    file->nomeFile[sizeof(file->nomeFile) - 1] = '\0'; 
+//}
+
+//void scrivereCarattereFile(File* file, char nuovoValore, unsigned int pos) {
+//    if (pos < MAX_CARATTERI) {
+//        file->caratteri[pos] = nuovoValore;
+//        incPosizioneFile(file);
+//    }
+//}
+//
+// typedef struct {
+//   File voci[MAX_VOCI]; 
+//   unsigned int posizione; 
+// Cartella;}
+//
+// File leggereProssimaVoce(Cartella* cartella) {
+// File voceLetta = cartella->voci[cartella->posizione];
+//    incPosizioneCartella(cartella);
+//    return voceLetta;
+//}
+//
+//char* ottenereNomeFile(File voce) {
+//   return voce.nomeFile;
+//}
+//
+//void incPosizioneCartella(Cartella* cartella) {
+//   cartella->posizione += 1;
+//}
+
+//void scrivereVoce(Cartella* cartella, File voce) {
+//   cartella->voci[cartella->posizione] = voce;
+//   incPosizioneCartella(cartella);
+//}
+
+

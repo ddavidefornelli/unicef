@@ -54,6 +54,10 @@ Scopo di ogni funzione presente:
 * RITORNO:                                                 *
 * -voce: voce successiva letta, tipo file                  *
 ************************************************************/
+//
+// abbiamo messo qui le funzioni (anche se sono di accesso al tipo di dato Cartella)
+// per continuita' del codice... 
+//
 struct dirent* leggereProssimaVoce(DIR* cartella) {
     struct dirent* voceLetta;
 
