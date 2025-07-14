@@ -112,15 +112,18 @@ void avviarePartita(const char *inputNome, Impostazioni impostazioni) {
     int valDaInserire, riga, colonna;
     int sceltaAzione;
     int dimensione;
+    int difficolta;
 
     grigliaPiena = FALSO;
     valido = FALSO;
     errore = FALSO;
 
     dimensione = leggereDimGrigliaImp(impostazioni);
+    difficolta = leggereDifficoltaImp(impostazioni);
 
     inizializzareGrigliaPartita(&partita, dimensione);
     scrivereNomePartita(&partita, (char *)inputNome);
+    scrivereImpPartita(&partita, difficolta, dimensione);
 
     convertireDimensione(&dimensione);
     scrivereDimensioneImp(&impostazioni, dimensione);
@@ -160,7 +163,7 @@ void avviarePartita(const char *inputNome, Impostazioni impostazioni) {
                 }
             }
         } else if (sceltaAzione == SALVA_PARTITA) {
-            salvarePartitaCorrente(&partita);
+            salvarePartita(&partita);
         } else if (sceltaAzione == TORNA_MENU) {
             avviareMenuPrincipale();
         } else {
@@ -354,7 +357,7 @@ void convertireDimensione(int *dimensione) {
 *                                                       *
 * RITORNO: griglia di gioco aggiornata                  *
 ********************************************************/
-void rimuovereNumeri(Griglia *griglia, Impostazioni impostazioni) {
+void rimuovereNumeri(Griglia *griglia, Impostazioni *impostazioni) {
     srand(time(NULL));
     int cellaGriglia;
     int celleDaRimuovere; 
@@ -362,6 +365,7 @@ void rimuovereNumeri(Griglia *griglia, Impostazioni impostazioni) {
     int riga, colonna;
     int dimensione;
 
+    printf("difficolta rimuovere numero %d", leggereDifficoltaImp(*impostazioni));
     dimensione = leggereDimGriglia(*griglia);
     
     rimosse = 0;
@@ -394,11 +398,11 @@ void rimuovereNumeri(Griglia *griglia, Impostazioni impostazioni) {
 * RITORNO: Intero che rappresenta la percentuale di    *
 *          celle da rimuovere                          *
 *******************************************************/
-int calcolareCelleDaRimuovere(Impostazioni impostazioni) {
+int calcolareCelleDaRimuovere(Impostazioni *impostazioni) {
     int difficolta;
     int risultato;
 
-    difficolta = leggereDifficoltaImp(impostazioni);
+    difficolta = leggereDifficoltaImp(*impostazioni);
 
     if(difficolta == DIFFICOLTA_FACILE)  {
         risultato = 20;
@@ -709,7 +713,7 @@ int trovareCellaVuota(Griglia *griglia) {
 *********************************************************/
 void generareSudoku(Partita *partita){
     Griglia griglia = leggereGrigliaPartita(partita);
-    Impostazioni impostazioni = leggereImpPartita(*partita);
+    Impostazioni *impostazioni = leggereImpPartita(partita);
 
     riempireGriglia(&griglia);
     rimuovereNumeri(&griglia, impostazioni);
@@ -1081,7 +1085,7 @@ void avviarePartitaContinuata(Partita *partita) {
                 errore = VERO;
             }
         } else if (sceltaAzione == 2) {
-            salvarePartitaCorrente(partita);
+            salvarePartita(partita);
         } else if (sceltaAzione == 3) {
             avviareMenuPrincipale();
             return;

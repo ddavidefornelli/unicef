@@ -16,7 +16,7 @@ typedef struct {
 // Definizione della struttura Partita
 typedef struct {
     Griglia grigliaPartita;
-    Impostazioni impostazioniPartita;
+    Impostazioni *impostazioniPartita;
     char nomePartita[50];
 } Partita;
 
@@ -29,11 +29,11 @@ void scrivereValGriglia(Griglia *griglia, int i, int j, int valore);
 // Dichiarazioni delle funzioni per Impostazioni
 int leggereDifficoltaImp(Impostazioni imp);
 int leggereDimGrigliaImp(Impostazioni imp);
-void scrivereDifficoltaImp(Impostazioni *imp, int valore);
+void scrivereDifficoltaImp(Impostazioni *imp, int *valore);
 void scrivereDimensioneImp(Impostazioni *imp, int valore);
 
 // Dichiarazioni delle funzioni per Partita
-Impostazioni leggereImpPartita(Partita partita);
+Impostazioni *leggereImpPartita(Partita *partita);
 Griglia leggereGrigliaPartita(Partita *partita);
 char* leggereNomePartita(Partita *partita);
 void scrivereImpPartita(Partita *partita, int difficolta, int dimensione);

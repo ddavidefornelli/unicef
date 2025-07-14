@@ -70,8 +70,8 @@ int leggereDifficoltaImp(Impostazioni imp) {
     return valoreLetto; 
 }
 
-void scrivereDifficoltaImp(Impostazioni *imp, int valore) {
-    imp->difficolta = valore;
+void scrivereDifficoltaImp(Impostazioni *imp, int *valore) {
+    imp->difficolta = *valore;
 }
 
 void scrivereDimensioneImp(Impostazioni *imp, int valore) {
@@ -79,10 +79,10 @@ void scrivereDimensioneImp(Impostazioni *imp, int valore) {
 }
 
 // Funzioni per Partita
-Impostazioni leggereImpPartita(Partita partita) {
-    Impostazioni valoreLetto;
+Impostazioni *leggereImpPartita(Partita *partita) {
+    Impostazioni *valoreLetto;
 
-    valoreLetto = partita.impostazioniPartita;
+    valoreLetto = partita->impostazioniPartita;
     return valoreLetto;
 }
 
@@ -100,8 +100,8 @@ char* leggereNomePartita(Partita *partita) {
 }
 
 void scrivereImpPartita(Partita *partita, int difficolta, int dimensione) {
-    scrivereDifficoltaImp(&partita->impostazioniPartita, difficolta);
-    scrivereDimensioneImp(&partita->impostazioniPartita, dimensione);
+    scrivereDifficoltaImp(partita->impostazioniPartita, &difficolta);
+    scrivereDimensioneImp(partita->impostazioniPartita, dimensione);
 }
 
 void scrivereNomePartita(Partita *partita, char nome[50]) {

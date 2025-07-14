@@ -125,8 +125,9 @@ void avviareImpostazioni() {
   inputDimensione = collezionareDimensione();
   collezionareNomePartita(inputNomePartita);
 
+  printf("%d", inputDifficolta);
 
-  scrivereDifficoltaImp(&impostazioni, inputDifficolta);
+  scrivereDifficoltaImp(&impostazioni, &inputDifficolta);
   scrivereDimensioneImp(&impostazioni, inputDimensione);
   avviarePartita(inputNomePartita, impostazioni);
 }

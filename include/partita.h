@@ -36,12 +36,12 @@ void stampareRigaGriglia(Griglia griglia, int riga);
 // Funzioni di utilità per dimensioni e difficoltà
 void convertireDimensione(int *dimensione);
 int calcolareSottoquadrato(int dimensione);
-int calcolareCelleDaRimuovere(Impostazioni impostazioni);
+int calcolareCelleDaRimuovere(Impostazioni *impostazioni);
 
 // Funzioni di generazione e riempimento Sudoku
 void generareSudoku(Partita *partita);
 int riempireGriglia(Griglia *griglia);
-void rimuovereNumeri(Griglia *griglia, Impostazioni impostazioni);
+void rimuovereNumeri(Griglia *griglia, Impostazioni *impostazioni);
 int trovareCellaVuota(Griglia *griglia);
 
 // Funzioni di validazione
