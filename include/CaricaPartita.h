@@ -4,6 +4,9 @@
 #include "../include/funzioniUtilita.h"
 #include "../include/tipiDiDato.h"
 
+
+#define MAX_NOME_FILE 50
+
 void avviareMenuCaricaPartita();
 void stampareTitoloCaricaPartita();
 
@@ -12,8 +15,6 @@ void salvarePartita(Partita *partita, const char *percorso);
 void salvareValoriGriglia(FILE *file, Partita *partita);
 void caricarePartita(Partita *partita, const char *percorso);
 void caricareValoriGriglia(FILE *file, Partita *partita);
-void liberarePartite(char *nomiPartite[], int partiteDaLiberare);
-const char *trovareFile(char *nomiPartite[], int numeroPartite, const char *input);
 void estrapolareNomeDaFile(const char *nomeFile, char *nome);
 
 #endif

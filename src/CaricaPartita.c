@@ -8,8 +8,6 @@ NOME FILE: Home Page sudoku
 
 Scopo di ogni funzione presente:
 - raccoglierePartiteSalvate: legge dalla cartella database i file che rappresentano le partite salvate dall'utente. Restituisce il numero totale di partite trovate.
-- liberarePartite: liberare la memoria utilizzata per contenere i nomi delle partite.
-- trovareFile: ricerca all'interno della cartella database(dove vengono salvate le partite) la partita che l'utente desidera giocare.
 - stampareTitoloCaricaPartita: stampa la scritta 'CARICA PARTITA'.
 */
 
@@ -38,7 +36,7 @@ Scopo di ogni funzione presente:
 #define RESET "\033[0m"
 #define MAX_PARTITE 13
 #define VERO 1
-
+#define MAX_NOME_FILE 50
 
 
 /***********************************************************
@@ -88,16 +86,15 @@ const char* ottenereNomeFile(struct dirent* voce) {
 *                                                        *
 * DESCRIZIONE: Scansiona la cartella "database" per      *
 *              trovare file che iniziano con "partita_"  *
-*              e le salva in un array                    *
+*              e le salva in un array statico            *
 * ARGOMENTI:                                             *
-* - nomiPartite: array di stringhe dove salvare i nomi   *
-*   dei file.                                            *
+* - nomiPartite: array statico di stringhe dove salvare  *
+*   i nomi dei file.                                     *
 *                                                        *
 * RITORNO:                                               *
-* - nomiPartite: array di stringhe con i nomi            *
-*   dei file.                                            *
+* Nessuno (l'array viene riempito direttamente)         *
 *********************************************************/
-void raccogliereNomiPartiteSalvate(char *nomiPartite[]) {
+void raccogliereNomiPartiteSalvate(char nomiPartite[][MAX_NOME_FILE]) {
     DIR *cartella; 
     struct dirent *voce;
     int conteggio;
@@ -110,7 +107,6 @@ void raccogliereNomiPartiteSalvate(char *nomiPartite[]) {
         nomeFile = ottenereNomeFile(voce);
         
         if (confrontarePrefisso(nomeFile, "partita_") == VERO) {
-            nomiPartite[conteggio] = malloc(lunghezza(nomeFile) + 1);
             strcpy(nomiPartite[conteggio], nomeFile);
             conteggio = conteggio + 1;
         }
@@ -127,13 +123,10 @@ void raccogliereNomiPartiteSalvate(char *nomiPartite[]) {
 *              e conta quante ce ne sono.                *
 *                                                        *
 * ARGOMENTI:                                             *
-* - nomiPartite: array di stringhe dove salvare i nomi   *
-*   dei file.                                            *
-* - massimePartite: numero massimo di elementi           *
-*   che l'array può contenere.                           *
+* Nessuno                                                *
 *                                                        *
 * RITORNO:                                               *
-* - conteggio: numero di file rilevati e copiati nell'array; *
+* - conteggio: numero di file rilevati;                  *
 *        0 se la cartella non esiste o in caso di errore *
 *********************************************************/
 int contareNumeroPartiteSalvate() {
@@ -156,63 +149,6 @@ int contareNumeroPartiteSalvate() {
     closedir(cartella);
     return conteggio;
 }
-
-/*********************************************************************
-* FUNZIONE: liberaPartite                                            *
-*                                                                    *
-* DESCRIZIONE: libera la memoria utilizzata per l'                   *
-*              array contenente il nome delle partite salvate        *
-*                                                                    *
-* ARGOMENTI:                                                         * 
-* -nomiParite: array contenete i nomi delle partite salvate          *
-* -partiteDaLiberare: numero di elementi dell' array nomiPartite     *
-*                                                                    *
-* RITORNO:                                                           *
-* -memoria liberata                                                  *
-**********************************************************************/
-void liberarePartite(char *nomiPartite[], int partiteDaLiberare) {
-  int cursPartite; 
-
-  cursPartite = 0;
-  while (cursPartite < partiteDaLiberare) {
-    if (nomiPartite[cursPartite] != NULL) {
-      free(nomiPartite[cursPartite]);
-    }
-    cursPartite = cursPartite + 1;
-  }
-}
-
-
-/********************************************************
-* FUNZIONE: trovareFile                                    *
-*                                                        *
-* DESCRIZIONE: Cerca un nome di file partite nell'array  *
-*              secondo l'indice numerico o una sottostr. *
-*                                                        *
-* ARGOMENTI:                                             *
-* - char *nomiPartite[]: array di nomi di file.          *
-* - int numero: numero di elementi validi nell'array.    *
-* - const char *input: stringa inserita dall'utente,     *
-*   che può essere un numero (come stringa) o parte del  *
-*   nome del file.                                       *
-*                                                        *
-* RITORNO:                                               *
-* - puntatore al nome di file trovato;                   *
-*   NULL se non viene trovata nessuna corrispondenza.    *
-*********************************************************/
-
-const char *trovareFile(char *nomiPartite[], int numeroPartite, const char *input) {
-  long indice; 
-  char *risultato;
-
-  indice = strtol(input, NULL, 10);
-  if (indice >= 1 && indice <= numeroPartite) {
-    risultato = nomiPartite[indice - 1];
-  }
-
-  return risultato;
-}
-
 
 /********************************************************
 * FUNZIONE: stampareTitoloCaricaPartita                 *
@@ -261,7 +197,7 @@ void stampareTitoloCaricaPartita() {
 *                                                       *
 ********************************************************/
 void avviareMenuCaricaPartita() {
-  char *nomiPartite[100];
+  char nomiPartite[MAX_PARTITE][MAX_NOME_FILE];
   int numeroPartite;
   char input[128];
   int scelta;
@@ -296,7 +232,6 @@ void avviareMenuCaricaPartita() {
   fgets(input, 128, stdin);
 
   if (*input == '0') {
-    liberarePartite(nomiPartite, numeroPartite);
     avviareMenuPrincipale(); 
   }
   
@@ -316,11 +251,9 @@ void avviareMenuCaricaPartita() {
     caricarePartita(&partita, percorso);
     estrapolareNomeDaFile(nomiPartite[scelta-1], nome);
     scrivereNomePartita(&partita, nome);
-    liberarePartite(nomiPartite, numeroPartite);
 
     avviarePartitaContinuata(&partita);
   } else {
-    liberarePartite(nomiPartite, numeroPartite);
     avviareMenuCaricaPartita(); 
   }
 }
