@@ -374,10 +374,7 @@ void caricarePartita(Partita *partita, const char *percorso) {
     file = fopen(percorso, "r");
     fscanf(file, "%d %d", &dimensione, &difficolta);
 
-    // Alloca impostazioniPartita
-    partita->impostazioniPartita = malloc(sizeof(Impostazioni));
-    partita->impostazioniPartita->dimensioneGriglia = dimensione;
-    partita->impostazioniPartita->difficolta = difficolta;
+    scrivereImpPartita(partita, difficolta, dimensione);
 
     inizializzareGrigliaPartita(partita, dimensione);
     caricareValoriGriglia(file, partita);

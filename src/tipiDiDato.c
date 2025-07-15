@@ -100,6 +100,7 @@ char* leggereNomePartita(Partita *partita) {
 }
 
 void scrivereImpPartita(Partita *partita, int difficolta, int dimensione) {
+    partita->impostazioniPartita = malloc(sizeof(Impostazioni));
     scrivereDifficoltaImp(partita->impostazioniPartita, &difficolta);
     scrivereDimensioneImp(partita->impostazioniPartita, dimensione);
 }
