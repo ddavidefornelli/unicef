@@ -45,6 +45,7 @@ Scopo di ogni funzione presente:
 #define OPZIONE_MAX 4
 
 #define VERO 1
+#define FALSO 0
 
 #define VERDE "\033[32m"
 #define RESET "\033[0m"
@@ -59,9 +60,6 @@ Scopo di ogni funzione presente:
 * ARGOMENTI: Nessuno                                    *
 *                                                       *
 * RITORNO: Terminale aggiornato                         *
-*                                                       *
-* MODIFICHE:                                            *
-* 23/06/25 - Prima versione                             *
 ********************************************************/
 void stampareMenuPrincipale() 
 {
@@ -97,41 +95,34 @@ void stampareMenuPrincipale()
 * ARGOMENTI: Nessuno                                    *
 *                                                       *
 * RITORNO: Terminale aggiornato                         *
-*                                                       *
-* MODIFICHE:                                            *
-* 24/06/25 - Prima versione                             *
 ********************************************************/
 
 void avviareMenuPrincipale(){
-  int input;
   stampareMenuPrincipale();
-  collezionareInputHomepage(&input); 
+  collezionareInputHomepage(); 
 }
 
 /************************************************************** 
  *  FUNZIONE: collezionareInput()                             *
- *  DESCRIZIONE: richiede un qualsiasi input con la stampare  *
- *               di un  testo, come la richiesta.             *
+ *  DESCRIZIONE: colleziona l' input dell' utente             *
  *                                                            *
  *  ARGOMENTI:                                                *
- *  *int intput: variabile dedicata all'input da terminale    *
+ *  //                                                        *
  *                                                            *
- *  RITORNO: //                                               *
- *                                                            *
- *  MODIFICHE:                                                *
- *  23/06/25 - Prima versione                                 *
- *  25/06/25 - Seconda versione                               *  
- *  26/06/25 - Terza versione                                 *
+ *  RITORNO: funzione scelta dall' utente avviata             *
  **************************************************************/
 
-void collezionareInputHomepage(int *input) {
+void collezionareInputHomepage() {
   int inMenuPrinipale; 
+  int input;
 
   inMenuPrinipale = VERO;
   while(inMenuPrinipale) {
     reimpostareZonaInput(INPUT_RIGA, INPUT_COLONNA);
     
-    while(scanf("%d", input) != 1) { // input é formato da caratteri  
+    // non presente nello pseudocodice, perche' si da per scontato
+    // che l' input dell' utente sia un numero
+    while(scanf("%d", &input) != 1) {  
       pulireBuffer();
       mostrareMessaggioErrore(" Digita un Numero ", ERR_MSG_RIGA, ERR_MSG_COLONNA);
       reimpostareZonaInput(INPUT_RIGA, INPUT_COLONNA);
@@ -139,19 +130,19 @@ void collezionareInputHomepage(int *input) {
 
     pulireBuffer();
 
-    if(*input < OPZIONE_MIN || *input > OPZIONE_MAX) {
+    if(input < OPZIONE_MIN || input > OPZIONE_MAX) {
       mostrareMessaggioErrore("Digita un Numero compreso tra 1 - 4 ", ERR_MSG_RIGA, ERR_MSG_COLONNA - 7);
       reimpostareZonaInput(INPUT_RIGA, INPUT_COLONNA);
     }
-    else if (*input == NUOVA_PARTITA) {
+    else if (input == NUOVA_PARTITA) {
+      inMenuPrinipale = FALSO;
       avviareImpostazioni();
-      inMenuPrinipale = 0;
     }
-    else if (*input == PARTITE_SALVATE) {
+    else if (input == PARTITE_SALVATE) {
+      inMenuPrinipale = FALSO;
       avviareMenuCaricaPartita();
-      inMenuPrinipale = 0;
     }
-    else if (*input == ESCI) {
+    else if (input == ESCI) {
       exit(0);
     }
   }

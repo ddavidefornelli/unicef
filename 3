@@ -61,7 +61,7 @@ Scopo delle funzioni presenti:
 *                                                       *
 * RITORNO: Terminale aggiornato                         *
 ********************************************************/
-void stampareMenuImpostazioni() {
+void stampareMenuDifficolta() {
   pulireSchermo();
   printf(CIANO);
   printf("\n");
@@ -119,11 +119,13 @@ void avviareImpostazioni() {
   char inputNomePartita[NOME_MAX + 1];
   Impostazioni impostazioni;
 
-  stampareMenuImpostazioni();
+  stampareMenuDifficolta();
 
   inputDifficolta = collezionareDifficolta();
   inputDimensione = collezionareDimensione();
   collezionareNomePartita(inputNomePartita);
+
+  printf("%d", inputDifficolta);
 
   scrivereDifficoltaImp(&impostazioni, &inputDifficolta);
   scrivereDimensioneImp(&impostazioni, inputDimensione);
@@ -156,8 +158,6 @@ int collezionareDifficolta() {
   while(inMenuDifficolta) {
     reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
     
-    //controllo non incluso nello pseudocodice perche' si da per scontato che
-    //l' input dell' utente sia un numero
     while(scanf("%d", &inputDifficolta) != 1) {
       pulireBuffer();
       reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
@@ -168,7 +168,7 @@ int collezionareDifficolta() {
     pulireBuffer();
     
     if(inputDifficolta >= OPZIONE_MIN && inputDifficolta <= OPZIONE_MAX) {
-      inMenuDifficolta = FALSO;  
+      inMenuDifficolta = 0;  
     } else {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA - 6, ERR_MSG_COLONNA - 5);
       reimpostareZonaInput(INPUT_RIGA_DIFFICOLTA, INPUT_COLONNA);
@@ -197,12 +197,10 @@ int collezionareDimensione() {
   int inMenuDimensione;
   int inputDimensione;
 
-  inMenuDimensione = VERO;
+  inMenuDimensione = 1;
   while(inMenuDimensione) {
     reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
     
-    //controllo non incluso nello pseudocodice perche' si da per scontato che
-    //l' input dell' utente sia un numero
     while(scanf("%d", &inputDimensione) != 1) {
       pulireBuffer();
       reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
@@ -213,7 +211,7 @@ int collezionareDimensione() {
     pulireBuffer();
 
     if(inputDimensione >= OPZIONE_MIN && inputDimensione <= OPZIONE_MAX) {
-      inMenuDimensione = FALSO;  
+      inMenuDimensione = 0;  
     } else {
       mostrareMessaggioErrore("Digita un numero tra (1 - 4)", ERR_MSG_RIGA + 2, ERR_MSG_COLONNA - 5);
       reimpostareZonaInput(INPUT_RIGA_DIMENSIONE, INPUT_COLONNA);
@@ -228,7 +226,9 @@ int collezionareDimensione() {
 * FUNZIONE: collezionaNomePartita                             *
 *                                                             *
 * DESCRIZIONE: Permette all’utente di inserire un nome per la *
-*              partita.                                       *
+*              partita. Se non viene inserito alcun nome,     *
+*              ne genera uno automaticamente in base al tempo *
+*              corrente.                                      *
 *                                                             *
 * ARGOMENTI:                                                  *
 * - char *nomeParitita: puntatore a buffer dove salvare il    *
@@ -236,18 +236,17 @@ int collezionareDimensione() {
 *                                                             *
 * RITORNO: partita aggiornata                                 *
 **************************************************************/
-void collezionareNomePartita(char *inputNomePartita) {
-  int lunghezzaNome;
+void collezionareNomePartita(char *nomeParitita) {
+  int lunghezza;
   int inputValido;
 
-  inputValido = 0;
+  inputValido = 0
   while(!inputValido) {
     reimpostareZonaInput(INPUT_RIGA_NOME, INPUT_COLONNA + 35);
-    fgets(inputNomePartita, NOME_MAX, stdin);
-    lunghezzaNome = lunghezza(inputNomePartita);
-    if (inputNomePartita[lunghezzaNome - 1] == '\n' && lunghezzaNome < NOME_MAX) { 
-      inputNomePartita[lunghezzaNome - 1] = '\0'; 
-      inputValido = 1;
+    fgets(nomeParitita, NOME_MAX, stdin);
+    lunghezza = strlen(nomeParitita);
+    if (lunghezza > 0 && nomeParitita[lunghezza - 1] == '\n' && lunghezza < NOME_MAX) { 
+      nomeParitita[lunghezza - 1] = '\0'; 
     } else {
         pulireBuffer();
     }

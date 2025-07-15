@@ -84,10 +84,8 @@ Nel giorno 21/06/25, Giuliano Antoniciello e Davide Fornelli hanno aggiornato le
 #define MEDIA 2
 #define GRANDE 3
 
-
 #define BLU "\033[34m"
 #define RESET "\033[0m"
-
 
 /*******************************************************
 * FUNZIONE: avviarePartita                             *
@@ -277,7 +275,7 @@ void stampareTabellaInput() {
     spostareCursore(RIGA_INPUT_VALORE - 1, COLONNA_INPUT);
     printf("-Valore-");
     spostareCursore(25, 17);
-    printf("\033[34m azione: (1 giocare / 2 salvare / 3 uscire)\033[0m");
+    printf("\033[34m azione: (1 giocare / 2 salvare / 3 uscire) \033[0m");
 }
 
 
@@ -365,13 +363,12 @@ void rimuovereNumeri(Griglia *griglia, Impostazioni *impostazioni) {
     int riga, colonna;
     int dimensione;
 
-    printf("difficolta rimuovere numero %d", leggereDifficoltaImp(*impostazioni));
     dimensione = leggereDimGriglia(*griglia);
     
-    rimosse = 0;
     cellaGriglia = dimensione * dimensione;
     celleDaRimuovere = cellaGriglia * calcolareCelleDaRimuovere(impostazioni) / 100;
 
+    rimosse = 0;
     while (rimosse < celleDaRimuovere) {
         riga = rand() % dimensione; 
         colonna = rand() % dimensione;
@@ -476,11 +473,10 @@ int verificareRiga(Griglia *griglia, int riga, int numero) {
     int risultato; 
     int dimensione;
     
+    risultato = VERO;
     dimensione = leggereDimGriglia(*griglia);
 
     cursColonna = 0;
-    risultato = VERO;
-    
     while (cursColonna < dimensione && risultato == VERO) {
         if (leggereValGriglia(*griglia, riga, cursColonna) == numero) {
             risultato = FALSO;
@@ -515,9 +511,9 @@ int verificareColonna(Griglia *griglia, int colonna, int numero) {
     int dimensione;
 
     risultato = VERO;
-    cursRiga = 0;
     dimensione = leggereDimGriglia(*griglia);
 
+    cursRiga = 0;
     while (cursRiga < dimensione && risultato == VERO) {
         if (leggereValGriglia(*griglia, cursRiga, colonna) == numero) {
             risultato = FALSO;
@@ -558,8 +554,9 @@ int verificareSottoquadrato(Griglia *griglia, int riga, int colonna, int numero)
 
     dimensioneSottoquadrato= calcolareSottoquadrato(leggereDimGriglia(*griglia));;
     inizioRiga  = riga - modulo(riga, dimensioneSottoquadrato);
-    risultato = VERO;
     inizioColonna = colonna - modulo(colonna, dimensioneSottoquadrato);
+
+    risultato = VERO;
 
     cursRiga = 0;
     while (cursRiga < dimensioneSottoquadrato && risultato == VERO) {
@@ -608,6 +605,7 @@ int riempireGriglia(Griglia *griglia) {
     dimensione = leggereDimGriglia(*griglia);
 
     int numeriDaProvare[dimensione];
+
     grigliaPiena = FALSO;
     cellaVuota = trovareCellaVuota(griglia);
     
@@ -674,8 +672,9 @@ int trovareCellaVuota(Griglia *griglia) {
 
     dimensione = leggereDimGriglia(*griglia);
     trovata = FALSO;
-    cursRiga = 0;
     risultato = 0;
+
+    cursRiga = 0;
     while (cursRiga < dimensione && trovata == FALSO) {
         cursColonna = 0;
         while (cursColonna < dimensione && trovata == FALSO) {
@@ -929,8 +928,8 @@ void stampareRigaGriglia(Griglia griglia, int riga) {
 }
 
 
-/*******************************************************
-* FUNZIONE: collezionareInput                             *
+/********************************************************
+* FUNZIONE: collezionareInput                           *
 *                                                       *
 * DESCRIZIONE: Gestisce la raccolta sicura di un        *
 *              input numerico da tastiera, effettuando  *
@@ -961,10 +960,10 @@ int collezionareInput(Griglia *griglia, int *input, int rigaTerminale) {
         reimpostareZonaInput(rigaTerminale, COLONNA_INPUT);
         inputOk = FALSO;
 
+        // questa parte non e' inclusa nello pseudocodice perche' 
+        // diamo per supposto che input sia un numero
         while (inputOk == FALSO) {
             if (scanf("%d", input) == 1) {
-                // non utilizziamo la funzione eUnNumero
-                // perche' ci da problemi con il formato dell' input
                 inputOk = VERO;
             } else {
                 pulireBuffer();
@@ -1008,8 +1007,8 @@ int controllareGrigliaPiena(Griglia griglia) {
 
     esito = VERO;
     dimensione = leggereDimGriglia(griglia);
-    cursRiga = 0;
 
+    cursRiga = 0;
     while (cursRiga < dimensione && esito == VERO) {
         cursColonna = 0;
         while (cursColonna < dimensione && esito == VERO) {
@@ -1088,8 +1087,9 @@ void avviarePartitaContinuata(Partita *partita) {
             salvarePartita(partita);
         } else if (sceltaAzione == 3) {
             avviareMenuPrincipale();
-            return;
-        } 
+        } else {
+          errore = VERO;
+        }
     }
     stampareVittoria();
 }

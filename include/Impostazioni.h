@@ -6,10 +6,8 @@
 void avviareImpostazioni();
 int collezionareDifficolta();
 int collezionareDimensione();
-void stampareMenuDifficolta();
-void stampareTitoloImpostazioni();
 void stampareMenuImpostazioni();
 
-void collezionareNomePartita(char* nomePartita);
+void collezionareNomePartita(char* inputNomePartita);
 
 #endif

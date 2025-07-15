@@ -20,10 +20,8 @@ spostareCursore() -> funzione utilizzata per spostare la posizione del cursore n
 #define VERO 1
 #define FALSO 0
 
-typedef enum {
-  LARGHEZZA_TERMINALE = 80,
-  ALTEZZA_TERMINALE = 25
-} terminale;
+#define LARGHEZZA_TERMINALE 80
+#define ALTEZZA_TERMINALE 25
 
 void spostareCursore(int x, int y)
 {
@@ -45,7 +43,6 @@ void stampareCentrato(const char *testo)
   int dimStringa; 
   int spazi; 
 
-  spaziDaInserire = 0;
   dimStringa = lunghezza(testo);
   spazi = (LARGHEZZA_TERMINALE - dimStringa) / 2;
   if (spazi < 0)
@@ -154,7 +151,7 @@ void tornareHomepage(int *input, int posRiga, int posColonna){
     }
     else if (*input == 0) {
       avviareMenuPrincipale();
-      inMenuCorrente = 0;
+      inMenuCorrente = FALSO;
     }
   }
 }
@@ -171,7 +168,6 @@ int lunghezza(const char stringa[]) {
     return lunghezza;
 }
 
-// Funzione per concatenare due stringhe
 void concatenareDueStringhe(const char stringa1[], const char stringa2[], char stringaFinale[]) {
     int i = 0;
     while (i < lunghezza(stringa1)) {
@@ -209,13 +205,17 @@ int confrontarePrefisso(const char *stringa1, const char *prefisso) {
 
 int modulo(int dividendo, int divisore) {
     int resto = 0;
-    while (dividendo >= divisore) {
-        dividendo = dividendo - divisore;
-    }
-    if (dividendo < 0) {
-        resto = -dividendo;
+    if(divisore == 0){
+      resto = -1;
     } else {
+      while (dividendo >= divisore) {
+        dividendo = dividendo - divisore;
+      }
+      if (dividendo < 0) {
+        resto = -dividendo;
+      } else {
         resto = dividendo;
+      }
     }
     return resto;
 }

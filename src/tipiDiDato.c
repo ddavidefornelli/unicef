@@ -27,7 +27,6 @@ Scopo delle funzioni presenti:
 - inizializzareGrigliaPartita: alloca e inizializza a zero la griglia di gioco con dimensione scelta.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "../include/tipiDiDato.h"

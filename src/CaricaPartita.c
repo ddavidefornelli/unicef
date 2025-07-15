@@ -102,9 +102,11 @@ void raccogliereNomiPartiteSalvate(char *nomiPartite[]) {
     struct dirent *voce;
     int conteggio;
     const char *nomeFile;
-    conteggio = 0;
+
     cartella = opendir("database");
     voce = leggereProssimaVoce(cartella);
+
+    conteggio = 0;
     while (voce != NULL && conteggio < MAX_PARTITE) {
         nomeFile = ottenereNomeFile(voce);
         if (confrontarePrefisso(nomeFile, "partita_") == VERO) {
@@ -116,7 +118,23 @@ void raccogliereNomiPartiteSalvate(char *nomiPartite[]) {
     }
     closedir(cartella);
 }
-
+/********************************************************************* FUNZIONE: liberaPartite                                            *
+*                                                                    *
+* DESCRIZIONE: libera la memoria utilizzata per l'                   *
+*              array contenente il nome delle partite salvate        *
+*                                                                    *
+* ARGOMENTI:                                                         * 
+* -nomiParite: array contenete i nomi delle partite salvate          *
+* -partiteDaLiberare: numero di elementi dell' array nomiPartite     *
+*                                                                    *
+* RITORNO:                                                           *
+* -memoria liberata                                                  *
+**********************************************************************/
+//
+//questa funzione non e' presente nello pseudocodice
+//perche' la liberazione della memoria non e' elemento
+//di studio nello pseudocodice
+//
 void liberareNomiPartite(char *nomiPartite[], int numero) {
     int i = 0;
     while (i < numero) {
@@ -148,9 +166,10 @@ int contareNumeroPartiteSalvate() {
     int conteggio;
     const char *nomeFile;
 
-    conteggio = 0;
     cartella = opendir("database");
     voce = leggereProssimaVoce(cartella);
+
+    conteggio = 0;
     while (voce != NULL && conteggio < MAX_PARTITE) {
         nomeFile = ottenereNomeFile(voce);
         
@@ -162,52 +181,6 @@ int contareNumeroPartiteSalvate() {
     closedir(cartella);
     return conteggio;
 }
-
-/*********************************************************************
-* FUNZIONE: liberaPartite                                            *
-*                                                                    *
-* DESCRIZIONE: libera la memoria utilizzata per l'                   *
-*              array contenente il nome delle partite salvate        *
-*                                                                    *
-* ARGOMENTI:                                                         * 
-* -nomiParite: array contenete i nomi delle partite salvate          *
-* -partiteDaLiberare: numero di elementi dell' array nomiPartite     *
-*                                                                    *
-* RITORNO:                                                           *
-* -memoria liberata                                                  *
-**********************************************************************/
-
-
-/********************************************************
-* FUNZIONE: trovareFile                                    *
-*                                                        *
-* DESCRIZIONE: Cerca un nome di file partite nell'array  *
-*              secondo l'indice numerico o una sottostr. *
-*                                                        *
-* ARGOMENTI:                                             *
-* - char *nomiPartite[]: array di nomi di file.          *
-* - int numero: numero di elementi validi nell'array.    *
-* - const char *input: stringa inserita dall'utente,     *
-*   che può essere un numero (come stringa) o parte del  *
-*   nome del file.                                       *
-*                                                        *
-* RITORNO:                                               *
-* - puntatore al nome di file trovato;                   *
-*   NULL se non viene trovata nessuna corrispondenza.    *
-*********************************************************/
-
-const char *trovareFile(char *nomiPartite[], int numeroPartite, const char *input) {
-  long indice; 
-  char *risultato;
-
-  indice = strtol(input, NULL, 10);
-  if (indice >= 1 && indice <= numeroPartite) {
-    risultato = nomiPartite[indice - 1];
-  }
-
-  return risultato;
-}
-
 
 /********************************************************
 * FUNZIONE: stampareTitoloCaricaPartita                 *
@@ -258,8 +231,7 @@ void stampareTitoloCaricaPartita() {
 void avviareMenuCaricaPartita() {
   char *nomiPartite[100];
   int numeroPartite;
-  char input[128];
-  int scelta;
+  int input;
   int tornaHP;
   int cursPartite;
   char nomeVisualizzato[128];
@@ -269,41 +241,33 @@ void avviareMenuCaricaPartita() {
 
   pulireSchermo();
   stampareTitoloCaricaPartita();
-
   raccogliereNomiPartiteSalvate(nomiPartite);
   numeroPartite = contareNumeroPartiteSalvate();
   if (numeroPartite == 0) {
     stampareCentrato("Nessuna partita salvata.");
     liberareNomiPartite(nomiPartite, numeroPartite);
     tornareHomepage(&tornaHP, RIGA_ERRORE, COLONNA - 10);
-    return;
   }
   printf("  [0] Torna al menu principale\n");
-
   cursPartite = 0;
   while (cursPartite < numeroPartite) {
     estrapolareNomeDaFile(nomiPartite[cursPartite], nomeVisualizzato);
     printf("  [%d] %s\n", cursPartite + 1, nomeVisualizzato);
     cursPartite = cursPartite + 1;
   }
-
-  // Chiedi quale partita caricare
+  
   printf("\n Scegli una partita: ");
-  fgets(input, 128, stdin);
-
-  if (*input == '0') {
+  scanf("%d", &input);
+  pulireBuffer();
+  
+  if (input == 0) {
     liberareNomiPartite(nomiPartite, numeroPartite);
     avviareMenuPrincipale(); 
     return;
-  }
-  
-  scelta = atoi(input);
-
-  // Gestisci scelta
-  if (scelta > 0 && scelta <= numeroPartite) {
-    snprintf(percorso, sizeof(percorso), "database/%s", nomiPartite[scelta-1]);
+  } else if (input > 0 && input <= numeroPartite) {
+    snprintf(percorso, sizeof(percorso), "database/%s", nomiPartite[input-1]);
     caricarePartita(&partita, percorso);
-    estrapolareNomeDaFile(nomiPartite[scelta-1], nome);
+    estrapolareNomeDaFile(nomiPartite[input-1], nome);
     scrivereNomePartita(&partita, nome);
     liberareNomiPartite(nomiPartite, numeroPartite);
     avviarePartitaContinuata(&partita);
@@ -471,22 +435,15 @@ void caricareValoriGriglia(FILE *file, Partita *partita) {
     int risultato;
     int dimensione;
     dimensione = leggereDimGriglia(leggereGrigliaPartita(partita));
-
-    
     risultato = VERO;
     riga = 0;
     while (riga < dimensione && risultato == VERO) {
         colonna = 0;
         while (colonna < dimensione && risultato == VERO) {
-            if (fscanf(file, "%d", &val) == 1) {
-                scrivereValGrigliaPartita(partita, val, riga, colonna);
-                colonna = colonna + 1;
-            } else {
-                risultato = FALSO;
-            }
+            fscanf(file, "%d", &val);
+            scrivereValGrigliaPartita(partita, val, riga, colonna);
+            colonna = colonna + 1;
         }
-        if (risultato == VERO) {
-            riga = riga + 1;
-        }
+        riga = riga + 1;
    }
 }
