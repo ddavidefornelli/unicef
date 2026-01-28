@@ -1,6 +1,5 @@
 #ifndef TIPIDIDATO_H
 #define TIPIDIDATO_H
-
 // Definizione della struttura Griglia
 typedef struct {
     int **valoriGriglia;
