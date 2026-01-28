@@ -18,5 +18,4 @@ void concatenareDueStringhe(const char stringa1[], const char stringa2[], char s
 int confrontarePrefisso(const char *stringa1, const char *prefisso);
 int modulo(int dividendo, int divisore);
 void mescolareArray(int *array, int dimensione);
-
 #endif

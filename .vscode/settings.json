@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "partita.h": "c",
-        "menudifficolta.h": "c",
-        "interfaccia_util.h": "c",
-        "funzioni_utilita.h": "c",
-        "stdio.h": "c"
-    }
-}
